@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 5388618077047660804}
   - component: {fileID: 7078722035870961944}
   - component: {fileID: 11487752}
+  - component: {fileID: 1970961225953634095}
   m_Layer: 8
   m_Name: Archer
   m_TagString: Player
@@ -72,7 +73,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &9529560
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -89,7 +90,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &114466173128114766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,9 +105,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneId: 0
+  _assetId: 103097899
   serverOnly: 0
   visible: 0
-  m_AssetId: eb4d93658e2654e8c9448f27a17f0f9e
   hasSpawned: 0
 --- !u!136 &1151286255528639776
 CapsuleCollider:
@@ -267,6 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 587ba4e2210854080997af9ebf15b816, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
   level: {fileID: 6372609056192116201}
@@ -279,7 +282,6 @@ MonoBehaviour:
   animator: {fileID: 9529560}
   collider: {fileID: 1405507854619521122}
   audioSource: {fileID: 82304612815829720}
-  brain: {fileID: 11400000, guid: 8a52ad4abc4d64440ab30bd1a071392b, type: 2}
   _state: IDLE
   lastCombatTime: 0
   target: {fileID: 0}
@@ -299,6 +301,12 @@ MonoBehaviour:
       m_Calls: []
   stunTimeEnd: 0
   inSafeZone: 0
+  raceData: {fileID: 11400000, guid: cec9fc2a71d34244bbe3b603226c913e, type: 2}
+  race: 0
+  gender: 
+  specialisation_1: 
+  specialisation_2: 
+  customization: {fileID: 1970961225953634095}
   experience: {fileID: 7224164981670902446}
   intelligence: {fileID: 5337225809773296567}
   strength: {fileID: 6395401577655504590}
@@ -333,6 +341,7 @@ MonoBehaviour:
   interactionRange: 4
   localPlayerClickThrough: 1
   cancelActionKey: 27
+  continueCastAfterStunned: 1
   offenderBuff: {fileID: 11400000, guid: b8d2834a38f4c411595b27152678ce72, type: 2}
   murdererBuff: {fileID: 11400000, guid: e806fbf7b375c497790f2f50e57c38d0, type: 2}
   attackToMoveRangeRatio: 0.8
@@ -354,6 +363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7fb003075d154e199566b65ef58a743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 1
   current: 1
@@ -370,6 +380,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bef807e81224447db88b60787893bd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
   health: {fileID: 5712206906443104382}
@@ -442,6 +453,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7543fd04b78284e9ea6f0906d905a21b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
   health: {fileID: 5712206906443104382}
@@ -466,6 +478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eec6acd435174d89875eb254cc78162, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
   level: {fileID: 6372609056192116201}
@@ -484,6 +497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76773ac2f3bb844caa44f436511ad45b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
   level: {fileID: 6372609056192116201}
@@ -502,6 +516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4724c14e1e737420293b4da7abd337b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
   level: {fileID: 6372609056192116201}
@@ -665,6 +680,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f98afe75dce041e7a2345a056f73328, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
   guild: {fileID: 4555037830765103302}
@@ -710,6 +726,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83a1374d1be7e4b37ac81ec5657a95da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 1
   syncInterval: 0.1
   player: {fileID: 11448894}
@@ -730,6 +747,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 493e1378d6813490a9ed4b5e616fa7cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
   player: {fileID: 11448894}
@@ -789,6 +807,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6f685a2169494d51b5065132043fa63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 1
   syncInterval: 0.1
   level: {fileID: 6372609056192116201}
@@ -815,6 +834,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f939d05a1993c464cb92675744c1afe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 1
   syncInterval: 1
   player: {fileID: 11448894}
@@ -835,6 +855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 275977b5b001f4e23ae7c1c4aa6e2be1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
   player: {fileID: 11448894}
@@ -870,6 +891,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 008f846ea63804bd3bf5d6c548ce6940, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
   player: {fileID: 11448894}
@@ -903,6 +925,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbd9dd6b2574b42f8a54b68abba7c4a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 1
   syncInterval: 0.1
   player: {fileID: 11448894}
@@ -923,6 +946,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e939ab397511f422aa1a1e378602efe7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
   player: {fileID: 11448894}
@@ -940,6 +964,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e11a770674634cbabebd089a1fb726a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
   meshToOffsetWhenMounted: {fileID: 4595521596180208}
@@ -957,6 +982,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6705c6fca6a841a3b356d0bfc685b03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
   agent: {fileID: 6177516853660936747}
@@ -973,6 +999,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff4d66359b91d403fbc581b83e8bac12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
   agent: {fileID: 6177516853660936747}
@@ -1005,6 +1032,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6929ef9b1ef4d4893b7372aa147d798e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
   player: {fileID: 11448894}
@@ -1020,6 +1048,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9e6163638feb4ab69e22897405875b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
   player: {fileID: 11448894}
@@ -1035,6 +1064,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 287b026b241c246df9e013bba150016d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
   player: {fileID: 11448894}
@@ -1051,6 +1081,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0800b135ef1a433cb89f404e58ac38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 1
   syncInterval: 0.1
   player: {fileID: 11448894}
@@ -1068,6 +1099,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 951c7fbca785844aeb2c666d3a29f81d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 1
   syncInterval: 0.1
   player: {fileID: 11448894}
@@ -1085,6 +1117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 088974fc653db4d0090266571ed863a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 1
   syncInterval: 0.1
   player: {fileID: 11448894}
@@ -1102,6 +1135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a97901bb0e7914f0e942a07966bce4a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
   equipment: {fileID: 1878228289942901919}
@@ -1140,6 +1174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84e11ccb9980d4510bdd0c0e01628108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
   entity: {fileID: 11448894}
@@ -1188,6 +1223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61c4dbe3870274197a48771e0ee93e91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
   player: {fileID: 11448894}
@@ -1205,6 +1241,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2af297a09f3964ddba25d6c525326c8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
   player: {fileID: 11448894}
@@ -1224,8 +1261,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c68a5308094a8c746b26bd483c618126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
+--- !u!114 &1970961225953634095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 142034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8264a1b203cf6c4c91687e1f3590ccd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  customization:
+  - name: Skin
+    type: 3
+    customizationBy: 0
+    objects: []
+    material:
+      mesh: {fileID: 5921097137361904436}
+      positionInMesh: 0
+      meshes:
+      - {fileID: 2100000, guid: a85da53b8b557e04fb7062b34c1c646d, type: 2}
+      - {fileID: 2100000, guid: c8ec6b7c7bf055545a298d7f41f2a2b7, type: 2}
+      - {fileID: 2100000, guid: fce08fe5f8c1862459e68c68fa72888a, type: 2}
+      - {fileID: 2100000, guid: 47160a77d9c51b24a907f5cf44702fb9, type: 2}
+    showWhenCharactercCreate: 1
+  rescaling: 0
+  scaleMin: 0.5
+  scaleMax: 1.5
+  scale: 1
 --- !u!1 &168058
 GameObject:
   m_ObjectHideFlags: 0

@@ -55,6 +55,7 @@ public partial class UICharacterInfo : MonoBehaviour
                 currentExperienceText.text = player.experience.current.ToString();
                 maximumExperienceText.text = player.experience.max.ToString();
                 skillExperienceText.text = ((PlayerSkills)player.skills).skillExperience.ToString();
+                Utils.InvokeMany(typeof(UICharacterInfo), this, "Update_", player);
 
                 // attributes (show spendable if >1 so it's more obvious)
                 // (each Attribute component has .PointsSpendable. can use any.)

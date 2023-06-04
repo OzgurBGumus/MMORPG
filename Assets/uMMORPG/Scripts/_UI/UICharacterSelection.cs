@@ -18,7 +18,7 @@ public partial class UICharacterSelection : MonoBehaviour
     void Update()
     {
         // show while in lobby and while not creating a character
-        if (manager.state == NetworkState.Lobby && !uiCharacterCreation.IsVisible())
+        if (CheckIsVisible())
         {
             panel.SetActive(true);
 
@@ -69,6 +69,7 @@ public partial class UICharacterSelection : MonoBehaviour
 
                 // quit button
                 quitButton.onClick.SetListener(() => { NetworkManagerMMO.Quit(); });
+                Utils.InvokeMany(typeof(UICharacterSelection), this, "Update_", characters);
             }
         }
         else panel.SetActive(false);

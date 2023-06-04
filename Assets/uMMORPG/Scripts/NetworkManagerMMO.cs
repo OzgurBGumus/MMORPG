@@ -291,6 +291,7 @@ public partial class NetworkManagerMMO : NetworkManager
         }
 
         // add selection script
+        SetCustomization(character, player);
         preview.AddComponent<SelectableCharacter>();
         preview.GetComponent<SelectableCharacter>().index = selectionIndex;
     }

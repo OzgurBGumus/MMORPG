@@ -87,7 +87,7 @@ public class PlayerEquipment : Equipment
         }
     }
 
-    bool CanReplaceAllBones(SkinnedMeshRenderer equipmentSkin)
+    public bool CanReplaceAllBones(SkinnedMeshRenderer equipmentSkin)
     {
         // are all equipment SkinnedMeshRenderer bones in the player bones?
         // (avoid Linq because it is HEAVY(!) on GC and performance)
@@ -100,7 +100,7 @@ public class PlayerEquipment : Equipment
     // replace all equipment SkinnedMeshRenderer bones with the original player
     // bones so that the equipment animation works with IK too
     // (make sure to check CanReplaceAllBones before)
-    void ReplaceAllBones(SkinnedMeshRenderer equipmentSkin)
+    public void ReplaceAllBones(SkinnedMeshRenderer equipmentSkin)
     {
         // get equipment bones
         Transform[] bones = equipmentSkin.bones;
@@ -117,7 +117,7 @@ public class PlayerEquipment : Equipment
         equipmentSkin.bones = bones;
     }
 
-    void RebindAnimators()
+    public void RebindAnimators()
     {
         foreach (Animator anim in GetComponentsInChildren<Animator>())
             anim.Rebind();

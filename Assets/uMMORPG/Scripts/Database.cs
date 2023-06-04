@@ -112,6 +112,8 @@ public partial class Database : MonoBehaviour
         public bool online { get; set; }
         public DateTime lastsaved { get; set; }
         public bool deleted { get; set; }
+        public RaceList race { get; set; }
+        public string gender { get; set; }
     }
     class character_inventory
     {
@@ -561,7 +563,8 @@ public partial class Database : MonoBehaviour
                     // the server logs too much.
                     //Debug.Log(player.name + " spawn position reset because it's not on a NavMesh anymore. This can happen if the player previously logged out in an instance or if the Terrain was changed.");
                 }
-
+                player.race = row.race;
+                player.gender = row.gender;
                 LoadInventory(player.inventory);
                 LoadEquipment((PlayerEquipment)player.equipment);
                 LoadItemCooldowns(player);
@@ -752,6 +755,8 @@ public partial class Database : MonoBehaviour
             coins = player.itemMall.coins,
             gamemaster = player.isGameMaster,
             online = online,
+            race = player.race,
+            gender = player.gender,
             lastsaved = DateTime.UtcNow
         });
 

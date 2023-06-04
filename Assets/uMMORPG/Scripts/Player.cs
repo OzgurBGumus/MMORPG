@@ -871,7 +871,7 @@ public partial class Player : Entity
                     nameOverlay.color = nameOverlayPartyColor;
                 // otherwise default
                 else
-                    nameOverlay.color = nameOverlayDefaultColor;
+                    nameOverlay.color = raceData.RaceColor(race);
             }
         }
     }
