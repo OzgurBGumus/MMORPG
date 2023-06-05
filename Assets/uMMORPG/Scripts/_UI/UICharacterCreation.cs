@@ -13,6 +13,10 @@ public partial class UICharacterCreation : MonoBehaviour
     public Button createButton;
     public Button cancelButton;
 
+    private void Start()
+    {
+        manager = GameObject.Find("NetworkManager").GetComponent<NetworkManagerMMO>();
+    }
     void Update()
     {
         // only update while visible (after character selection made it visible)

@@ -73,6 +73,16 @@ namespace Mirror
         [Tooltip("Scene that Mirror will switch to when the server is started. Clients will recieve a Scene Message to load the server's current scene when they connect.")]
         public string onlineScene = "";
 
+        [Scene]
+        [FormerlySerializedAs("m_LoginScene")]
+        [Tooltip("Login Scene")]
+        public string loginScene = "";
+
+        [Scene]
+        [FormerlySerializedAs("m_CharacterSelecScene")]
+        [Tooltip("Character Select Scene After Login")]
+        public string characterSelectScene = "";
+
         // transport layer
         [Header("Network Info")]
         [Tooltip("Transport component attached to this object that server and client will use to connect")]
@@ -149,6 +159,7 @@ namespace Mirror
         //    in other words, we need this to know which mode we are running in
         //    during FinishLoadScene.
         public NetworkManagerMode mode { get; private set; }
+        
 
         // virtual so that inheriting classes' OnValidate() can call base.OnValidate() too
         public virtual void OnValidate()
@@ -801,7 +812,7 @@ namespace Mirror
         // to prevent AddPlayer message after loading/unloading additive scenes
         SceneOperation clientSceneOperation = SceneOperation.Normal;
 
-        internal void ClientChangeScene(string newSceneName, SceneOperation sceneOperation = SceneOperation.Normal, bool customHandling = false)
+        protected void ClientChangeScene(string newSceneName, SceneOperation sceneOperation = SceneOperation.Normal, bool customHandling = false)
         {
             if (string.IsNullOrWhiteSpace(newSceneName))
             {
@@ -1113,7 +1124,6 @@ namespace Mirror
                 };
                 conn.Send(msg);
             }
-
             OnServerConnect(conn);
         }
 

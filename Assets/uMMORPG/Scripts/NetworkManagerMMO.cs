@@ -306,11 +306,14 @@ public partial class NetworkManagerMMO : NetworkManager
 
     void OnClientCharactersAvailable(CharactersAvailableMsg message)
     {
+        
         charactersAvailableMsg = message;
         Debug.Log("characters available:" + charactersAvailableMsg.characters.Length);
 
         // set state
         state = NetworkState.Lobby;
+
+        ClientChangeScene(characterSelectScene);
 
         // clear previous previews in any case
         ClearPreviews();

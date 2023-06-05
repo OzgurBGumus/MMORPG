@@ -15,6 +15,10 @@ public partial class UICharacterSelection : MonoBehaviour
     public Button createButton;
     public Button quitButton;
 
+    private void Start()
+    {
+        manager = GameObject.Find("NetworkManager").GetComponent<NetworkManagerMMO>();
+    }
     void Update()
     {
         // show while in lobby and while not creating a character
