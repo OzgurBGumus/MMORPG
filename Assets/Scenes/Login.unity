@@ -488,7 +488,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 2147483647
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -2221,7 +2221,7 @@ MonoBehaviour:
   offlineScene: 
   onlineScene: 
   loginScene: Assets/Scenes/Login.unity
-  characterSelectScene: Assets/Scenes/World.unity
+  characterSelectScene: Assets/Scenes/CharacterSelect.unity
   transport: {fileID: 608338827}
   networkAddress: Use the Server List below!
   maxConnections: 1000

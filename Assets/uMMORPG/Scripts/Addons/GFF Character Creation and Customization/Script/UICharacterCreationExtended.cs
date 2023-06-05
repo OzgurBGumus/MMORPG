@@ -26,8 +26,6 @@ public partial class UICharacterCreationExtended : MonoBehaviour
     public Button cancelIButton;
     public Button createButton;
     public Button customizationButton;
-    public Button buttonRotate_L;
-    public Button buttonRotate_R;
     public Toggle gameMasterToggle;
 
     [Header("Create Character left")]
@@ -59,6 +57,7 @@ public partial class UICharacterCreationExtended : MonoBehaviour
 
     private void Start()
     {
+        manager = GameObject.Find("NetworkManager").GetComponent<NetworkManagerMMO>();
         LoadRaces();
         LoadClasses();
         LoadGender();
@@ -109,9 +108,6 @@ public partial class UICharacterCreationExtended : MonoBehaviour
                 customizationButton.gameObject.SetActive(playerPreview != null && playerPreview.GetComponent<PlayerCustomization>().GetItemTypesForCharacterCreate().Length > 0);
                 customizationButton.onClick.SetListener(() => {PressButtonCustomization();});
 
-                //button rotate
-                buttonRotate_L.onClick.SetListener(() => { playerPreview.transform.Rotate(0, 25, 0); });
-                buttonRotate_R.onClick.SetListener(() => { playerPreview.transform.Rotate(0, -25, 0); });
 
                 //button equip
                 if (isEquip) buttonEquip.GetComponentInChildren<Text>().text = "Non Equip";
@@ -308,7 +304,7 @@ public partial class UICharacterCreationExtended : MonoBehaviour
         panelCreation.SetActive(false);
         panelCustomization.SetActive(true);
 
-        Camera.main.transform.position = positions.cameraCustomizationPosition.position;
+        Camera.main.transform.position = positions.cameraFaceCustomizationPosition.position;
     }
     void PressButtonCancel()
     {

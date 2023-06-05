@@ -18,6 +18,7 @@ public partial class UICharacterSelection : MonoBehaviour
     private void Start()
     {
         manager = GameObject.Find("NetworkManager").GetComponent<NetworkManagerMMO>();
+        auth = GameObject.Find("NetworkManager").GetComponent<NetworkAuthenticatorMMO>();
     }
     void Update()
     {
