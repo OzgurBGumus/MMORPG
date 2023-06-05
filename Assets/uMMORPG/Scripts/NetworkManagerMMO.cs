@@ -313,7 +313,8 @@ public partial class NetworkManagerMMO : NetworkManager
         // set state
         state = NetworkState.Lobby;
 
-        ClientChangeScene(characterSelectScene);
+        ClientChangeScene(characterSelectScene, callback: Load3DCharacterSelection);
+
     }
 
     public void Load3DCharacterSelection()

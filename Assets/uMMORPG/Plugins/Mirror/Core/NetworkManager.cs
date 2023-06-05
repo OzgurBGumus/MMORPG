@@ -812,7 +812,7 @@ namespace Mirror
         // to prevent AddPlayer message after loading/unloading additive scenes
         SceneOperation clientSceneOperation = SceneOperation.Normal;
 
-        protected void ClientChangeScene(string newSceneName, SceneOperation sceneOperation = SceneOperation.Normal, bool customHandling = false)
+        protected void ClientChangeScene(string newSceneName, SceneOperation sceneOperation = SceneOperation.Normal, bool customHandling = false, Action callback = null)
         {
             if (string.IsNullOrWhiteSpace(newSceneName))
             {
@@ -851,7 +851,8 @@ namespace Mirror
             switch (sceneOperation)
             {
                 case SceneOperation.Normal:
-                    loadingSceneAsync = SceneManager.LoadSceneAsync(newSceneName);
+                    LoadSceneWithLoadingScreen(newSceneName, callback);
+
                     break;
                 case SceneOperation.LoadAdditive:
                     // Ensure additive scene is not already loaded on client by name or path
@@ -884,6 +885,31 @@ namespace Mirror
             // don't change the client's current networkSceneName when loading additive scene content
             if (sceneOperation == SceneOperation.Normal)
                 networkSceneName = newSceneName;
+        }
+
+        private void LoadSceneWithLoadingScreen(string newSceneName, Action callback)
+        {
+            StartCoroutine(LoadSceneCoroutine(newSceneName, callback));
+            
+        }
+
+        private System.Collections.IEnumerator LoadSceneCoroutine(string newSceneName, Action callback)
+        {
+            loadingSceneAsync = SceneManager.LoadSceneAsync(newSceneName);
+
+            while (loadingSceneAsync != null && !loadingSceneAsync.isDone)
+            {
+                // Display progress or perform other tasks
+                float progress = Mathf.Clamp01(loadingSceneAsync.progress / 0.9f);
+                Debug.Log("Loading progress: " + progress);
+                yield return null;
+            }
+
+            // Scene loading is complete
+            Debug.Log("Scene loading complete");
+
+            // Call the callback function
+            if(callback != null) callback.Invoke();
         }
 
         // support additive scene loads:

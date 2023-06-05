@@ -20,7 +20,7 @@ public partial class UICharacterSelection : MonoBehaviour
         manager = GameObject.Find("NetworkManager").GetComponent<NetworkManagerMMO>();
         auth = GameObject.Find("NetworkManager").GetComponent<NetworkAuthenticatorMMO>();
         Camera.main.transform.position = manager.selectionCameraLocation.position;
-        manager.Load3DCharacterSelection();
+        
     }
     void Update()
     {
