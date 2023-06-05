@@ -314,7 +314,10 @@ public partial class NetworkManagerMMO : NetworkManager
         state = NetworkState.Lobby;
 
         ClientChangeScene(characterSelectScene);
+    }
 
+    public void Load3DCharacterSelection()
+    {
         // clear previous previews in any case
         ClearPreviews();
 
@@ -330,10 +333,6 @@ public partial class NetworkManagerMMO : NetworkManager
             else
                 Debug.LogWarning("Character Selection: no prefab found for class " + character.className);
         }
-
-        // setup camera
-        Camera.main.transform.position = selectionCameraLocation.position;
-        Camera.main.transform.rotation = selectionCameraLocation.rotation;
 
         // addon system hooks
         onClientCharactersAvailable.Invoke(charactersAvailableMsg);
