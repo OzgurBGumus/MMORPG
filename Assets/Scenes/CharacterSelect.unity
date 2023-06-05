@@ -816,6 +816,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4200529479819731262, guid: 35ffb2e9686b44a42b44c483563eb899,
         type: 3}
+      propertyPath: useStats
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200529479819731262, guid: 35ffb2e9686b44a42b44c483563eb899,
+        type: 3}
       propertyPath: uiConfirmation
       value: 
       objectReference: {fileID: 166902235}
@@ -1258,7 +1263,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 24375
+    m_Bits: 7991
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

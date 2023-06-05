@@ -26,10 +26,10 @@ public partial class UICharacterSelection : MonoBehaviour
         if (CheckIsVisible())
         {
             panel.SetActive(true);
-
             // characters available message received already?
             if (manager.charactersAvailableMsg.characters != null)
             {
+                Camera.main.transform.position = manager.selectionCameraLocation.position;
                 CharactersAvailableMsg.CharacterPreview[] characters = manager.charactersAvailableMsg.characters;
 
                 // start button: calls AddPLayer which calls OnServerAddPlayer

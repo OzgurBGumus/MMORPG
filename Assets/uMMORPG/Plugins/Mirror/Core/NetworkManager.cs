@@ -911,6 +911,7 @@ namespace Mirror
                     // Debug.Log($"Rebuild Client spawnableObjects after additive scene load: {scene.name}");
                 }
             }
+            NetworkClient.isLoadingScene = false;
         }
 
         void UpdateScene()

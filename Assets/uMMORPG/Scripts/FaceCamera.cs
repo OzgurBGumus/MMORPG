@@ -22,7 +22,7 @@ public class FaceCamera : MonoBehaviour
     // LateUpdate so that all camera updates are finished.
     void LateUpdate()
     {
-        transform.forward = cam.forward;
+        if(cam != null && transform != null) transform.forward = cam.forward;
     }
 
     // copying transform.forward is relatively expensive and slows things down
