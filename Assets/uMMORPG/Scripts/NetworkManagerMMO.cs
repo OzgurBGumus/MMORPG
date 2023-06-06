@@ -314,7 +314,7 @@ public partial class NetworkManagerMMO : NetworkManager
         state = NetworkState.Lobby;
 
         ClientChangeScene(characterSelectScene, callback: Load3DCharacterSelection);
-
+        
     }
 
     public void Load3DCharacterSelection()
@@ -339,6 +339,17 @@ public partial class NetworkManagerMMO : NetworkManager
         onClientCharactersAvailable.Invoke(charactersAvailableMsg);
     }
 
+
+    public void LoadWorldAfterCharacterSelected()
+    {
+        ClientChangeScene(worldScene, callback: () =>
+        {
+            NetworkClient.Send(new CharacterSelectMsg { index = selection });
+
+            // clear character selection previews
+            ClearPreviews();
+        });
+    }
     // handshake: character creation ///////////////////////////////////////////
     // find a NetworkStartPosition for this class, or a normal one otherwise
     // (ignore the ones with playerPrefab == null)

@@ -83,6 +83,16 @@ namespace Mirror
         [Tooltip("Character Select Scene After Login")]
         public string characterSelectScene = "";
 
+        [Scene]
+        [FormerlySerializedAs("m_LoadingScene")]
+        [Tooltip("Loading New Scene Scene")]
+        public string loadingScene = "";
+
+        [Scene]
+        [FormerlySerializedAs("m_worldScene")]
+        [Tooltip("Main Game World Scene")]
+        public string worldScene = "";
+
         // transport layer
         [Header("Network Info")]
         [Tooltip("Transport component attached to this object that server and client will use to connect")]
@@ -827,8 +837,9 @@ namespace Mirror
 
             // After calling OnClientChangeScene, exit if server since server is already doing
             // the actual scene change, and we don't need to do it for the host client
-            if (NetworkServer.active)
-                return;
+            
+            //if (NetworkServer.active)
+            //    return;
 
             // set client flag to stop processing messages while loading scenes.
             // otherwise we would process messages and then lose all the state
@@ -883,8 +894,8 @@ namespace Mirror
             }
 
             // don't change the client's current networkSceneName when loading additive scene content
-            if (sceneOperation == SceneOperation.Normal)
-                networkSceneName = newSceneName;
+            //if (sceneOperation == SceneOperation.Normal)
+                //networkSceneName = newSceneName;
         }
 
         private void LoadSceneWithLoadingScreen(string newSceneName, Action callback)
@@ -895,13 +906,22 @@ namespace Mirror
 
         private System.Collections.IEnumerator LoadSceneCoroutine(string newSceneName, Action callback)
         {
+            SceneManager.LoadSceneAsync(loadingScene);
+
             loadingSceneAsync = SceneManager.LoadSceneAsync(newSceneName);
+            loadingSceneAsync.allowSceneActivation = false;
 
             while (loadingSceneAsync != null && !loadingSceneAsync.isDone)
             {
                 // Display progress or perform other tasks
                 float progress = Mathf.Clamp01(loadingSceneAsync.progress / 0.9f);
                 Debug.Log("Loading progress: " + progress);
+
+                if(loadingSceneAsync.progress >= 0.9f)
+                {
+                    loadingSceneAsync.allowSceneActivation=true;
+                }
+
                 yield return null;
             }
 

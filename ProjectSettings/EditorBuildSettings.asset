@@ -9,21 +9,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Login.unity
     guid: 5f18428bf4a66d7459d6c497d1376932
   - enabled: 1
+    path: Assets/Scenes/Loading.unity
+    guid: 7f1799f856deadc41a021dbe1c79d945
+  - enabled: 1
     path: Assets/Scenes/CharacterSelect.unity
     guid: 5e64041ee0ae6fe4eb1755bbe3f93c10
   - enabled: 1
     path: Assets/Scenes/World.unity
     guid: a11831025daca24449ab977327654930
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
   m_configObjects: {}

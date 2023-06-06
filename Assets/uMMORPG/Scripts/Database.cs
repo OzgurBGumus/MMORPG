@@ -586,7 +586,7 @@ public partial class Database : MonoBehaviour
                     connection.Execute("UPDATE characters SET online=1, lastsaved=? WHERE name=?", DateTime.UtcNow, characterName);
 
                 // addon system hooks
-                onCharacterLoad.Invoke(player);
+                CharacterLoad_Customization(player);
 
                 return go;
             }
@@ -770,7 +770,7 @@ public partial class Database : MonoBehaviour
             SaveGuild(player.guild.guild, false); // TODO only if needs saving? but would be complicated
 
         // addon system hooks
-        onCharacterSave.Invoke(player);
+        CharacterSave_Customization(player);
 
         if (useTransaction) connection.Commit();
     }
@@ -886,5 +886,42 @@ public partial class Database : MonoBehaviour
             connection.Execute("UPDATE character_orders SET processed=1 WHERE orderid=?", row.orderid);
         }
         return result;
+    }
+
+    public void CharacterLoad_Customization(Player player)
+    {
+        character_customization info = connection.FindWithQuery<character_customization>("Select * FROM character_customization WHERE character=?", player.name);
+
+        if (info != null)
+        {
+            string temp = info.values;
+            //We are looping through all instances of the letter in the given string
+            while (temp.IndexOf(";") != -1)
+            {
+                player.customization.values.Add(int.Parse(temp.Substring(0, temp.IndexOf(";"))));
+                temp = temp.Remove(0, temp.IndexOf(";") + 1);
+            }
+
+            player.customization.scale = info.scale;
+        }
+    }
+    public void CharacterSave_Customization(Player player)
+    {
+        // quests: remove old entries first, then add all new ones
+        connection.Execute("DELETE FROM character_customization WHERE character=?", player.name);
+
+        string _values = "";
+        for (int i = 0; i < player.customization.values.Count; i++)
+        {
+            _values += player.customization.values[i] + ";";
+        }
+
+        // note: .Insert causes a 'Constraint' exception. use Replace.
+        connection.Insert(new character_customization
+        {
+            character = player.name,
+            values = _values,
+            scale = player.customization.scale
+        });
     }
 }
