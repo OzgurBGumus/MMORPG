@@ -600,6 +600,11 @@ public partial class Database : MonoBehaviour
         return null;
     }
 
+    public string CharacterSceneLoad(string characterName)
+    {
+        string query = string.Format("SELECT currentScene FROM characters WHERE name=? AND deleted=0", characterName);
+        return connection.ExecuteScalar<string>(query, characterName);
+    }
     void SaveInventory(PlayerInventory inventory)
     {
         // inventory: remove old entries first, then add all new ones

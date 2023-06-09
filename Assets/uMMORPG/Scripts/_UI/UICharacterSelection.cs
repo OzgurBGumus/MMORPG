@@ -47,10 +47,9 @@ public partial class UICharacterSelection : MonoBehaviour
                     // set client "ready". we will receive world messages from
                     // monsters etc. then.
 
-                    NetworkClient.Ready();
+                    NetworkClient.Ready(manager.selection);
 
-                    //load the world and send CharacterSelect message (need to be ready first!)
-                    manager.LoadWorldAfterCharacterSelected();
+                    //manager.LoadWorldAfterCharacterSelected();
                     
                     // make sure we can't select twice and call AddPlayer twice
                     panel.SetActive(false);

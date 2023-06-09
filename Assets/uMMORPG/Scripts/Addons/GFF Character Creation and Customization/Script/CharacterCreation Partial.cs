@@ -123,7 +123,7 @@ public partial class UICharacterSelection
 
     bool CheckIsVisible()
     {
-        return manager.state == NetworkState.Lobby &&
+        return !NetworkClient.ready && manager.state ==  NetworkState.Lobby &&
             ((characterCreationExtended != null && !characterCreationExtended.IsVisible()) || (uiCharacterCreation != null && !uiCharacterCreation.IsVisible()));
     }
 }

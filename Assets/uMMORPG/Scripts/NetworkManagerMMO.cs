@@ -184,7 +184,7 @@ public partial class NetworkManagerMMO : NetworkManager
         // setup handlers
         NetworkClient.RegisterHandler<ErrorMsg>(OnClientError, false); // allowed before auth!
         NetworkClient.RegisterHandler<CharactersAvailableMsg>(OnClientCharactersAvailable);
-
+        NetworkClient.RegisterHandler<ReadyResponseMessage>(OnClientLoadWorldAfterCharacterSelected);
         // addon system hooks
         onStartClient.Invoke();
     }
@@ -200,6 +200,7 @@ public partial class NetworkManagerMMO : NetworkManager
         NetworkServer.RegisterHandler<CharacterDeleteMsg>(OnServerCharacterDelete);
         NetworkServer.RegisterHandler<TeleportLoadedMsg>(OnServerTeleportLoaded);
 
+        //NetworkServer.ReplaceHandler<ReadyMessage>(OnServerReadyMessageInternal);
         // invoke saving
         InvokeRepeating(nameof(SavePlayers), saveInterval, saveInterval);
 
@@ -228,20 +229,20 @@ public partial class NetworkManagerMMO : NetworkManager
         {
             // load all subscenes on the server only
             StartCoroutine(LoadSubScenes());
-            Vector3 vector3;
-            // Instantiate Zone Handler on server only
-            foreach(var tp in teleportPoints)
-            {
-                Vector3 vector = new Vector3()
-                {
-                    x = tp.x,
-                    y = tp.y,
-                    z = tp.z
-                };
-                //!!!BUG!!!
-                //it creates all of the Zones in the first scene
-                Instantiate(Zone, vector, Quaternion.identity);
-            }
+            //Vector3 vector3;
+            //// Instantiate Zone Handler on server only
+            //foreach(var tp in teleportPoints)
+            //{
+            //    Vector3 vector = new Vector3()
+            //    {
+            //        x = tp.x,
+            //        y = tp.y,
+            //        z = tp.z
+            //    };
+            //    //!!!BUG!!!
+            //    //it creates all of the Zones in the first scene
+            //    Instantiate(Zone, vector, Quaternion.identity);
+            //}
             additiveScenesInited = true;
         }
     }
@@ -404,9 +405,10 @@ public partial class NetworkManagerMMO : NetworkManager
     }
 
 
-    public void LoadWorldAfterCharacterSelected()
+    //load the world and send CharacterSelect message (need to be ready first!)
+    public void OnClientLoadWorldAfterCharacterSelected(ReadyResponseMessage msg)
     {
-        ClientChangeScene(worldScene, callback: () =>
+        ClientChangeScene(msg.scene, callback: () =>
         {
             NetworkClient.Send(new CharacterSelectMsg { index = selection });
 
@@ -754,7 +756,33 @@ public partial class NetworkManagerMMO : NetworkManager
         // addon system hooks
         onClientDisconnect.Invoke(NetworkClient.connection);
     }
-
+    public override void OnServerReadyMessageInternal(NetworkConnectionToClient conn, ReadyMessage msg)
+    {
+        //Debug.Log("NetworkManager.OnServerReadyMessageInternal");
+        if (!string.IsNullOrEmpty(msg.index))
+        {
+            if (lobby.ContainsKey(conn))
+            {
+                //Debug.Log("NetworkManager.OnServerReadyMessageInternal");
+            if (!string.IsNullOrEmpty(msg.index))
+            {
+                if (lobby.ContainsKey(conn))
+                {
+                        string account = lobby[conn];
+                        List<string> characters = Database.singleton.CharactersForAccount(account);
+                        if (0 <= msg.index.ToInt() && msg.index.ToInt() < characters.Count)
+                        {
+                            string scene = Database.singleton.CharacterSceneLoad(characters[msg.index.ToInt()]);
+                            ReadyResponseMessage respondMsg = new ReadyResponseMessage { scene = scene };
+                            conn.Send(respondMsg);
+                        }
+                    }
+            }
+            OnServerReady(conn, msg.scene);
+            }
+        }
+        OnServerReady(conn, msg.scene);
+    }
     // universal quit function for editor & build
     public static void Quit()
     {
