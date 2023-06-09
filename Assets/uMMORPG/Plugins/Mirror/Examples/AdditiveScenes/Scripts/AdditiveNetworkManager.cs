@@ -12,12 +12,9 @@ namespace Mirror.Examples.AdditiveScenes
     [AddComponentMenu("")]
     public class AdditiveNetworkManager : NetworkManager
     {
-        [Tooltip("Trigger Zone Prefab")]
-        public GameObject Zone;
+        
 
-        [Scene]
-        [Tooltip("Add all sub-scenes to this list")]
-        public string[] subScenes;
+        
 
         public override void OnStartServer()
         {

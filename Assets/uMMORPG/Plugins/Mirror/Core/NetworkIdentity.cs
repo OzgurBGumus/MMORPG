@@ -108,7 +108,7 @@ namespace Mirror
         // persistent scene id <sceneHash/32,sceneId/32> (see AssignSceneID comments)
         [FormerlySerializedAs("m_SceneId"), HideInInspector]
         public ulong sceneId;
-
+        [HideInInspector]public string scene;
         // assetId used to spawn prefabs across the network.
         // originally a Guid, but a 4 byte uint is sufficient
         // (as suggested by james)
@@ -489,7 +489,7 @@ namespace Mirror
 
             // OR into scene id
             sceneId = (sceneId & 0xFFFFFFFF) | shiftedHash;
-
+            scene = gameObject.scene.path;
             // log it. this is incredibly useful to debug sceneId issues.
             //Debug.Log($"{name} in scene {gameObject.scene.name} scene index hash {pathHash:X} copied into sceneId {sceneId:X}");
         }

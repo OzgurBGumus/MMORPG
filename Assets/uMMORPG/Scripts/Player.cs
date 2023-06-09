@@ -90,7 +90,7 @@ public partial class Player : Entity
     // some meta info
     [HideInInspector] public string account = "";
     [HideInInspector] public string className = "";
-
+    [HideInInspector] public string currentScene = "";
     // keep the GM flag in here and the controls in PlayerGameMaster.cs:
     // -> we need the flag for NameOverlay prefix anyway
     // -> it might be needed outside of PlayerGameMaster for other GM specific
@@ -717,7 +717,7 @@ public partial class Player : Entity
         if (EventRespawn())
         {
             // revive to closest spawn, with 50% health, then go to idle
-            Transform start = NetworkManagerMMO.GetNearestStartPosition(transform.position);
+            Transform start = NetworkManagerMMO.GetNearestStartPosition(transform.position, currentScene);
             // warp to new position (never use transform.position for agents!)
             //
             // NOTE: Warp sends RpcWarp to clients automatically, but the

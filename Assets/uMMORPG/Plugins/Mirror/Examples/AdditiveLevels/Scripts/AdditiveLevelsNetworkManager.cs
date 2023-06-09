@@ -144,12 +144,12 @@ namespace Mirror.Examples.AdditiveLevels
         /// <para>The default implementation of this function calls NetworkServer.SetClientReady() to continue the network setup process.</para>
         /// </summary>
         /// <param name="conn">Connection from client.</param>
-        public override void OnServerReady(NetworkConnectionToClient conn)
+        public override void OnServerReady(NetworkConnectionToClient conn, string scene)
         {
             //Debug.Log($"OnServerReady {conn} {conn.identity}");
 
             // This fires from a Ready message client sends to server after loading the online scene
-            base.OnServerReady(conn);
+            base.OnServerReady(conn, scene);
 
             if (conn.identity == null)
                 StartCoroutine(AddPlayerDelayed(conn));
@@ -167,7 +167,7 @@ namespace Mirror.Examples.AdditiveLevels
             conn.Send(new SceneMessage { sceneName = additiveScenes[0], sceneOperation = SceneOperation.LoadAdditive, customHandling = true });
 
             // We have Network Start Positions in first additive scene...pick one
-            Transform start = GetStartPosition();
+            Transform start = GetStartPosition(firstScene);
 
             // Instantiate player as child of start position - this will place it in the additive scene
             // This also lets player object "inherit" pos and rot from start position transform
@@ -179,7 +179,7 @@ namespace Mirror.Examples.AdditiveLevels
             yield return new WaitForEndOfFrame();
 
             // Finally spawn the player object for this connection
-            NetworkServer.AddPlayerForConnection(conn, player);
+            NetworkServer.AddPlayerForConnection(conn, player, "");
         }
 
         #endregion

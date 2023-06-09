@@ -507,7 +507,7 @@ namespace Mirror.Examples.MultipleMatch
 
                     GameObject player = Instantiate(NetworkManager.singleton.playerPrefab);
                     player.GetComponent<NetworkMatch>().matchId = matchId;
-                    NetworkServer.AddPlayerForConnection(playerConn, player);
+                    NetworkServer.AddPlayerForConnection(playerConn, player, "");
 
                     if (matchController.player1 == null)
                     {

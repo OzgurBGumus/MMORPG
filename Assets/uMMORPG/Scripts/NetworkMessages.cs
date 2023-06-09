@@ -28,6 +28,7 @@ public partial struct CharacterDeleteMsg : NetworkMessage
     public int index;
 }
 
+
 // server to client ////////////////////////////////////////////////////////////
 // we need an error msg packet because we can't use TargetRpc with the Network-
 // Manager, since it's not a MonoBehaviour.

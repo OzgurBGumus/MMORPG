@@ -136,7 +136,7 @@ namespace Mirror
             if (gamePlayer == null)
             {
                 // get start position from base class
-                Transform startPos = GetStartPosition();
+                Transform startPos = GetStartPosition(gamePlayer.scene.path);
                 gamePlayer = startPos != null
                     ? Instantiate(playerPrefab, startPos.position, startPos.rotation)
                     : Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
@@ -265,10 +265,10 @@ namespace Mirror
         /// <para>The default implementation of this function calls NetworkServer.SetClientReady() to continue the network setup process.</para>
         /// </summary>
         /// <param name="conn">Connection from client.</param>
-        public override void OnServerReady(NetworkConnectionToClient conn)
+        public override void OnServerReady(NetworkConnectionToClient conn, string scene)
         {
             Debug.Log($"NetworkRoomManager OnServerReady {conn}");
-            base.OnServerReady(conn);
+            base.OnServerReady(conn, scene);
 
             if (conn != null && conn.identity != null)
             {
@@ -300,7 +300,7 @@ namespace Mirror
                 if (newRoomGameObject == null)
                     newRoomGameObject = Instantiate(roomPlayerPrefab.gameObject, Vector3.zero, Quaternion.identity);
 
-                NetworkServer.AddPlayerForConnection(conn, newRoomGameObject);
+                NetworkServer.AddPlayerForConnection(conn, newRoomGameObject, "");
             }
             else
             {

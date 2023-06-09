@@ -80,7 +80,7 @@ namespace Mirror.Examples.AdditiveLevels
                 conn.Send(new SceneMessage { sceneName = destinationScene, sceneOperation = SceneOperation.LoadAdditive, customHandling = true });
 
                 //Debug.Log($"SendPlayerToNewScene AddPlayerForConnection {conn} netId:{conn.identity.netId}");
-                NetworkServer.AddPlayerForConnection(conn, player);
+                NetworkServer.AddPlayerForConnection(conn, player, destinationScene);
 
                 // host client would have been disabled by OnTriggerEnter above
                 if (NetworkClient.localPlayer != null && NetworkClient.localPlayer.TryGetComponent<PlayerController>(out PlayerController playerController))

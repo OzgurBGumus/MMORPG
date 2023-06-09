@@ -11,7 +11,9 @@ namespace Mirror
     // => do it exactly every sendInterval on every TimeSnapshotMessage.
     public struct TimeSnapshotMessage : NetworkMessage {}
 
-    public struct ReadyMessage : NetworkMessage {}
+    public struct ReadyMessage : NetworkMessage {
+        public string scene;
+    }
 
     public struct NotReadyMessage : NetworkMessage {}
 
@@ -23,6 +25,17 @@ namespace Mirror
         // Normal = 0, LoadAdditive = 1, UnloadAdditive = 2
         public SceneOperation sceneOperation;
         public bool customHandling;
+    }
+    public partial struct TeleportStartMessage : NetworkMessage {
+        public string characterName;
+        public string sceneName;
+        // Normal = 0, LoadAdditive = 1, UnloadAdditive = 2
+        public SceneOperation sceneOperation;
+        public bool customHandling;
+    }
+    public partial struct TeleportLoadedMsg : NetworkMessage {
+        public string characterName;
+        public string sceneName;
     }
 
     public enum SceneOperation : byte

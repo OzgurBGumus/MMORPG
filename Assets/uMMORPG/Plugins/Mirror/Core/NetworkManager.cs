@@ -74,6 +74,11 @@ namespace Mirror
         public string onlineScene = "";
 
         [Scene]
+        [FormerlySerializedAs("m_firstScene")]
+        [Tooltip("First Scene that character will load after creation")]
+        public string firstScene = "";
+
+        [Scene]
         [FormerlySerializedAs("m_LoginScene")]
         [Tooltip("Login Scene")]
         public string loginScene = "";
@@ -92,6 +97,21 @@ namespace Mirror
         [FormerlySerializedAs("m_worldScene")]
         [Tooltip("Main Game World Scene")]
         public string worldScene = "";
+
+        [Scene]
+        [FormerlySerializedAs("m_previousScene")]
+        [Tooltip("After a scene change, this stores the previous scene.")]
+        public string previousScene;
+
+        [Header("AdditiveNetworkManager")]
+        [Tooltip("Trigger Zone Prefab")]
+        public GameObject Zone;
+        public Transform[] ZoneLocations;
+
+        [Scene]
+        [FormerlySerializedAs("m_subScenes")]
+        [Tooltip("Add all sub-scenes to this list")]
+        public string[] subScenes;
 
         // transport layer
         [Header("Network Info")]
@@ -135,7 +155,7 @@ namespace Mirror
         public List<GameObject> spawnPrefabs = new List<GameObject>();
 
         /// <summary>List of transforms populated by NetworkStartPositions</summary>
-        public static List<Transform> startPositions = new List<Transform>();
+        public static Dictionary<string, List<Transform>> startPositions = new Dictionary<string, List<Transform>>();
         public static int startPositionIndex;
 
         [Header("Snapshot Interpolation")]
@@ -169,7 +189,10 @@ namespace Mirror
         //    in other words, we need this to know which mode we are running in
         //    during FinishLoadScene.
         public NetworkManagerMode mode { get; private set; }
-        
+
+        public float sceneLoadingProcess;
+
+        protected bool additiveScenesInited = false;
 
         // virtual so that inheriting classes' OnValidate() can call base.OnValidate() too
         public virtual void OnValidate()
@@ -728,6 +751,8 @@ namespace Mirror
             NetworkClient.OnErrorEvent = OnClientError;
             NetworkClient.RegisterHandler<NotReadyMessage>(OnClientNotReadyMessageInternal);
             NetworkClient.RegisterHandler<SceneMessage>(OnClientSceneInternal, false);
+            NetworkClient.RegisterHandler<TeleportStartMessage>(OnClientTeleportInternal, true);
+            
 
             if (playerPrefab != null)
                 NetworkClient.RegisterPrefab(playerPrefab);
@@ -814,7 +839,12 @@ namespace Mirror
             }
 
             startPositionIndex = 0;
-            startPositions.Clear();
+            foreach(string scene in startPositions.Keys)
+            {
+                if(scene!= characterSelectScene)
+                    startPositions.Clear();
+            }
+            
         }
 
         // This is only set in ClientChangeScene below...never on server.
@@ -869,7 +899,13 @@ namespace Mirror
                     // Ensure additive scene is not already loaded on client by name or path
                     // since we don't know which was passed in the Scene message
                     if (!SceneManager.GetSceneByName(newSceneName).IsValid() && !SceneManager.GetSceneByPath(newSceneName).IsValid())
-                        loadingSceneAsync = SceneManager.LoadSceneAsync(newSceneName, LoadSceneMode.Additive);
+                    {
+                        LoadSceneWithLoadingScreen(newSceneName, () =>
+                        {
+                            Debug.Log("Additive Scene Loaded:"+newSceneName);
+                        },
+                        true);
+                    }
                     else
                     {
                         Debug.LogWarning($"Scene {newSceneName} is already loaded");
@@ -898,38 +934,49 @@ namespace Mirror
                 //networkSceneName = newSceneName;
         }
 
-        private void LoadSceneWithLoadingScreen(string newSceneName, Action callback)
+        private void LoadSceneWithLoadingScreen(string newSceneName, Action callback, bool additive = false)
         {
-            StartCoroutine(LoadSceneCoroutine(newSceneName, callback));
+            StartCoroutine(LoadSceneCoroutine(newSceneName, callback, additive));
             
         }
 
-        private System.Collections.IEnumerator LoadSceneCoroutine(string newSceneName, Action callback)
+        private System.Collections.IEnumerator LoadSceneCoroutine(string newSceneName, Action callback, bool additive)
         {
-            SceneManager.LoadSceneAsync(loadingScene);
+            previousScene = SceneManager.GetActiveScene().path;
+            //Load Loading Screen
+            if (!additive)
+            {
+                SceneManager.LoadSceneAsync(loadingScene);
+            }
+            else SceneManager.LoadSceneAsync(loadingScene, LoadSceneMode.Additive);
 
-            loadingSceneAsync = SceneManager.LoadSceneAsync(newSceneName);
+            //Start Loading newScene
+            loadingSceneAsync = additive 
+                ? SceneManager.LoadSceneAsync(newSceneName, LoadSceneMode.Additive) 
+                : SceneManager.LoadSceneAsync(newSceneName);
             loadingSceneAsync.allowSceneActivation = false;
 
+            sceneLoadingProcess = 0;
             while (loadingSceneAsync != null && !loadingSceneAsync.isDone)
             {
                 // Display progress or perform other tasks
-                float progress = Mathf.Clamp01(loadingSceneAsync.progress / 0.9f);
-                Debug.Log("Loading progress: " + progress);
-
+                sceneLoadingProcess = Mathf.Clamp01(loadingSceneAsync.progress / 0.9f);
                 if(loadingSceneAsync.progress >= 0.9f)
                 {
+                    SceneManager.UnloadSceneAsync(loadingScene);
                     loadingSceneAsync.allowSceneActivation=true;
+
                 }
 
                 yield return null;
             }
 
             // Scene loading is complete
+            NetworkClient.isLoadingScene = false;
             Debug.Log("Scene loading complete");
-
+            
             // Call the callback function
-            if(callback != null) callback.Invoke();
+            if (callback != null) callback.Invoke();
         }
 
         // support additive scene loads:
@@ -1095,44 +1142,54 @@ namespace Mirror
         /// <param name="start">Transform to register.</param>
         // Static because it's called from NetworkStartPosition::Awake
         // and singleton may not exist yet
-        public static void RegisterStartPosition(Transform start)
+        public static void RegisterStartPosition(Transform start, string scenePath)
         {
             // Debug.Log($"RegisterStartPosition: {start.gameObject.name} {start.position}");
-            startPositions.Add(start);
+            if (!startPositions.ContainsKey(scenePath))
+            {
+                startPositions.Add(scenePath, new List<Transform>());
+            }
+            startPositions[scenePath].Add(start);
 
             // reorder the list so that round-robin spawning uses the start positions
             // in hierarchy order.  This assumes all objects with NetworkStartPosition
             // component are siblings, either in the scene root or together as children
             // under a single parent in the scene.
-            startPositions = startPositions.OrderBy(transform => transform.GetSiblingIndex()).ToList();
+            startPositions[scenePath] = startPositions[scenePath].OrderBy(transform => transform.GetSiblingIndex()).ToList();
         }
 
         /// <summary>Unregister a Transform from start positions.</summary>
         // Static because it's called from NetworkStartPosition::OnDestroy
         // and singleton may not exist yet
-        public static void UnRegisterStartPosition(Transform start)
+        public static void UnRegisterStartPosition(Transform start, string scenePath)
         {
             //Debug.Log($"UnRegisterStartPosition: {start.name} {start.position}");
-            startPositions.Remove(start);
+            if(startPositions.ContainsKey(scenePath))
+                startPositions[scenePath].Remove(start);
         }
 
         /// <summary>Get the next NetworkStartPosition based on the selected PlayerSpawnMethod.</summary>
-        public virtual Transform GetStartPosition()
+        public virtual Transform GetStartPosition(string currentScene)
         {
             // first remove any dead transforms
-            startPositions.RemoveAll(t => t == null);
+            foreach (string scene in startPositions.Keys)
+            {
+                if(scene != characterSelectScene)
+                    startPositions[scene].RemoveAll(t => t == null);
+            }
+                
 
-            if (startPositions.Count == 0)
+            if (startPositions[currentScene].Count == 0)
                 return null;
 
             if (playerSpawnMethod == PlayerSpawnMethod.Random)
             {
-                return startPositions[UnityEngine.Random.Range(0, startPositions.Count)];
+                return startPositions[currentScene][UnityEngine.Random.Range(0, startPositions[currentScene].Count)];
             }
             else
             {
-                Transform startPosition = startPositions[startPositionIndex];
-                startPositionIndex = (startPositionIndex + 1) % startPositions.Count;
+                Transform startPosition = startPositions[currentScene][startPositionIndex];
+                startPositionIndex = (startPositionIndex + 1) % startPositions[currentScene].Count;
                 return startPosition;
             }
         }
@@ -1177,7 +1234,7 @@ namespace Mirror
         void OnServerReadyMessageInternal(NetworkConnectionToClient conn, ReadyMessage msg)
         {
             //Debug.Log("NetworkManager.OnServerReadyMessageInternal");
-            OnServerReady(conn);
+            OnServerReady(conn, msg.scene);
         }
 
         void OnServerAddPlayerInternal(NetworkConnectionToClient conn, AddPlayerMessage msg)
@@ -1324,6 +1381,16 @@ namespace Mirror
                 ClientChangeScene(msg.sceneName, msg.sceneOperation, msg.customHandling);
             }
         }
+        void OnClientTeleportInternal(TeleportStartMessage msg)
+        {
+            if (NetworkClient.isConnected)
+            {
+                ClientChangeScene(msg.sceneName, msg.sceneOperation, msg.customHandling, () =>
+                {
+                    NetworkClient.OnClientTeleported(msg.characterName, msg.sceneName);
+                });
+            }
+        }
 
         /// <summary>Called on the server when a new client connects.</summary>
         public virtual void OnServerConnect(NetworkConnectionToClient conn) { }
@@ -1340,21 +1407,21 @@ namespace Mirror
         }
 
         /// <summary>Called on the server when a client is ready (= loaded the scene)</summary>
-        public virtual void OnServerReady(NetworkConnectionToClient conn)
+        public virtual void OnServerReady(NetworkConnectionToClient conn, string scene)
         {
             if (conn.identity == null)
             {
                 // this is now allowed (was not for a while)
                 //Debug.Log("Ready with no player object");
             }
-            NetworkServer.SetClientReady(conn);
+            NetworkServer.SetClientReady(conn, scene);
         }
 
         /// <summary>Called on server when a client requests to add the player. Adds playerPrefab by default. Can be overwritten.</summary>
         // The default implementation for this function creates a new player object from the playerPrefab.
         public virtual void OnServerAddPlayer(NetworkConnectionToClient conn)
         {
-            Transform startPos = GetStartPosition();
+            Transform startPos = GetStartPosition(firstScene);
             GameObject player = startPos != null
                 ? Instantiate(playerPrefab, startPos.position, startPos.rotation)
                 : Instantiate(playerPrefab);
@@ -1362,7 +1429,7 @@ namespace Mirror
             // instantiating a "Player" prefab gives it the name "Player(clone)"
             // => appending the connectionId is WAY more useful for debugging!
             player.name = $"{playerPrefab.name} [connId={conn.connectionId}]";
-            NetworkServer.AddPlayerForConnection(conn, player);
+            NetworkServer.AddPlayerForConnection(conn, player, "");
         }
 
         /// <summary>Called on server when transport raises an exception. NetworkConnection may be null.</summary>

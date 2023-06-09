@@ -114,6 +114,7 @@ public partial class Database : MonoBehaviour
         public bool deleted { get; set; }
         public RaceList race { get; set; }
         public string gender { get; set; }
+        public string currentScene { get; set; }
     }
     class character_inventory
     {
@@ -542,7 +543,7 @@ public partial class Database : MonoBehaviour
                 player.gold                                   = row.gold;
                 player.isGameMaster                           = row.gamemaster;
                 player.itemMall.coins                         = row.coins;
-
+                player.currentScene                           = row.currentScene;
                 // can the player's movement type spawn on the saved position?
                 // it might not be if we changed the terrain, or if the player
                 // logged out in an instanced dungeon that doesn't exist anymore
@@ -557,11 +558,15 @@ public partial class Database : MonoBehaviour
                 // otherwise warp to start position
                 else
                 {
-                    Transform start = NetworkManagerMMO.GetNearestStartPosition(position);
-                    player.movement.Warp(start.position);
-                    // no need to show the message all the time. it would spam
-                    // the server logs too much.
-                    //Debug.Log(player.name + " spawn position reset because it's not on a NavMesh anymore. This can happen if the player previously logged out in an instance or if the Terrain was changed.");
+                    Transform start = NetworkManagerMMO.GetNearestStartPosition(position, player.currentScene);
+                    if(start != null)
+                    {
+                        player.movement.Warp(start.position);
+                        // no need to show the message all the time. it would spam
+                        // the server logs too much.
+                        //Debug.Log(player.name + " spawn position reset because it's not on a NavMesh anymore. This can happen if the player previously logged out in an instance or if the Terrain was changed.");
+                    }
+
                 }
                 player.race = row.race;
                 player.gender = row.gender;
@@ -732,7 +737,7 @@ public partial class Database : MonoBehaviour
     }
 
     // adds or overwrites character data in the database
-    public void CharacterSave(Player player, bool online, bool useTransaction = true)
+    public void CharacterSave(Player player, bool online, bool useTransaction = true, Vector3? spawnPoint = null)
     {
         // only use a transaction if not called within SaveMany transaction
         if (useTransaction) connection.BeginTransaction();
@@ -741,9 +746,9 @@ public partial class Database : MonoBehaviour
             name = player.name,
             account = player.account,
             classname = player.className,
-            x = player.transform.position.x,
-            y = player.transform.position.y,
-            z = player.transform.position.z,
+            x = spawnPoint == null ? player.transform.position.x : spawnPoint.Value.x,
+            y = spawnPoint == null ? player.transform.position.y : player.transform.position.y,
+            z = spawnPoint == null ? player.transform.position.z : player.transform.position.z,
             level = player.level.current,
             health = player.health.current,
             mana = player.mana.current,
@@ -757,7 +762,8 @@ public partial class Database : MonoBehaviour
             online = online,
             race = player.race,
             gender = player.gender,
-            lastsaved = DateTime.UtcNow
+            lastsaved = DateTime.UtcNow,
+            currentScene = player.currentScene
         });
 
         SaveInventory(player.inventory);

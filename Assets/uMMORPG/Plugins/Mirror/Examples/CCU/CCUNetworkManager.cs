@@ -21,8 +21,13 @@ namespace Mirror.Examples.CCU
         void SpawnAll()
         {
             // clear previous player spawn positions in case we start twice
-            foreach (Transform position in startPositions)
-                Destroy(position.gameObject);
+            foreach(string scene in startPositions.Keys)
+            {
+                foreach (Transform position in startPositions[scene])
+                    Destroy(position.gameObject);
+                if(scene != characterSelectScene)startPositions.Clear();
+            }
+            
 
             startPositions.Clear();
 
@@ -71,17 +76,20 @@ namespace Mirror.Examples.CCU
         // - needs to be deterministic so every CCU test results in the same
         // - needs to be random so not only are the spawn positions spread out
         //   randomly, we also have a random amount of players per spawn position
-        public override Transform GetStartPosition()
+        public override Transform GetStartPosition(string currentScene)
         {
             // first remove any dead transforms
-            startPositions.RemoveAll(t => t == null);
+            foreach (string scene in startPositions.Keys)
+            {
+                startPositions[scene].RemoveAll(t => t == null);
+            }
 
-            if (startPositions.Count == 0)
+            if (startPositions[currentScene].Count == 0)
                 return null;
 
             // pick a random one
-            int index = random.Next(0, startPositions.Count); // DETERMINISTIC
-            return startPositions[index];
+            int index = random.Next(0, startPositions[currentScene].Count); // DETERMINISTIC
+            return startPositions[currentScene][index];
         }
 
         public override void OnStartServer()

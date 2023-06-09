@@ -5,11 +5,13 @@
 // dragged into the spawnable objects property.
 //
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using Mirror;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -65,12 +67,16 @@ public partial class NetworkManagerMMO : NetworkManager
     public int selection = -1;
     public Transform[] selectionLocations;
     public Transform selectionCameraLocation;
+    public CharacterSelectSpawnPosition selectionSpawnLocation;
     [HideInInspector] public List<Player> playerClasses = new List<Player>(); // cached in Awake
 
     [Header("Database")]
     public int characterLimit = 4;
     public int characterNameMaxLength = 16;
     public float saveInterval = 60f; // in seconds
+    
+    [Header("Teleport")]
+    public List<TeleportPoint> teleportPoints = new List<TeleportPoint>();
 
     // we still need OnStartClient/Server/etc. events for NetworkManager because
     // those are not regular NetworkBehaviour events that all components get.
@@ -88,6 +94,8 @@ public partial class NetworkManagerMMO : NetworkManager
     public UnityEventNetworkConnection onClientDisconnect;
     public UnityEventNetworkConnection onServerDisconnect;
 
+    
+
     // store characters available message on client so that UI can access it
     [HideInInspector] public CharactersAvailableMsg charactersAvailableMsg;
 
@@ -102,9 +110,10 @@ public partial class NetworkManagerMMO : NetworkManager
                Regex.IsMatch(characterName, @"^[a-zA-Z0-9_]+$");
     }
 
+
     // nearest startposition ///////////////////////////////////////////////////
-    public static Transform GetNearestStartPosition(Vector3 from) =>
-        Utils.GetNearestTransform(startPositions, from);
+    public static Transform GetNearestStartPosition(Vector3 from, string sceneName) =>
+        Utils.GetNearestTransform(startPositions, from, sceneName);
 
     // player classes //////////////////////////////////////////////////////////]
     public List<Player> FindPlayerClasses()
@@ -189,6 +198,7 @@ public partial class NetworkManagerMMO : NetworkManager
         NetworkServer.RegisterHandler<CharacterCreateMsg>(OnServerCharacterCreate);
         NetworkServer.RegisterHandler<CharacterSelectMsg>(OnServerCharacterSelect);
         NetworkServer.RegisterHandler<CharacterDeleteMsg>(OnServerCharacterDelete);
+        NetworkServer.RegisterHandler<TeleportLoadedMsg>(OnServerTeleportLoaded);
 
         // invoke saving
         InvokeRepeating(nameof(SavePlayers), saveInterval, saveInterval);
@@ -210,6 +220,60 @@ public partial class NetworkManagerMMO : NetworkManager
         // addon system hooks
         onStopServer.Invoke();
     }
+
+    #region AdditiveScenes
+    public void OnStartServer_AdditiveScenes()
+    {
+        if(!additiveScenesInited)
+        {
+            // load all subscenes on the server only
+            StartCoroutine(LoadSubScenes());
+            Vector3 vector3;
+            // Instantiate Zone Handler on server only
+            foreach(var tp in teleportPoints)
+            {
+                Vector3 vector = new Vector3()
+                {
+                    x = tp.x,
+                    y = tp.y,
+                    z = tp.z
+                };
+                //!!!BUG!!!
+                //it creates all of the Zones in the first scene
+                Instantiate(Zone, vector, Quaternion.identity);
+            }
+            additiveScenesInited = true;
+        }
+    }
+    public  void OnStopServer_AdditiveScenes()
+    {
+        StartCoroutine(UnloadScenes());
+    }
+
+    IEnumerator UnloadScenes()
+    {
+        Debug.Log("Unloading Subscenes");
+
+        foreach (string sceneName in subScenes)
+            if (SceneManager.GetSceneByName(sceneName).IsValid() || SceneManager.GetSceneByPath(sceneName).IsValid())
+            {
+                yield return SceneManager.UnloadSceneAsync(sceneName);
+                // Debug.Log($"Unloaded {sceneName}");
+            }
+
+        yield return Resources.UnloadUnusedAssets();
+    }
+    IEnumerator LoadSubScenes()
+    {
+        Debug.Log("Loading Scenes");
+
+        foreach (string sceneName in subScenes)
+        {
+            yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+            // Debug.Log($"Loaded {sceneName}");
+        }
+    }
+    #endregion
 
     // handshake: login ////////////////////////////////////////////////////////
     // called on the client if a client connects after successful auth
@@ -353,10 +417,10 @@ public partial class NetworkManagerMMO : NetworkManager
     // handshake: character creation ///////////////////////////////////////////
     // find a NetworkStartPosition for this class, or a normal one otherwise
     // (ignore the ones with playerPrefab == null)
-    public Transform GetStartPositionFor(string className)
+    public Transform GetStartPositionFor(string className, string scene)
     {
         // avoid Linq for performance/GC. players spawn frequently!
-        foreach (Transform startPosition in startPositions)
+        foreach (Transform startPosition in startPositions[scene])
         {
             NetworkStartPositionForClass spawn = startPosition.GetComponent<NetworkStartPositionForClass>();
             if (spawn != null &&
@@ -365,7 +429,14 @@ public partial class NetworkManagerMMO : NetworkManager
                 return spawn.transform;
         }
         // return any start position otherwise
-        return GetStartPosition();
+        return GetStartPosition(scene);
+    }
+    // handshake: character creation ///////////////////////////////////////////
+    // find a NetworkStartPosition for this class, or a normal one otherwise
+    // (ignore the ones with playerPrefab == null)
+    public Transform GetStartPositionForCharacterCreate()
+    {
+        return selectionSpawnLocation.transform;
     }
 
     Player CreateCharacter(GameObject classPrefab, string characterName, string account, bool gameMaster)
@@ -380,7 +451,8 @@ public partial class NetworkManagerMMO : NetworkManager
         player.name = characterName;
         player.account = account;
         player.className = classPrefab.name;
-        player.transform.position = GetStartPositionFor(player.className).position;
+        player.currentScene = characterSelectScene;
+        player.transform.position = GetStartPositionForCharacterCreate().position;
         for (int i = 0; i < player.inventory.size; ++i)
         {
             // add empty slot or default item if any
@@ -429,7 +501,7 @@ public partial class NetworkManagerMMO : NetworkManager
 
                                 // addon system hooks
                                 onServerCharacterCreate.Invoke(message, player);
-
+                                player.currentScene = firstScene;
                                 // save the player
                                 Database.singleton.CharacterSave(player, false);
                                 Destroy(player.gameObject);
@@ -478,7 +550,19 @@ public partial class NetworkManagerMMO : NetworkManager
 
     // overwrite the original OnServerAddPlayer function so nothing happens if
     // someone sends that message.
-    public override void OnServerAddPlayer(NetworkConnectionToClient conn) { Debug.LogWarning("Use the CharacterSelectMsg instead"); }
+    public override void OnServerAddPlayer(NetworkConnectionToClient conn) { 
+        Debug.LogWarning("Use the CharacterSelectMsg instead");
+
+        Transform startPos = GetStartPosition(playerPrefab.GetComponent<Player>().currentScene);
+        GameObject player = startPos != null
+            ? Instantiate(playerPrefab, startPos.position, startPos.rotation)
+            : Instantiate(playerPrefab);
+
+        // instantiating a "Player" prefab gives it the name "Player(clone)"
+        // => appending the connectionId is WAY more useful for debugging!
+        player.name = $"{playerPrefab.name} [connId={conn.connectionId}]";
+        NetworkServer.AddPlayerForConnection(conn, player, player.gameObject.GetComponent<Player>().currentScene);
+    }
 
     void OnServerCharacterSelect(NetworkConnectionToClient conn, CharacterSelectMsg message)
     {
@@ -501,7 +585,7 @@ public partial class NetworkManagerMMO : NetworkManager
                 GameObject go = Database.singleton.CharacterLoad(characters[message.index], playerClasses, false);
 
                 // add to client
-                NetworkServer.AddPlayerForConnection(conn, go);
+                NetworkServer.AddPlayerForConnection(conn, go, go.gameObject.GetComponent<Player>().currentScene);
 
                 // addon system hooks
                 onServerCharacterSelect.Invoke(account, go, conn, message);
@@ -556,6 +640,40 @@ public partial class NetworkManagerMMO : NetworkManager
             Debug.Log("CharacterDelete: not in lobby: " + conn);
             ServerSendError(conn, "CharacterDelete: not in lobby", true);
         }
+    }
+
+    void OnServerTeleportLoaded(NetworkConnectionToClient conn, TeleportLoadedMsg message)
+    {
+        GameObject go = Database.singleton.CharacterLoad(message.characterName, playerClasses, false);
+        NetworkServer.AddPlayerForConnection(conn, go, go.gameObject.GetComponent<Player>().currentScene);
+    }
+
+    public void TeleportPlayer(NetworkConnectionToClient conn, string newScene)
+    {
+        conn.identity.GetComponent<Player>().currentScene = newScene;
+        var spawnPoint = GetNearestStartPosition(conn.identity.transform.position, newScene).position;
+        //if newScene doesn't have any spawn point, teleport the character to firstScene.
+        if(spawnPoint == null)
+        {
+            spawnPoint = GetNearestStartPosition(conn.identity.transform.position, firstScene).position;
+            newScene = firstScene;
+        }
+        if(spawnPoint != null)
+        {
+            Database.singleton.CharacterSave(
+                conn.identity.GetComponent<Player>(),
+                false,
+                spawnPoint: spawnPoint
+            );
+        }
+        
+        string characterName = conn.identity.GetComponent<Player>().name;
+        TeleportStartMessage message = new TeleportStartMessage {characterName = characterName,  sceneName = newScene, sceneOperation = SceneOperation.Normal, customHandling = false };
+        conn.Send(message);
+
+        NetworkServer.DestroyPlayerForConnection(conn);
+
+
     }
 
     // player saving ///////////////////////////////////////////////////////////

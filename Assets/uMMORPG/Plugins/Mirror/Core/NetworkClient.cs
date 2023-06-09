@@ -1711,5 +1711,11 @@ namespace Mirror
 
             GUILayout.EndArea();
         }
+
+        public static void OnClientTeleported(string characterName, string newScene)
+        {
+            TeleportLoadedMsg message = new TeleportLoadedMsg { characterName = characterName, sceneName = newScene };
+            connection.Send(message);
+        }
     }
 }

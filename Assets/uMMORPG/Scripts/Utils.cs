@@ -198,18 +198,20 @@ public class Utils
     }
 
     // helper function to find the nearest Transform from a point 'from'
-    public static Transform GetNearestTransform(List<Transform> transforms, Vector3 from)
+    public static Transform GetNearestTransform(Dictionary<string, List<Transform>> transforms, Vector3 from, string sceneName)
     {
         // note: avoid Linq for performance / GC
         // => players can respawn frequently, and the game could have many start
         //    positions so this function does matter even if not in hot path.
         Transform nearest = null;
-        foreach (Transform tf in transforms)
-        {
-            // better candidate if we have no candidate yet, or if closer
-            if (nearest == null ||
-                Vector3.Distance(tf.position, from) < Vector3.Distance(nearest.position, from))
-                nearest = tf;
+        if (sceneName != null && transforms != null && transforms.ContainsKey(sceneName)){
+            foreach (Transform tf in transforms[sceneName])
+            {
+                // better candidate if we have no candidate yet, or if closer
+                if (nearest == null ||
+                    Vector3.Distance(tf.position, from) < Vector3.Distance(nearest.position, from))
+                    nearest = tf;
+            }
         }
         return nearest;
     }

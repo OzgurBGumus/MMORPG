@@ -203,6 +203,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 10634681}
   m_CullTransparentMesh: 0
+--- !u!1 &24231771
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 24231773}
+  - component: {fileID: 24231772}
+  m_Layer: 0
+  m_Name: SelectionSpawnPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &24231772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24231771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74c84c0edced2e648b3244fcf0ceda5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &24231773
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24231771}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 608338833}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &27159995
 GameObject:
   m_ObjectHideFlags: 0
@@ -2277,10 +2321,16 @@ MonoBehaviour:
   sendRate: 20
   offlineScene: 
   onlineScene: 
+  firstScene: Assets/Scenes/World.unity
   loginScene: Assets/Scenes/Login.unity
   characterSelectScene: Assets/Scenes/CharacterSelect.unity
   loadingScene: Assets/Scenes/Loading.unity
   worldScene: Assets/Scenes/World.unity
+  previousScene: 
+  Zone: {fileID: 3460729395543957449, guid: 44d5b9c7f10e7bb4787f52d42d5603d1, type: 3}
+  ZoneLocations: []
+  subScenes:
+  - Assets/Scenes/World2.unity
   transport: {fileID: 608338827}
   networkAddress: Use the Server List below!
   maxConnections: 1000
@@ -2311,6 +2361,7 @@ MonoBehaviour:
     dynamicAdjustmentTolerance: 1
     deliveryTimeEmaDuration: 2
   timeInterpolationGui: 0
+  sceneLoadingProcess: 0
   state: 0
   uiPopup: {fileID: 0}
   serverList:
@@ -2324,10 +2375,18 @@ MonoBehaviour:
   - {fileID: 503226298}
   - {fileID: 806853980}
   selectionCameraLocation: {fileID: 332003595}
+  selectionSpawnLocation: {fileID: 24231772}
   playerClasses: []
   characterLimit: 4
   characterNameMaxLength: 16
   saveInterval: 30
+  teleportPoints:
+  - x: 15
+    y: 3.7
+    z: -24
+  - x: -352
+    y: 2.5
+    z: 66.2
   onStartClient:
     m_PersistentCalls:
       m_Calls: []
@@ -2366,7 +2425,19 @@ MonoBehaviour:
         m_CallState: 2
   onServerCharacterSelect:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 608338832}
+        m_TargetAssemblyTypeName: NetworkManagerMMO, uMMORPG
+        m_MethodName: OnStartServer_AdditiveScenes
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onServerCharacterDelete:
     m_PersistentCalls:
       m_Calls: []
@@ -2393,6 +2464,7 @@ Transform:
   - {fileID: 764412256}
   - {fileID: 503226298}
   - {fileID: 806853980}
+  - {fileID: 24231773}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3134,6 +3206,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 923605922}
   m_CullTransparentMesh: 0
+--- !u!1 &935737833
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 935737834}
+  m_Layer: 0
+  m_Name: TeleportPoints
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &935737834
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 935737833}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &998215669
 GameObject:
   m_ObjectHideFlags: 0

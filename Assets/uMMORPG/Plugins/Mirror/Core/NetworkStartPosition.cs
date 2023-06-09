@@ -10,12 +10,12 @@ namespace Mirror
     {
         public void Awake()
         {
-            NetworkManager.RegisterStartPosition(transform);
+            NetworkManager.RegisterStartPosition(transform, gameObject.scene.path);
         }
 
         public void OnDestroy()
         {
-            NetworkManager.UnRegisterStartPosition(transform);
+            NetworkManager.UnRegisterStartPosition(transform, gameObject.scene.path);
         }
     }
 }

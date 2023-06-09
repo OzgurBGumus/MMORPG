@@ -136,7 +136,7 @@ public class Instance : MonoBehaviour
                         // otherwise kick from instance
                         else
                         {
-                            Transform spawn = ((NetworkManagerMMO)NetworkManager.singleton).GetStartPositionFor(player.className);
+                            Transform spawn = ((NetworkManagerMMO)NetworkManager.singleton).GetStartPositionFor(player.className, player.currentScene);
                             player.movement.Warp(spawn.position);
                             Debug.Log("Removed player " + player.name + " with partyId=" + player.party.party.partyId + " from instance " + name + " with partyId=" + partyId);
                         }

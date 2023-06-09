@@ -268,7 +268,7 @@ namespace Mirror
         static void OnClientReadyMessage(NetworkConnectionToClient conn, ReadyMessage msg)
         {
             // Debug.Log($"Default handler for ready message from {conn}");
-            SetClientReady(conn);
+            SetClientReady(conn, msg.scene);
         }
 
         static void OnCommandMessage(NetworkConnectionToClient conn, CommandMessage msg, int channelId)
@@ -875,13 +875,13 @@ namespace Mirror
         // for that object. This function is used for "adding" a player, not for
         // "replacing" the player on a connection. If there is already a player
         // on this playerControllerId for this connection, this will fail.
-        public static bool AddPlayerForConnection(NetworkConnectionToClient conn, GameObject player, uint assetId)
+        public static bool AddPlayerForConnection(NetworkConnectionToClient conn, GameObject player, uint assetId, string scene)
         {
             if (GetNetworkIdentity(player, out NetworkIdentity identity))
             {
                 identity.assetId = assetId;
             }
-            return AddPlayerForConnection(conn, player);
+            return AddPlayerForConnection(conn, player, scene);
         }
 
         /// <summary>Called by server after AddPlayer message to add the player for the connection.</summary>
@@ -891,7 +891,7 @@ namespace Mirror
         // for that object. This function is used for "adding" a player, not for
         // "replacing" the player on a connection. If there is already a player
         // on this playerControllerId for this connection, this will fail.
-        public static bool AddPlayerForConnection(NetworkConnectionToClient conn, GameObject player)
+        public static bool AddPlayerForConnection(NetworkConnectionToClient conn, GameObject player, string scene)
         {
             if (!player.TryGetComponent(out NetworkIdentity identity))
             {
@@ -921,7 +921,7 @@ namespace Mirror
             }
 
             // set ready if not set yet
-            SetClientReady(conn);
+            SetClientReady(conn, scene);
 
             // Debug.Log($"Adding new playerGameObject object netId: {identity.netId} asset ID: {identity.assetId}");
 
@@ -1025,7 +1025,7 @@ namespace Mirror
         // SYSTEM_READY message. If there is not specific action a game needs to
         // take for this message, relying on the default ready handler function
         // is probably fine, so this call wont be needed.
-        public static void SetClientReady(NetworkConnectionToClient conn)
+        public static void SetClientReady(NetworkConnectionToClient conn, string scene)
         {
             // Debug.Log($"SetClientReadyInternal for conn:{conn}");
 
@@ -1034,10 +1034,10 @@ namespace Mirror
 
             // client is ready to start spawning objects
             if (conn.identity != null)
-                SpawnObserversForConnection(conn);
+                SpawnObserversForConnection(conn, scene);
         }
 
-        static void SpawnObserversForConnection(NetworkConnectionToClient conn)
+        static void SpawnObserversForConnection(NetworkConnectionToClient conn, string connScene = "")
         {
             //Debug.Log($"Spawning {spawned.Count} objects for conn {conn}");
 
@@ -1055,44 +1055,47 @@ namespace Mirror
             // internally sends a spawn message for each one to the connection.
             foreach (NetworkIdentity identity in spawned.Values)
             {
-                // try with far away ones in ummorpg!
-                if (identity.gameObject.activeSelf) //TODO this is different
+                if (identity.sceneId == 0 || string.IsNullOrEmpty(connScene) || (identity.sceneId != 0 && identity.scene == connScene))
                 {
-                    //Debug.Log($"Sending spawn message for current server objects name:{identity.name} netId:{identity.netId} sceneId:{identity.sceneId:X}");
+                    // try with far away ones in ummorpg!
+                    if (identity.gameObject.activeSelf) //TODO this is different
+                    {
+                        //Debug.Log($"Sending spawn message for current server objects name:{identity.name} netId:{identity.netId} sceneId:{identity.sceneId:X}");
 
-                    // we need to support three cases:
-                    // - legacy system (identity has .visibility)
-                    // - new system (networkserver has .aoi)
-                    // - default case: no .visibility and no .aoi means add all
-                    //   connections by default)
-                    //
-                    // ForceHidden/ForceShown overwrite all systems so check it
-                    // first!
+                        // we need to support three cases:
+                        // - legacy system (identity has .visibility)
+                        // - new system (networkserver has .aoi)
+                        // - default case: no .visibility and no .aoi means add all
+                        //   connections by default)
+                        //
+                        // ForceHidden/ForceShown overwrite all systems so check it
+                        // first!
 
-                    // ForceShown: add no matter what
-                    if (identity.visible == Visibility.ForceShown)
-                    {
-                        identity.AddObserver(conn);
-                    }
-                    // ForceHidden: don't show no matter what
-                    else if (identity.visible == Visibility.ForceHidden)
-                    {
-                        // do nothing
-                    }
-                    // default: legacy system / new system / no system support
-                    else if (identity.visible == Visibility.Default)
-                    {
-                        // aoi system
-                        if (aoi != null)
-                        {
-                            // call OnCheckObserver
-                            if (aoi.OnCheckObserver(identity, conn))
-                                identity.AddObserver(conn);
-                        }
-                        // no system: add all observers by default
-                        else
+                        // ForceShown: add no matter what
+                        if (identity.visible == Visibility.ForceShown)
                         {
                             identity.AddObserver(conn);
+                        }
+                        // ForceHidden: don't show no matter what
+                        else if (identity.visible == Visibility.ForceHidden)
+                        {
+                            // do nothing
+                        }
+                        // default: legacy system / new system / no system support
+                        else if (identity.visible == Visibility.Default)
+                        {
+                            // aoi system
+                            if (aoi != null)
+                            {
+                                // call OnCheckObserver
+                                if (aoi.OnCheckObserver(identity, conn))
+                                    identity.AddObserver(conn);
+                            }
+                            // no system: add all observers by default
+                            else
+                            {
+                                identity.AddObserver(conn);
+                            }
                         }
                     }
                 }

@@ -17,4 +17,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/World.unity
     guid: a11831025daca24449ab977327654930
+  - enabled: 1
+    path: Assets/Scenes/World2.unity
+    guid: 16f8f9e850f72104c8245210ecfda60d
+  - enabled: 0
+    path: Assets/uMMORPG/Plugins/Mirror/Examples/AdditiveScenes/Scenes/MainScene.unity
+    guid: 7a0eee2f518e9dc4fb628d96dc452faf
+  - enabled: 0
+    path: Assets/uMMORPG/Plugins/Mirror/Examples/AdditiveScenes/Scenes/SubScene.unity
+    guid: 7f4fd683fc6d866418c95f99977533a6
   m_configObjects: {}

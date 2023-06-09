@@ -18,19 +18,8 @@ namespace Mirror.Examples.AdditiveScenes
         void OnTriggerEnter(Collider other)
         {
             // Debug.Log($"Loading {subScene}");
-
             NetworkIdentity networkIdentity = other.gameObject.GetComponent<NetworkIdentity>();
-            SceneMessage message = new SceneMessage{ sceneName = subScene, sceneOperation = SceneOperation.LoadAdditive };
-            networkIdentity.connectionToClient.Send(message);
-        }
-
-        [ServerCallback]
-        void OnTriggerExit(Collider other)
-        {
-            // Debug.Log($"Unloading {subScene}");
-
-            NetworkIdentity networkIdentity = other.gameObject.GetComponent<NetworkIdentity>();
-            SceneMessage message = new SceneMessage{ sceneName = subScene, sceneOperation = SceneOperation.UnloadAdditive };
+            SceneMessage message = new SceneMessage{ sceneName = subScene, sceneOperation = SceneOperation.Normal };
             networkIdentity.connectionToClient.Send(message);
         }
     }
