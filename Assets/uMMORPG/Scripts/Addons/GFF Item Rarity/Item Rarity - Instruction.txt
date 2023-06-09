@@ -1,0 +1,64 @@
+Thank you for your purchase. 
+Our other projects you can see https://assetstore.unity.com/publishers/37837
+We are waiting for your feedback on asset store
+Best wishes the development team GFF
+Support us on patreon  https://www.patreon.com/GameFunSPB
+Contacts : email "GameFunSPB@gmail.com"; Discord  "GameFunSPB#2037"
+
+
+Addon name : Item Rarity
+Addon version : 1.7
+Date of creation / editing 28.04.2023
+Require Components : Addons Core(UniversalSlot), Textures
+Recommended Components : none
+Compatible projects : uMMORPG Remastered 2.39, uMMORPG 2D Remastered 2.13
+Recommendations : Test the addon on a clean version uMMORPG without changes.
+Recommended version Unity 2021.3.23
+Link : http://u3d.as/1PVN
+
+Versions for other projects:
+ * uMMORPG Classic : http://u3d.as/1FXR
+ * For uSurvival : http://u3d.as/1G2V
+
+Small set of Addons for uMMORPG Classic and uMMORPG 2D http://u3d.as/1pms
+All Addons for uMMORPG Classic http://u3d.as/25bQ
+All Addons for uMMORPG Remastered https://u3d.as/2AEs
+All Addons for uMMORPG 2D Remastered
+All Addons for uSurvival
+
+
+                                     Installation and Configuration
+
+//if you do not use our Inventory addon
+1. Edit the "UIInventory.cs"  Script in   Assets/uMMORPG/Scripts/_UI/
+  a) after line     slot.amountText.text = itemSlot.amount.ToString();
+      add lines     slot.GetComponent<Image>().sprite = player.itemRarityConfig.GetSprite;
+                    slot.GetComponent<Image>().color = player.itemRarityConfig.GetColor(itemSlot.item);
+
+  b) after line     slot.amountOverlay.SetActive(false);
+      add lines     slot.GetComponent<Image>().sprite = player.itemRarityConfig.GetSprite;
+                    slot.GetComponent<Image>().color = player.itemRarityConfig.GetColorForEmptySlot();
+
+
+//if you do not use our Equipment addon
+2. Edit the "UIEquipment.cs"  Script in   Assets/uMMORPG/Scripts/_UI/
+  a) after line     slot.amountText.text = itemSlot.amount.ToString();
+      add lines     slot.GetComponent<UnityEngine.UI.Image>().sprite = player.itemRarityConfig.GetSprite;
+                    slot.GetComponent<UnityEngine.UI.Image>().color = player.itemRarityConfig.GetColor(itemSlot.item);
+
+  b) after line     slot.amountOverlay.SetActive(false);
+      add lines     slot.GetComponent<UnityEngine.UI.Image>().sprite = player.itemRarityConfig.GetSprite;
+                    slot.GetComponent<UnityEngine.UI.Image>().color = player.itemRarityConfig.GetColorForEmptySlot();
+
+
+3. Edit all player prefabs
+  a) in Inspector In script "Player" in field "Item Rarity Config" select "ItemRarityConfig" from (Assets/uMMORPG/Scripts/Addons/GFF Item Rarity/Resources/)
+
+
+
+ How to adjust the rarity of items 
+  * all files in a folder (uMMORPG\Resources\Items\) parameter added "Rarity"
+
+
+
+

@@ -104,6 +104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneId: 0
+  scene: 
   _assetId: 1811182490
   serverOnly: 0
   visible: 0
@@ -635,6 +636,7 @@ MonoBehaviour:
   specialisation_1: 
   specialisation_2: 
   customization: {fileID: 1029474228226580476}
+  itemRarityConfig: {fileID: 11400000, guid: dd350f5007de8874cb433e69b78b8c95, type: 2}
   experience: {fileID: 8572613298790361383}
   intelligence: {fileID: 2096369668014323925}
   strength: {fileID: 1823876935877992634}
@@ -665,6 +667,7 @@ MonoBehaviour:
   portraitIcon: {fileID: 21300000, guid: c693d79aa070c43f7a8c3a0da6f72436, type: 3}
   account: 
   className: 
+  currentScene: 
   isGameMaster: 0
   interactionRange: 4
   localPlayerClickThrough: 1

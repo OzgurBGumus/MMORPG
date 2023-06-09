@@ -88,6 +88,8 @@ public partial class UIInventory : MonoBehaviour
                         else slot.cooldownCircle.fillAmount = 0;
                         slot.amountOverlay.SetActive(itemSlot.amount > 1);
                         slot.amountText.text = itemSlot.amount.ToString();
+                        slot.GetComponent<Image>().sprite = player.itemRarityConfig.GetSprite;
+                        slot.GetComponent<Image>().color = player.itemRarityConfig.GetColor(itemSlot.item);
                     }
                     else
                     {
@@ -99,6 +101,8 @@ public partial class UIInventory : MonoBehaviour
                         slot.image.sprite = null;
                         slot.cooldownCircle.fillAmount = 0;
                         slot.amountOverlay.SetActive(false);
+                        slot.GetComponent<Image>().sprite = player.itemRarityConfig.GetSprite;
+                        slot.GetComponent<Image>().color = player.itemRarityConfig.GetColorForEmptySlot();
                     }
                 }
 
