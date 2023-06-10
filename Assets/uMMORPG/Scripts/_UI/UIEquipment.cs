@@ -94,7 +94,7 @@ public partial class UIEquipment : MonoBehaviour
                         slot.cooldownCircle.fillAmount = 0;
                         slot.amountOverlay.SetActive(false);
                         slot.GetComponent<UnityEngine.UI.Image>().sprite = player.itemRarityConfig.GetSprite;
-                        slot.GetComponent<UnityEngine.UI.Image>().color = player.itemRarityConfig.GetColor(itemSlot.item);
+                        slot.GetComponent<UnityEngine.UI.Image>().color = player.itemRarityConfig.GetColorForEmptySlot();
                     }
                 }
             }

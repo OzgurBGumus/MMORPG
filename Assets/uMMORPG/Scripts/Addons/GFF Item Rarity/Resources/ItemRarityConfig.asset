@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44388a145fab75244a59841f15223db6, type: 3}
   m_Name: ItemRarityConfig
   m_EditorClassIdentifier: 
-  useRarityTypeA: 0
-  useRarityTypeB: 1
-  raritySpriteA: {fileID: 21300000, guid: 0e1b430bd65d8584dbc911c9f3c5c71a, type: 3}
+  useRarityTypeA: 1
+  useRarityTypeB: 0
+  raritySpriteA: {fileID: 21300000, guid: cec634b72cca2d64f80df03c941a86ff, type: 3}
   raritySpriteB: {fileID: 21300000, guid: 147ff30c364aa9d49a287b1815f43c18, type: 3}
   types:
   - rarity: 0
@@ -27,3 +27,5 @@ MonoBehaviour:
     color: {r: 1, g: 0, b: 1, a: 1}
   - rarity: 4
     color: {r: 1, g: 0.4435961, b: 0.10849059, a: 1}
+  - rarity: 5
+    color: {r: 0.59607846, g: 0, b: 0, a: 1}
