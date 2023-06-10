@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eed1fa1e0572cb44793483287a85d0f2, type: 3}
+  m_Name: Throw Rock
+  m_EditorClassIdentifier: 
+  followupDefaultAttack: 0
+  toolTip: '<b>{NAME} Lvl {LEVEL}</b>
+
+    Throw a rock to enemy (Monster) to get
+    attantion
+
+
+    Damage: {DAMAGE}
+
+    Stun Chance: {STUNCHANCE}%
+
+    Stun Time:
+    {STUNTIME}s
+
+    Cast Time: {CASTTIME}
+
+    Cooldown: {COOLDOWN}
+
+    Cast Range:
+    {CASTRANGE}
+
+    Mana Costs: {MANACOSTS}
+
+'
+  image: {fileID: 21300000, guid: ec3ee788626d34ebab227ba3ee0fb3bc, type: 3}
+  learnDefault: 0
+  showCastBar: 1
+  cancelCastIfTargetDied: 1
+  allowMovement: 0
+  predecessor: {fileID: 0}
+  predecessorLevel: 1
+  requiredWeaponCategory: 0
+  requiredLevel:
+    baseValue: 1
+    bonusPerLevel: 0
+  requiredSkillExperience:
+    baseValue: 1
+    bonusPerLevel: 0
+  maxLevel: 1
+  manaCosts:
+    baseValue: 5
+    bonusPerLevel: 0
+  castTime:
+    baseValue: 0.4
+    bonusPerLevel: 0
+  cooldown:
+    baseValue: 7
+    bonusPerLevel: 0
+  castRange:
+    baseValue: 22
+    bonusPerLevel: 0
+  castSound: {fileID: 0}
+  damage:
+    baseValue: 1
+    bonusPerLevel: 0
+  stunChance:
+    baseValue: 0
+    bonusPerLevel: 0
+  stunTime:
+    baseValue: 0
+    bonusPerLevel: 0
+  projectile: {fileID: 0}

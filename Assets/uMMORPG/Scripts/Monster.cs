@@ -246,6 +246,7 @@ public partial class Monster : Entity
             return "MOVING";
         }
         if (EventDeathTimeElapsed()) {} // don't care
+        if (EventAggroExtendedEnd()) FindNewAggroTarget();
         if (EventRespawnTimeElapsed()) {} // don't care
         if (EventMoveEnd()) {} // don't care
         if (EventSkillFinished()) {} // don't care
@@ -329,6 +330,7 @@ public partial class Monster : Entity
             return "IDLE";
         }
         if (EventDeathTimeElapsed()) {} // don't care
+        if (EventAggroExtendedEnd()) FindNewAggroTarget();
         if (EventRespawnTimeElapsed()) {} // don't care
         if (EventSkillFinished()) {} // don't care
         if (EventTargetDisappeared()) {} // don't care
@@ -415,6 +417,7 @@ public partial class Monster : Entity
             return "IDLE";
         }
         if (EventDeathTimeElapsed()) {} // don't care
+        if (EventAggroExtendedEnd()) FindNewAggroTarget();
         if (EventRespawnTimeElapsed()) {} // don't care
         if (EventMoveEnd()) {} // don't care
         if (EventTargetTooFarToAttack()) {} // don't care, we were close enough when starting to cast
@@ -509,7 +512,11 @@ public partial class Monster : Entity
         {
             // keep looking at the target for server & clients (only Y rotation)
             if (target)
+            {
                 movement.LookAtY(target.transform.position);
+                Utils.InvokeMany(typeof(Monster), this, "UpdateClient_");
+            }
+                
         }
     }
 
@@ -548,13 +555,13 @@ public partial class Monster : Entity
             //       the aggro area anyway. transform.position is perfectly fine
             if (target == null)
             {
-                target = entity;
+                UpdateAggroList(entity, aggroValueMax);
             }
             else if (entity != target) // no need to check dist for same target
             {
                 float oldDistance = Vector3.Distance(transform.position, target.transform.position);
                 float newDistance = Vector3.Distance(transform.position, entity.transform.position);
-                if (newDistance < oldDistance * 0.8) target = entity;
+                //if (newDistance < oldDistance * 0.8) target = entity;
             }
         }
     }
@@ -611,6 +618,52 @@ public partial class Monster : Entity
             // use collider point(s) to also work with big entities
             Vector3 destination = Utils.ClosestPoint(this, player.transform.position);
             player.movement.Navigate(destination, player.interactionRange);
+        }
+    }
+
+
+    //////////// Extended Aggro Addon
+    void UpdateClient_Aggro()
+    {
+        if (aggroSprite != null)
+        {
+            if (aggroTimeEnd + aggroTime > NetworkTime.time)
+            {
+                aggroSprite.SetActive(true);
+                if (aggroSound != null) audioSource.PlayOneShot(aggroSound);
+            }
+            if (aggroSprite.activeSelf && ((aggroTimeEnd + aggroTime < NetworkTime.time) || state == "DEAD")) aggroSprite.SetActive(false);
+        }
+    }
+
+    bool EventAggroExtendedEnd()
+    {
+        return NetworkTime.time >= aggroTimeEnd;
+    }
+
+    void FindNewAggroTarget()
+    {
+        if (target == null)
+        {
+            for (int i = 0; i < aggroList.Count; i++)
+            {
+                if (aggroList[i].entity.health.current == 0 || aggroList[i].entity.state == "DEAD") aggroList.RemoveAt(i);
+            }
+        }
+
+        if (aggroList.Count > 1)
+        {
+            //sort
+            aggroList.Sort((a, b) => b.value.CompareTo(a.value));
+
+            if (!aggroList[0].entity.Equals(target))
+            {
+                for (int i = 1; i < aggroList.Count; i++)
+                    aggroList[i].value = 0;
+
+                target = aggroList[0].entity;
+                aggroTimeEnd = NetworkTime.time + aggroTime;
+            }
         }
     }
 }

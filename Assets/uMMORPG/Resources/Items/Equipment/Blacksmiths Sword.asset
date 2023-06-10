@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Blacksmiths Sword
   m_EditorClassIdentifier: 
   rarity: 2
+  category: 7
   maxStack: 1
   maxDurability: 1000
   buyPrice: 10
@@ -53,7 +54,6 @@ MonoBehaviour:
   minLevel: 1
   cooldown: 0
   _cooldownCategory: 
-  category: WeaponSword
   healthBonus: 0
   manaBonus: 0
   damageBonus: 10

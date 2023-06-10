@@ -22,9 +22,16 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
+public enum ItemCategory { None,
+    Potion, Pet, Mount, Usable, Material, 
+    Bow, Sword, Staff, priestWeapon, Shield,
+    Helmet, Gloves, Boots, Armor, Panth, 
+    Belt, Necklage, Earring, Ring}
+
 [CreateAssetMenu(menuName="uMMORPG Item/General", order=999)]
 public partial class ScriptableItem : ScriptableObject
 {
+    public ItemCategory category;
     [Header("Base Stats")]
     public int maxStack;
     [Tooltip("Durability is only allowed for non-stackable items (if MaxStack is 1))")]

@@ -95,6 +95,6 @@ public abstract class Equipment : ItemContainer, IHealthBonus, IManaBonus, IComb
     {
         // find the weapon slot
         int index = GetEquippedWeaponIndex();
-        return index != -1 ? ((WeaponItem)slots[index].item.data).category : "";
+        return index != -1 ? ((WeaponItem)slots[index].item.data).category.ToString() : "";
     }
 }

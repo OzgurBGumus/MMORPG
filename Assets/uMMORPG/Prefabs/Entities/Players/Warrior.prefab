@@ -1262,6 +1262,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 77d6d092d0a8c45a2aec83e9196a2b47, type: 2}
   - {fileID: 11400000, guid: 073a4171553974a489a856df15a164ce, type: 2}
   - {fileID: 11400000, guid: 79a26c6c394964a128b4c784ec1ab655, type: 2}
+  - {fileID: 11400000, guid: 9881cbdf1fa19314bb48db080daa9e5f, type: 2}
   _effectMount: {fileID: 0}
   onSkillCastStarted:
     m_PersistentCalls:
