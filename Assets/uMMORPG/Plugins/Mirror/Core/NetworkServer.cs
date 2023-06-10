@@ -1034,7 +1034,10 @@ namespace Mirror
 
             // client is ready to start spawning objects
             if (conn.identity != null)
+            {
                 SpawnObserversForConnection(conn, scene);
+            }
+                
         }
 
         static void SpawnObserversForConnection(NetworkConnectionToClient conn, string connScene = "")

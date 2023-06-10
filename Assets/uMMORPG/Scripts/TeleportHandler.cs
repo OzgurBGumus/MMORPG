@@ -23,6 +23,8 @@ public class TeleportHandler : MonoBehaviour
 
     private NetworkManagerMMO manager;
 
+    private bool initialUpdated = false;
+
     private void Start()
     {
         manager = GameObject.Find("NetworkManager").GetComponent<NetworkManagerMMO>();

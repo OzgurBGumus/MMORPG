@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b46e77781e723458d9bd8926c698027d, type: 3}
   m_Name: Sapling
   m_EditorClassIdentifier: 
+  rarity: 5
   maxStack: 1
   maxDurability: 0
   buyPrice: 50
@@ -25,35 +26,42 @@ MonoBehaviour:
     A Sapling Pet.
 
 
-    Click Item to summon it.
+    Click Item
+    to summon it.
 
     Click again to unsummon it.
 
     (requires owner level {SUMMONEDLEVEL}).
 
 
-    Health: {SUMMONEDHEALTH}
+    Health:
+    {SUMMONEDHEALTH}
 
     Level: {SUMMONEDLEVEL}
 
     Experience: {SUMMONEDEXPERIENCE}
 
 
-    Destroyable: {DESTROYABLE}
+    Destroyable:
+    {DESTROYABLE}
 
     Sellable: {SELLABLE}
 
     Tradable: {TRADABLE}
 
-    Required Level: {MINLEVEL}
+    Required
+    Level: {MINLEVEL}
 
 
     Amount: {AMOUNT}
 
     Price: {BUYPRICE} Gold
 
-    <i>Sells for: {SELLPRICE} Gold</i>'
+    <i>Sells
+    for: {SELLPRICE} Gold</i>'
   image: {fileID: 21300000, guid: dfa13dde54e4e485592cc51f2ef08abf, type: 3}
+  race: 0
+  clases: 0
   minLevel: 1
   cooldown: 0
   _cooldownCategory: 

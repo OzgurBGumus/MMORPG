@@ -13,6 +13,12 @@ namespace Mirror
 
     public struct ReadyMessage : NetworkMessage {
         public string scene;
+        //have to be string because we are using this ReadyMessage in
+        //different places and we only need this index in 1 place.
+        //since we can't give a default value as -1, 0 is a good value to
+        //process it. We don't want to process 0 if we don't have a real value
+        //in index.
+        public string index;
     }
 
     public struct NotReadyMessage : NetworkMessage {}

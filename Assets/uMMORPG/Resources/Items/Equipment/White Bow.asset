@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f653a8b1ca60b47409f833726aa10a69, type: 3}
   m_Name: White Bow
   m_EditorClassIdentifier: 
+  rarity: 2
   maxStack: 1
   maxDurability: 1000
   buyPrice: 10
@@ -27,28 +28,34 @@ MonoBehaviour:
 
     {DAMAGEBONUS} Damage
 
-    {CRITICALCHANCEBONUS} Critical
+    {CRITICALCHANCEBONUS}
+    Critical
 
     Durability: {DURABILITY}%
 
     Destroyable: {DESTROYABLE}
 
-    Sellable: {SELLABLE}
+    Sellable:
+    {SELLABLE}
 
     Tradable: {TRADABLE}
 
     Required Level: {MINLEVEL}
 
 
-    Requires {REQUIREDAMMO}
+    Requires
+    {REQUIREDAMMO}
 
 
     Amount: {AMOUNT}
 
     Price: {BUYPRICE} Gold
 
-    <i>Sells for: {SELLPRICE} Gold</i>'
+    <i>Sells
+    for: {SELLPRICE} Gold</i>'
   image: {fileID: 21300000, guid: 12085298bfeea48c6bd147922ace454e, type: 3}
+  race: 0
+  clases: 0
   minLevel: 1
   cooldown: 0
   _cooldownCategory: 

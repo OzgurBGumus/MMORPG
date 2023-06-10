@@ -919,7 +919,7 @@ namespace Mirror
         // has finished loading the current scene. The server should respond to
         // the SYSTEM_READY event with an appropriate handler which instantiates
         // the players object for example.
-        public static bool Ready()
+        public static bool Ready(int index = 0)
         {
             // Debug.Log($"NetworkClient.Ready() called with connection {conn}");
             if (ready)
@@ -942,7 +942,7 @@ namespace Mirror
             connection.isReady = true;
 
             // Tell server we're ready to have a player object spawned
-            connection.Send(new ReadyMessage());
+            connection.Send(new ReadyMessage() { index= index.ToString() });
             return true;
         }
 

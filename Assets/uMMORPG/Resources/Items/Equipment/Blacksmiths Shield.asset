@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48accaeb8682847f29f12fab972a2710, type: 3}
   m_Name: Blacksmiths Shield
   m_EditorClassIdentifier: 
+  rarity: 2
   maxStack: 1
   maxDurability: 1000
   buyPrice: 10
@@ -25,29 +26,35 @@ MonoBehaviour:
     The Blacksmith''s last Shield.
 
 
-    {DEFENSEBONUS} Defense
+    {DEFENSEBONUS}
+    Defense
 
     {HEALTHBONUS} Health
 
     {BLOCKCHANCEBONUS} Block
 
-    Durability: {DURABILITY}%
+    Durability:
+    {DURABILITY}%
 
     Destroyable: {DESTROYABLE}
 
     Sellable: {SELLABLE}
 
-    Tradable: {TRADABLE}
+    Tradable:
+    {TRADABLE}
 
     Required Level: {MINLEVEL}
 
 
     Amount: {AMOUNT}
 
-    Price: {BUYPRICE} Gold
+    Price:
+    {BUYPRICE} Gold
 
     <i>Sells for: {SELLPRICE} Gold</i>'
   image: {fileID: 21300000, guid: ae3e76d10f08c4ffc9f2b1f4d8f056a9, type: 3}
+  race: 0
+  clases: 0
   minLevel: 1
   cooldown: 0
   _cooldownCategory: 

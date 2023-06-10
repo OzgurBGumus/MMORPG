@@ -76,3 +76,8 @@ public partial struct CharactersAvailableMsg : NetworkMessage
         Utils.InvokeMany(typeof(CharactersAvailableMsg), this, "Load_", players);
     }
 }
+
+public partial struct ReadyResponseMessage : NetworkMessage
+{
+    public string scene;
+}
