@@ -1,0 +1,67 @@
+Thank you for your purchase. 
+Our other projects you can see https://assetstore.unity.com/publishers/37837
+We are waiting for your feedback on asset store
+Best wishes the development team GFF
+Support us on patreon  https://www.patreon.com/GameFunSPB
+Contacts : email "GameFunSPB@gmail.com"; Discord  "GameFunSPB#2037"
+
+
+Addon name : Agro Extended
+Addon version : 1.4
+Date of creation / editing 14.08.2021
+Require Components : none
+Recommended Components : none
+Compatible projects : uMMORPG Remastered 2.34
+Recommendations : Test the addon on a clean version uMMORPG without changes.
+Recommended version Unity 2019.4.31
+Link : http://u3d.as/2gJb
+
+Versions for other projects:
+ * uMMORPG  http://u3d.as/2gJ7
+
+Small set of Addons for uMMORPG Classic and uMMORPG 2D http://u3d.as/1pms
+All Addons for uMMORPG Classic http://u3d.as/25bQ
+All Addons for uMMORPG Remastered https://u3d.as/2AEs
+All Addons for uMMORPG 2D Remastered
+All Addons for uSurvival
+All Addons for uMOBA
+All Addons for uRPG
+
+
+                                      Installation and Configuration
+
+1. Edit the "MonsterBrain.cs"  Script in “/Scripts/ScriptableBrains/" 
+  a) before line     public class MonsterBrain
+       change to     public partial class MonsterBrain
+
+  
+  b) in void UpdateClient    after line     Monster monster = (Monster)entity;
+                               add line     Utils.InvokeMany(typeof(MonsterBrain), this, "UpdateClient_", monster);
+		 
+
+		 in 3 locations
+  c)  after line     if (EventDeathTimeElapsed(monster)) {} // don't care
+        add line     if (EventAggroExtendedEnd(monster)) FindNewAggroTarget(monster);
+
+
+2. Edit the "Monster.cs"  Script in “/Scripts/" 
+   a) find line      target = entity;
+     replace to      UpdateAggroList(entity, aggroValueMax);
+
+   b) find and comment line     if (newDistance < oldDistance * 0.8) target = entity;
+
+
+3. Move folder "GFF Aggro" from  (GFF Aggro Extended/Skills/) to Resources/Skills, Buffs, Status Effects/
+
+
+4. Edit Warrior prefab
+  a) Add new skills "Aggro Area", "Aggro Target" and "Agro Drop" in script "Skills" to skill templates
+  b) in Component Animator Set Controller to "Controller with Aggro Skills"
+
+
+5. a) Add to scene new "Skeleton" prefab
+      (new prefabs added a sprite - an indicator of aggression)
+
+
+
+

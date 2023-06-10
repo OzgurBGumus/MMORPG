@@ -69,7 +69,7 @@ public partial struct Skill
     public int maxLevel => data.maxLevel;
     public ScriptableSkill predecessor => data.predecessor;
     public int predecessorLevel => data.predecessorLevel;
-    public string requiredWeaponCategory => data.requiredWeaponCategory;
+    public string requiredWeaponCategory => data.requiredWeaponCategory.ToString();
     public int upgradeRequiredLevel => data.requiredLevel.Get(level+1);
     public long upgradeRequiredSkillExperience => data.requiredSkillExperience.Get(level+1);
 

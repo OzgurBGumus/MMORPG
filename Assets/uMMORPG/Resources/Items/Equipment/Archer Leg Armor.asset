@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Archer Leg Armor
   m_EditorClassIdentifier: 
   rarity: 1
+  category: 15
   maxStack: 1
   maxDurability: 1000
   buyPrice: 50
@@ -51,7 +52,6 @@ MonoBehaviour:
   minLevel: 1
   cooldown: 0
   _cooldownCategory: 
-  category: Legs
   healthBonus: 0
   manaBonus: 0
   damageBonus: 0

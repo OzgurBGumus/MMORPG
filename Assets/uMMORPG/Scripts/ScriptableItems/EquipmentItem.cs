@@ -1,11 +1,9 @@
 ﻿using System.Text;
 using UnityEngine;
-
 [CreateAssetMenu(menuName="uMMORPG Item/Equipment", order=999)]
 public class EquipmentItem : UsableItem
 {
     [Header("Equipment")]
-    public string category;
     public int healthBonus;
     public int manaBonus;
     public int damageBonus;
@@ -28,7 +26,7 @@ public class EquipmentItem : UsableItem
         string requiredCategory = slotInfo.requiredCategory;
         return base.CanUse(player, inventoryIndex) &&
                requiredCategory != "" &&
-               category.StartsWith(requiredCategory);
+               category.ToString().StartsWith(requiredCategory.ToString());
     }
 
     int FindEquipableSlotFor(Player player, int inventoryIndex)
@@ -70,7 +68,7 @@ public class EquipmentItem : UsableItem
     public override string ToolTip()
     {
         StringBuilder tip = new StringBuilder(base.ToolTip());
-        tip.Replace("{CATEGORY}", category);
+        tip.Replace("{CATEGORY}", category.ToString());
         tip.Replace("{DAMAGEBONUS}", damageBonus.ToString());
         tip.Replace("{DEFENSEBONUS}", defenseBonus.ToString());
         tip.Replace("{HEALTHBONUS}", healthBonus.ToString());

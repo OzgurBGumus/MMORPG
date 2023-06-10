@@ -15,7 +15,7 @@ public class TargetProjectileSkill : DamageSkill
         // then we can't find weapon and check ammo. just allow it.
         // (monsters have no weapon requirements and don't even have an
         //  equipment component)
-        if (string.IsNullOrWhiteSpace(requiredWeaponCategory))
+        if (string.IsNullOrWhiteSpace(requiredWeaponCategory.ToString()))
             return true;
 
         int weaponIndex = caster.equipment.GetEquippedWeaponIndex();
@@ -35,7 +35,7 @@ public class TargetProjectileSkill : DamageSkill
         // then we can't find weapon and check ammo. just allow it.
         // (monsters have no weapon requirements and don't even have an
         //  equipment component)
-        if (string.IsNullOrWhiteSpace(requiredWeaponCategory))
+        if (string.IsNullOrWhiteSpace(requiredWeaponCategory.ToString()))
             return;
 
         int weaponIndex = caster.equipment.GetEquippedWeaponIndex();

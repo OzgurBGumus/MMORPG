@@ -36,7 +36,7 @@ public abstract partial class ScriptableSkill : ScriptableObject
     [Header("Requirements")]
     public ScriptableSkill predecessor; // this skill has to be learned first
     public int predecessorLevel = 1; // level of predecessor skill that is required
-    public string requiredWeaponCategory = ""; // "" = no weapon needed; "Weapon" = requires a weapon, "WeaponSword" = requires a sword weapon, etc.
+    public ItemCategory requiredWeaponCategory = ItemCategory.None; // "" = no weapon needed; "Weapon" = requires a weapon, "WeaponSword" = requires a sword weapon, etc.
     public LinearInt requiredLevel; // required player level
     public LinearLong requiredSkillExperience;
 
@@ -57,11 +57,11 @@ public abstract partial class ScriptableSkill : ScriptableObject
     bool CheckWeapon(Entity caster)
     {
         // requires no weapon category?
-        if (string.IsNullOrWhiteSpace(requiredWeaponCategory))
+        if (string.IsNullOrWhiteSpace(requiredWeaponCategory.ToString()) || requiredWeaponCategory == ItemCategory.None)
             return true;
 
         // otherwise check category
-        if (caster.equipment.GetEquippedWeaponCategory().StartsWith(requiredWeaponCategory))
+        if (caster.equipment.GetEquippedWeaponCategory().StartsWith(requiredWeaponCategory.ToString()))
         {
             // and check durability
             int weaponIndex = caster.equipment.GetEquippedWeaponIndex();
