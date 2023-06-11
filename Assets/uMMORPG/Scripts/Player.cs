@@ -160,6 +160,10 @@ public partial class Player : Entity
     // helper variable to remember which skill to use when we walked close enough
     [HideInInspector] public int useSkillWhenCloser = -1;
 
+    bool skipUpdate = false;
+    bool checkSkipUpdateUsed = false;
+    Vector3? nextMove;
+
     // networkbehaviour ////////////////////////////////////////////////////////
     public override void OnStartLocalPlayer()
     {
@@ -295,6 +299,17 @@ public partial class Player : Entity
     public void CmdCancelAction() { cmdEvents.Add("CancelAction"); }
     bool EventCancelAction() { return cmdEvents.Remove("CancelAction"); }
 
+    [Command]
+    public void SetNextMove(Vector3 destination)
+    {
+        nextMove = destination;
+        skipUpdate = true;
+        //cmdEvents.Add("destination:"+destination.x.ToString()+":"+destination.y.ToString() + ":"+destination.z.ToString());
+        pendingDestinationValid = true;
+        UpdateState();
+
+    }
+
     // finite state machine - server ///////////////////////////////////////////
     [Server]
     string UpdateServer_IDLE()
@@ -315,6 +330,12 @@ public partial class Player : Entity
             // the only thing that we can cancel is the target
             target = null;
             return "IDLE";
+        }
+        if (nextMove != null)
+        {
+            movement.Navigate(nextMove.Value, 0);
+            nextMove = null;
+            return "MOVING";
         }
         if (EventTradeStarted())
         {
@@ -753,15 +774,31 @@ public partial class Player : Entity
     [Server]
     protected override string UpdateServer()
     {
-        if (state == "IDLE")     return UpdateServer_IDLE();
-        if (state == "MOVING")   return UpdateServer_MOVING();
-        if (state == "CASTING")  return UpdateServer_CASTING();
-        if (state == "STUNNED")  return UpdateServer_STUNNED();
-        if (state == "TRADING")  return UpdateServer_TRADING();
-        if (state == "CRAFTING") return UpdateServer_CRAFTING();
-        if (state == "DEAD")     return UpdateServer_DEAD();
-        Debug.LogError("invalid state:" + state);
-        return "IDLE";
+        if (!skipUpdate)
+        {
+            if (checkSkipUpdateUsed  && movement.IsMoving())
+            {
+                checkSkipUpdateUsed = false;
+                return state;
+            }
+            if (state == "IDLE") return UpdateServer_IDLE();
+            if (state == "MOVING") return UpdateServer_MOVING();
+            if (state == "CASTING") return UpdateServer_CASTING();
+            if (state == "STUNNED") return UpdateServer_STUNNED();
+            if (state == "TRADING") return UpdateServer_TRADING();
+            if (state == "CRAFTING") return UpdateServer_CRAFTING();
+            if (state == "DEAD") return UpdateServer_DEAD();
+            Debug.LogError("invalid state:" + state);
+            return state;
+        }
+        else
+        {
+            skills.CancelCast();
+            skipUpdate = false;
+            checkSkipUpdateUsed = true;
+            return state;
+        }
+        
     }
 
     // finite state machine - client ///////////////////////////////////////////
@@ -785,7 +822,7 @@ public partial class Player : Entity
                 if (useSkillWhenCloser != -1)
                 {
                     // can we still attack the target? maybe it was switched.
-                    if (CanAttack(target))
+                    if (target != null && CanAttack(target))
                     {
                         // in range already?
                         // -> we don't use CastCheckDistance because we want to

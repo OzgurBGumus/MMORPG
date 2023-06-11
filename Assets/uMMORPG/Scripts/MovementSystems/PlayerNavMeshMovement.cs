@@ -190,13 +190,21 @@ public class PlayerNavMeshMovement : NavMeshMovement
                     indicator.SetViaPosition(bestDestination);
 
                     // casting or stunned? then set pending destination
-                    if (player.state == "CASTING" || player.state == "STUNNED")
+                    if (player.state == "STUNNED")
                     {
                         player.pendingDestination = bestDestination;
                         player.pendingDestinationValid = true;
                     }
                     // otherwise navigate there
-                    else Navigate(bestDestination, 0);
+                    else
+                    {
+                        Navigate(bestDestination, 0);
+                        if (player.state == "CASTING")
+                        {
+                            player.SetNextMove(bestDestination);
+                            player.UpdateState();
+                        }
+                    }
                 }
             }
         }
