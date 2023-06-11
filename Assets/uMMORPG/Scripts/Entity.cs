@@ -330,4 +330,10 @@ public abstract partial class Entity : NetworkBehaviour
         if (col.isTrigger && col.GetComponent<SafeZone>())
             inSafeZone = false;
     }
+
+
+    public void UpdateState(string state = "IDLE")
+    {
+        _state = state;
+    }
 }
