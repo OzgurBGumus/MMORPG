@@ -65,7 +65,7 @@ MonoBehaviour:
     bonusPerLevel: 0
   castSound: {fileID: 0}
   damage:
-    baseValue: 1
+    baseValue: 0
     bonusPerLevel: 0
   stunChance:
     baseValue: 0
