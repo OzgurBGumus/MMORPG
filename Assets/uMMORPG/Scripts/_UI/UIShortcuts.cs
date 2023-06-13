@@ -11,6 +11,9 @@ public partial class UIShortcuts : MonoBehaviour
     public Button equipmentButton;
     public GameObject equipmentPanel;
 
+    public Button merchantButton;
+    public GameObject merchantPanel;
+
     public Button skillsButton;
     public GameObject skillsPanel;
 
@@ -46,10 +49,15 @@ public partial class UIShortcuts : MonoBehaviour
 
             inventoryButton.onClick.SetListener(() => {
                 inventoryPanel.SetActive(!inventoryPanel.activeSelf);
+                equipmentPanel.SetActive(inventoryPanel.activeSelf);
             });
 
             equipmentButton.onClick.SetListener(() => {
                 equipmentPanel.SetActive(!equipmentPanel.activeSelf);
+            });
+            merchantButton.onClick.SetListener(() => {
+                if (player.state != "MERCHANT" && merchantPanel.activeSelf != true) player.merchant.Cleanup();
+                merchantPanel.SetActive(!merchantPanel.activeSelf);
             });
 
             skillsButton.onClick.SetListener(() => {
@@ -97,5 +105,46 @@ public partial class UIShortcuts : MonoBehaviour
             });
         }
         else panel.SetActive(false);
+    }
+
+    public void CloseAllPanels(bool exceptMerchant = false)
+    {
+        if (inventoryPanel.activeSelf)
+        {
+            inventoryPanel.SetActive(false);
+        }
+        if (equipmentPanel.activeSelf)
+        {
+            equipmentPanel.SetActive(false);
+        }
+        if (merchantPanel.activeSelf && !exceptMerchant)
+        {
+            merchantPanel.SetActive(false);
+        }
+        if (skillsPanel.activeSelf)
+        {
+            skillsPanel.SetActive(false);
+        }
+        if (questsPanel.activeSelf)
+        {
+            questsPanel.SetActive(false);
+        }
+        if (craftingPanel.activeSelf)
+        {
+            craftingPanel.SetActive(false);
+        }
+        if (guildPanel.activeSelf)
+        {
+            guildPanel.SetActive(false);
+        }
+        if (partyPanel.activeSelf)
+        {
+            partyPanel.SetActive(false);
+        }
+        if (itemMallPanel.activeSelf)
+        {
+            itemMallPanel.SetActive(false);
+        }
+
     }
 }

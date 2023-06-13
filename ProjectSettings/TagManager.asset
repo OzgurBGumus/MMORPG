@@ -24,6 +24,7 @@ TagManager:
   - QuestLocation
   - NpcReviveSlot
   - Water
+  - MerchantSlot
   layers:
   - Default
   - TransparentFX

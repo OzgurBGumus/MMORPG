@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 7078722035870961944}
   - component: {fileID: 11487752}
   - component: {fileID: 1970961225953634095}
+  - component: {fileID: 8800218624224055961}
   m_Layer: 8
   m_Name: Archer
   m_TagString: Player
@@ -329,6 +330,7 @@ MonoBehaviour:
   quests: {fileID: 6248578586520662940}
   skillbar: {fileID: 4964662516097220050}
   trading: {fileID: 7078722035870961944}
+  merchant: {fileID: 8800218624224055961}
   nameOverlay: {fileID: 7366955452696793662}
   nameOverlayDefaultColor: {r: 1, g: 1, b: 1, a: 1}
   nameOverlayOffenderColor: {r: 1, g: 0, b: 1, a: 1}
@@ -1300,6 +1302,25 @@ MonoBehaviour:
   scaleMin: 0.5
   scaleMax: 1.5
   scale: 1
+--- !u!114 &8800218624224055961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 142034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef23d36178e19ec4088e7c973df5885c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  player: {fileID: 11448894}
+  inventory: {fileID: 5862149248774273826}
+  merchantPlayer: {fileID: 0}
+  isInMerchant: 0
 --- !u!1 &168058
 GameObject:
   m_ObjectHideFlags: 0

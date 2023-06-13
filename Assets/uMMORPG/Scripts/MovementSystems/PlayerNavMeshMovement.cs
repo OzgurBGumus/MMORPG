@@ -45,6 +45,7 @@ public class PlayerNavMeshMovement : NavMeshMovement
     Vector3 rotation;
     bool rotationInitialized;
 
+    bool moveWhileClick = false;
     // Camera.main calls FindObjectWithTag each time. cache it!
     Camera cam;
 
@@ -165,9 +166,17 @@ public class PlayerNavMeshMovement : NavMeshMovement
     [Client]
     void MoveClick()
     {
+        if (Input.GetMouseButtonUp(0))
+        {
+            moveWhileClick = false;
+        }
+        else if (Input.GetMouseButtonDown(0))
+        {
+            moveWhileClick= true;
+        }
         // click raycasting if not over a UI element & not pinching on mobile
         // note: this only works if the UI's CanvasGroup blocks Raycasts
-        if (Input.GetMouseButtonDown(0) &&
+        if (moveWhileClick &&
             !Utils.IsCursorOverUserInterface() &&
             Input.touchCount <= 1)
         {

@@ -187,7 +187,7 @@ public abstract partial class Entity : NetworkBehaviour
         if (isServer && IsWorthUpdating())
         {
             if (target != null && target.IsHidden()) target = null;
-            _state = UpdateServer();
+            _state = UpdateServer(); 
         }
 
         // update overlays in any case, except on server-only mode
