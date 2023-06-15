@@ -9,12 +9,13 @@ public class FaceCamera : MonoBehaviour
 {
     // Camera.main calls FindObjectWithTag each time. cache it!
     Transform cam;
+    bool doesObjectHaveBoxCollider;
 
     void Awake()
     {
         // find main camera
         cam = Camera.main.transform;
-
+        doesObjectHaveBoxCollider = gameObject.TryGetComponent(out BoxCollider collider);
         // disable by default until visible
         enabled = false;
     }
@@ -22,7 +23,20 @@ public class FaceCamera : MonoBehaviour
     // LateUpdate so that all camera updates are finished.
     void LateUpdate()
     {
-        if(cam != null && transform != null) transform.forward = cam.forward;
+        if (cam != null && transform != null) {
+            if (doesObjectHaveBoxCollider)
+            {
+                Vector3 v3 = cam.forward;
+                Quaternion rotation = Quaternion.Euler(90f, 0f, 0f);
+                transform.rotation = Quaternion.LookRotation(v3) * rotation;
+            }
+            else
+            {
+                transform.forward = cam.forward;
+            }
+            
+        }
+            
     }
 
     // copying transform.forward is relatively expensive and slows things down

@@ -946,6 +946,7 @@ public partial class Player : Entity
         else if (state == "TRADING") {}
         else if (state == "CRAFTING") {}
         else if (state == "DEAD") {}
+        else if (state == "MERCHANT") { }
         else Debug.LogError("invalid state:" + state);
     }
 
@@ -1184,20 +1185,28 @@ public partial class Player : Entity
         // not local player?
         if (this != localPlayer)
         {
-            // attackable and has skills? => attack
-            if (localPlayer.CanAttack(this) && localPlayer.skills.skills.Count > 0)
+            if(state == "MERCHANT")
             {
-                // then try to use that one
-                ((PlayerSkills)localPlayer.skills).TryUse(0);
+                localPlayer.merchant.OnOpenMerchant(this);
             }
-            // otherwise just walk there
-            // (e.g. if clicking on it in a safe zone where we can't attack)
             else
             {
-                // use collider point(s) to also work with big entities
-                Vector3 destination = Utils.ClosestPoint(this, localPlayer.transform.position);
-                localPlayer.movement.Navigate(destination, localPlayer.interactionRange);
+
             }
+            //// attackable and has skills? => attack
+            //if (localPlayer.CanAttack(this) && localPlayer.skills.skills.Count > 0)
+            //{
+            //    // then try to use that one
+            //    ((PlayerSkills)localPlayer.skills).TryUse(0);
+            //}
+            //// otherwise just walk there
+            //// (e.g. if clicking on it in a safe zone where we can't attack)
+            //else
+            //{
+            //    // use collider point(s) to also work with big entities
+            //    Vector3 destination = Utils.ClosestPoint(this, localPlayer.transform.position);
+            //    localPlayer.movement.Navigate(destination, localPlayer.interactionRange);
+            //}
         }
     }
 }

@@ -170,7 +170,9 @@ public class PlayerNavMeshMovement : NavMeshMovement
         {
             moveWhileClick = false;
         }
-        else if (Input.GetMouseButtonDown(0))
+        else if (Input.GetMouseButtonDown(0) &&
+            !Utils.IsCursorOverUserInterface() &&
+            Input.touchCount <= 1)
         {
             moveWhileClick= true;
         }

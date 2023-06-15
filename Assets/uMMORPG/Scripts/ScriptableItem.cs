@@ -23,8 +23,8 @@ using System.Text;
 using UnityEngine;
 
 public enum ItemCategory { None,
-    Potion, Pet, Mount, Usable, Material, 
-    Bow, Sword, Staff, priestWeapon, Shield,
+    Potion, Pet, Mount, Usable, Material,
+    WeaponBow, WeaponSword, WeaponStaff, WeaponPriestWeapon, WeaponShield,
     Helmet, Gloves, Boots, Armor, Panth, 
     Belt, Necklage, Earring, Ring}
 

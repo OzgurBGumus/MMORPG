@@ -8,9 +8,6 @@ public partial class UIShortcuts : MonoBehaviour
     public Button inventoryButton;
     public GameObject inventoryPanel;
 
-    public Button equipmentButton;
-    public GameObject equipmentPanel;
-
     public Button merchantButton;
     public GameObject merchantPanel;
 
@@ -49,14 +46,12 @@ public partial class UIShortcuts : MonoBehaviour
 
             inventoryButton.onClick.SetListener(() => {
                 inventoryPanel.SetActive(!inventoryPanel.activeSelf);
-                equipmentPanel.SetActive(inventoryPanel.activeSelf);
             });
 
-            equipmentButton.onClick.SetListener(() => {
-                equipmentPanel.SetActive(!equipmentPanel.activeSelf);
-            });
             merchantButton.onClick.SetListener(() => {
-                if (player.state != "MERCHANT" && merchantPanel.activeSelf != true) player.merchant.Cleanup();
+                if (player.state != "MERCHANT" && merchantPanel.activeSelf != true) {
+                    player.merchant.Cleanup();
+                }
                 merchantPanel.SetActive(!merchantPanel.activeSelf);
             });
 
@@ -107,15 +102,11 @@ public partial class UIShortcuts : MonoBehaviour
         else panel.SetActive(false);
     }
 
-    public void CloseAllPanels(bool exceptMerchant = false)
+    public void CloseAllPanels(bool exceptMerchant = false, bool exceptInventory = false)
     {
-        if (inventoryPanel.activeSelf)
+        if (inventoryPanel.activeSelf && !exceptInventory)
         {
             inventoryPanel.SetActive(false);
-        }
-        if (equipmentPanel.activeSelf)
-        {
-            equipmentPanel.SetActive(false);
         }
         if (merchantPanel.activeSelf && !exceptMerchant)
         {

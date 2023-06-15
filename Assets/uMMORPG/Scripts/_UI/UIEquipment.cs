@@ -44,8 +44,8 @@ public partial class UIEquipment : MonoBehaviour
                     // category string, for example EquipmentWeaponBow => Bow
                     // (disabled if no category, e.g. for archer shield slot)
                     EquipmentInfo slotInfo = ((PlayerEquipment)player.equipment).slotInfo[i];
-                    slot.categoryOverlay.SetActive(slotInfo.requiredCategory != "");
-                    string overlay = Utils.ParseLastNoun(slotInfo.requiredCategory);
+                    slot.categoryOverlay.SetActive(slotInfo.requiredCategory != ItemCategory.None);
+                    string overlay = Utils.ParseLastNoun(slotInfo.requiredCategory.ToString());
                     slot.categoryText.text = overlay != "" ? overlay : "?";
 
                     if (itemSlot.amount > 0)
