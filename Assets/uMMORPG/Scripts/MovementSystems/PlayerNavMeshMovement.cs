@@ -44,7 +44,8 @@ public class PlayerNavMeshMovement : NavMeshMovement
     // impossible
     Vector3 rotation;
     bool rotationInitialized;
-    bool isDragging;
+
+    bool moveWhileClick = false;
     // Camera.main calls FindObjectWithTag each time. cache it!
     Camera cam;
 
@@ -165,17 +166,22 @@ public class PlayerNavMeshMovement : NavMeshMovement
     [Client]
     void MoveClick()
     {
+        if (Input.GetMouseButtonUp(0))
+        {
+            moveWhileClick = false;
+        }
+        else if (Input.GetMouseButtonDown(0) &&
+            !Utils.IsCursorOverUserInterface() &&
+            Input.touchCount <= 1)
+        {
+            moveWhileClick= true;
+        }
         // click raycasting if not over a UI element & not pinching on mobile
         // note: this only works if the UI's CanvasGroup blocks Raycasts
-        if(isDragging && Input.GetMouseButtonUp(0))
-        {
-            isDragging = false;
-        }
-        if ((Input.GetMouseButtonDown(0) &&
+        if (moveWhileClick &&
             !Utils.IsCursorOverUserInterface() &&
-            Input.touchCount <= 1) || isDragging)
+            Input.touchCount <= 1)
         {
-            isDragging = true;
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
             // raycast with local player ignore option

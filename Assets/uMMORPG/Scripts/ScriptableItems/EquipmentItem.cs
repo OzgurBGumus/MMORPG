@@ -23,7 +23,7 @@ public class EquipmentItem : UsableItem
     public bool CanEquip(Player player, int inventoryIndex, int equipmentIndex)
     {
         EquipmentInfo slotInfo = ((PlayerEquipment)player.equipment).slotInfo[equipmentIndex];
-        string requiredCategory = slotInfo.requiredCategory;
+        string requiredCategory = slotInfo.requiredCategory.ToString();
         return base.CanUse(player, inventoryIndex) &&
                requiredCategory != "" &&
                category.ToString().StartsWith(requiredCategory.ToString());

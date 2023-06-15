@@ -40,14 +40,34 @@ public partial struct ItemSlot
     }
 
     // tooltip
-    public string ToolTip()
+    public string ToolTip(int merchantPrice = 0)
     {
         if (amount == 0) return "";
 
         // we use a StringBuilder so that addons can modify tooltips later too
         // ('string' itself can't be passed as a mutable object)
-        StringBuilder tip = new StringBuilder(item.ToolTip());
-        tip.Replace("{AMOUNT}", amount.ToString());
-        return tip.ToString();
+        string itemTooltip = item.ToolTip();
+        if (merchantPrice != 0)
+        {
+            int lastAmountIndex = itemTooltip.LastIndexOf("Amount");
+            string color = "red";
+            itemTooltip  = itemTooltip.Substring(0, lastAmountIndex).Trim();
+            itemTooltip += "\n\n";
+            if(Player.localPlayer.gold >= merchantPrice)
+            {
+                color = "green";
+            }
+            itemTooltip += "<color="+ color + ">Price: " + merchantPrice+ "Coin</color>";
+            StringBuilder tip = new StringBuilder(itemTooltip);
+            return tip.ToString();
+        }
+        else
+        {
+            StringBuilder tip = new StringBuilder(itemTooltip);
+            tip.Replace("{AMOUNT}", amount.ToString());
+            return tip.ToString();
+        }
+        
     }
+
 }

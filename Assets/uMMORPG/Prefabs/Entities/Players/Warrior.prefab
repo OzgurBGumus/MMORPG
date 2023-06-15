@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 2281539363835074831}
   - component: {fileID: 11491078}
   - component: {fileID: 1029474228226580476}
+  - component: {fileID: 4915458892248246458}
   m_Layer: 8
   m_Name: Warrior
   m_TagString: Player
@@ -657,6 +658,7 @@ MonoBehaviour:
   quests: {fileID: 8571743491161562067}
   skillbar: {fileID: 3736177147690101666}
   trading: {fileID: 2281539363835074831}
+  merchant: {fileID: 4915458892248246458}
   nameOverlay: {fileID: 3401869003798820015}
   nameOverlayDefaultColor: {r: 1, g: 1, b: 1, a: 1}
   nameOverlayOffenderColor: {r: 1, g: 0, b: 1, a: 1}
@@ -1376,6 +1378,25 @@ MonoBehaviour:
   scaleMin: 0.5
   scaleMax: 1.5
   scale: 1
+--- !u!114 &4915458892248246458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef23d36178e19ec4088e7c973df5885c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  player: {fileID: 11460454}
+  inventory: {fileID: 6069428826967279425}
+  merchantPlayer: {fileID: 0}
+  isInMerchant: 0
 --- !u!1 &137938
 GameObject:
   m_ObjectHideFlags: 0

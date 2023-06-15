@@ -17,14 +17,16 @@ public class UIWindow : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     // currently dragged UIWindow in case it's needed somewhere else
     public static UIWindow currentlyDragged;
-
+    public bool isDraggable = true;
     // cache
     Transform window;
+    Transform panelsParent;
 
     void Awake()
     {
         // cache the parent window
         window = transform.parent;
+        panelsParent = window.parent;
     }
 
     public void HandleDrag(PointerEventData d)
@@ -38,19 +40,29 @@ public class UIWindow : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnBeginDrag(PointerEventData d)
     {
-        currentlyDragged = this;
-        HandleDrag(d);
+        if(isDraggable)
+        {
+            currentlyDragged = this;
+            HandleDrag(d);
+        }
+        
     }
 
     public void OnDrag(PointerEventData d)
     {
-        HandleDrag(d);
+        if (isDraggable)
+        {
+            HandleDrag(d);
+        }
     }
 
     public void OnEndDrag(PointerEventData d)
     {
-        HandleDrag(d);
-        currentlyDragged = null;
+        if (isDraggable)
+        {
+            HandleDrag(d);
+            currentlyDragged = null;
+        }
     }
 
     // OnClose is called by the close button via Inspector Callbacks
@@ -59,7 +71,7 @@ public class UIWindow : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         // send message in case it's needed
         // note: it's important to not name it the same as THIS function to avoid
         //       a deadlock
-        window.SendMessage("OnWindowClose", SendMessageOptions.DontRequireReceiver);
+        panelsParent.SendMessage("OnWindowClose", SendMessageOptions.DontRequireReceiver);
 
         // hide window
         if (onClose == CloseOption.DeactivateWindow)

@@ -74,6 +74,7 @@ public partial class Player : Entity
     public PlayerQuests quests;
     public PlayerSkillbar skillbar;
     public PlayerTrading trading;
+    public PlayerMerchant merchant;
 
     [Header("Text Meshes")]
     public TextMeshPro nameOverlay;
@@ -267,6 +268,11 @@ public partial class Player : Entity
         Player player = trading.FindPlayerFromInvitation();
         return player != null && player.trading.requestFrom == name;
     }
+    
+    bool EventMerchant()
+    {
+        return merchant.isInMerchant;
+    }
 
     bool EventTradeDone() =>
         // trade canceled or finished?
@@ -336,6 +342,11 @@ public partial class Player : Entity
             movement.Navigate(nextMove.Value, 0);
             nextMove = null;
             return "MOVING";
+        }
+        if (EventMerchant())
+        {
+            skills.CancelCast(); // just in case
+            return "MERCHANT";
         }
         if (EventTradeStarted())
         {
@@ -430,6 +441,12 @@ public partial class Player : Entity
             movement.Reset();
             target = trading.FindPlayerFromInvitation();
             return "TRADING";
+        }
+        if (EventMerchant())
+        {
+            skills.CancelCast(); // just in case
+            movement.Reset();
+            return "MERCHANT";
         }
         if (EventCraftingStarted())
         {
@@ -562,6 +579,12 @@ public partial class Player : Entity
             nextTarget = null;
             return "TRADING";
         }
+        if (EventMerchant())
+        {
+            skills.CancelCast(); // just in case
+            movement.Reset();
+            return "MERCHANT";
+        }
         if (EventTargetDisappeared())
         {
             // cancel if the target matters for this skill
@@ -653,6 +676,13 @@ public partial class Player : Entity
             // reject movement while trading
             movement.Reset();
             return "TRADING";
+        }
+        if (EventMerchant())
+        {
+            skills.CancelCast(); // just in case
+            movement.Reset();
+            trading.Cleanup();
+            return "MERCHANT";
         }
         if (EventCancelAction())
         {
@@ -772,6 +802,41 @@ public partial class Player : Entity
     }
 
     [Server]
+    string UpdateServer_MERCHANT()
+    {
+        if (EventDied())
+        {
+            merchant.Cleanup();
+            // we died, stop merchant
+            return "DEAD";
+        }
+        if (EventStunned())
+        {
+        }
+        if (EventMoveStart())
+        {
+        }
+        if (!EventMerchant())
+        {
+            merchant.Cleanup();
+            // finish Merchant
+            return "IDLE";
+        }
+        if (EventCraftingStarted()) { } // don't care
+        if (EventCancelAction()) { } // don't care. user pressed craft, we craft.
+        if (EventTargetDisappeared()) { } // don't care
+        if (EventTargetDied()) { } // don't care
+        if (EventMoveEnd()) { } // don't care
+        if (EventSkillFinished()) { } // don't care
+        if (EventRespawn()) { } // don't care
+        if (EventTradeStarted()) { } // don't care
+        if (EventTradeDone()) { } // don't care
+        if (EventCraftingStarted()) { } // don't care
+        if (EventSkillRequest()) { } // don't care
+
+        return "MERCHANT"; // nothing interesting happened
+    }
+    [Server]
     protected override string UpdateServer()
     {
         if (!skipUpdate)
@@ -788,6 +853,7 @@ public partial class Player : Entity
             if (state == "TRADING") return UpdateServer_TRADING();
             if (state == "CRAFTING") return UpdateServer_CRAFTING();
             if (state == "DEAD") return UpdateServer_DEAD();
+            if (state == "MERCHANT") return UpdateServer_MERCHANT();
             Debug.LogError("invalid state:" + state);
             return state;
         }
@@ -880,6 +946,7 @@ public partial class Player : Entity
         else if (state == "TRADING") {}
         else if (state == "CRAFTING") {}
         else if (state == "DEAD") {}
+        else if (state == "MERCHANT") { }
         else Debug.LogError("invalid state:" + state);
     }
 
@@ -1118,20 +1185,28 @@ public partial class Player : Entity
         // not local player?
         if (this != localPlayer)
         {
-            // attackable and has skills? => attack
-            if (localPlayer.CanAttack(this) && localPlayer.skills.skills.Count > 0)
+            if(state == "MERCHANT")
             {
-                // then try to use that one
-                ((PlayerSkills)localPlayer.skills).TryUse(0);
+                localPlayer.merchant.OnOpenMerchant(this);
             }
-            // otherwise just walk there
-            // (e.g. if clicking on it in a safe zone where we can't attack)
             else
             {
-                // use collider point(s) to also work with big entities
-                Vector3 destination = Utils.ClosestPoint(this, localPlayer.transform.position);
-                localPlayer.movement.Navigate(destination, localPlayer.interactionRange);
+
             }
+            //// attackable and has skills? => attack
+            //if (localPlayer.CanAttack(this) && localPlayer.skills.skills.Count > 0)
+            //{
+            //    // then try to use that one
+            //    ((PlayerSkills)localPlayer.skills).TryUse(0);
+            //}
+            //// otherwise just walk there
+            //// (e.g. if clicking on it in a safe zone where we can't attack)
+            //else
+            //{
+            //    // use collider point(s) to also work with big entities
+            //    Vector3 destination = Utils.ClosestPoint(this, localPlayer.transform.position);
+            //    localPlayer.movement.Navigate(destination, localPlayer.interactionRange);
+            //}
         }
     }
 }

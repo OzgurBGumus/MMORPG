@@ -6,7 +6,7 @@ using Mirror;
 [Serializable]
 public partial struct EquipmentInfo
 {
-    public string requiredCategory;
+    public ItemCategory requiredCategory;
     public Transform location;
     public ScriptableItemAndAmount defaultItem;
 }
@@ -26,14 +26,14 @@ public class PlayerEquipment : Equipment
 
     [Header("Equipment Info")]
     public EquipmentInfo[] slotInfo = {
-        new EquipmentInfo{requiredCategory="Weapon", location=null, defaultItem=new ScriptableItemAndAmount()},
-        new EquipmentInfo{requiredCategory="Head", location=null, defaultItem=new ScriptableItemAndAmount()},
-        new EquipmentInfo{requiredCategory="Chest", location=null, defaultItem=new ScriptableItemAndAmount()},
-        new EquipmentInfo{requiredCategory="Legs", location=null, defaultItem=new ScriptableItemAndAmount()},
-        new EquipmentInfo{requiredCategory="Shield", location=null, defaultItem=new ScriptableItemAndAmount()},
-        new EquipmentInfo{requiredCategory="Shoulders", location=null, defaultItem=new ScriptableItemAndAmount()},
-        new EquipmentInfo{requiredCategory="Hands", location=null, defaultItem=new ScriptableItemAndAmount()},
-        new EquipmentInfo{requiredCategory="Feet", location=null, defaultItem=new ScriptableItemAndAmount()}
+        new EquipmentInfo{requiredCategory=ItemCategory.WeaponBow, location=null, defaultItem=new ScriptableItemAndAmount()},
+        new EquipmentInfo{requiredCategory=ItemCategory.Helmet, location=null, defaultItem=new ScriptableItemAndAmount()},
+        new EquipmentInfo{requiredCategory=ItemCategory.Armor, location=null, defaultItem=new ScriptableItemAndAmount()},
+        new EquipmentInfo{requiredCategory=ItemCategory.Panth, location=null, defaultItem=new ScriptableItemAndAmount()},
+        new EquipmentInfo{requiredCategory=ItemCategory.WeaponShield, location=null, defaultItem=new ScriptableItemAndAmount()},
+        new EquipmentInfo{requiredCategory=ItemCategory.None, location=null, defaultItem=new ScriptableItemAndAmount()},
+        new EquipmentInfo{requiredCategory=ItemCategory.Gloves, location=null, defaultItem=new ScriptableItemAndAmount()},
+        new EquipmentInfo{requiredCategory=ItemCategory.Boots, location=null, defaultItem=new ScriptableItemAndAmount()}
     };
 
     // cached SkinnedMeshRenderer bones without equipment, by name
@@ -129,7 +129,7 @@ public class PlayerEquipment : Equipment
         EquipmentInfo info = slotInfo[index];
 
         // valid category and valid location? otherwise don't bother
-        if (info.requiredCategory != "" && info.location != null)
+        if (info.requiredCategory != ItemCategory.None && info.location != null)
         {
             // clear previous one in any case (when overwriting or clearing)
             if (info.location.childCount > 0) Destroy(info.location.GetChild(0).gameObject);
