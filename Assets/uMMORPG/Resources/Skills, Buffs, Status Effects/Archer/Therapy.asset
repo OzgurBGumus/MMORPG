@@ -18,13 +18,15 @@ MonoBehaviour:
     Heals all surrounding Players
 
 
-    Cast Time: {CASTTIME}
+    Cast
+    Time: {CASTTIME}
 
     Cooldown: {COOLDOWN}
 
     Cast Range: {CASTRANGE}
 
-    Heals Health: {HEALSHEALTH}
+    Heals
+    Health: {HEALSHEALTH}
 
     Mana Costs: {MANACOSTS}'
   image: {fileID: 21300000, guid: f5dde84fcce6a45eab1c52e9a8252f70, type: 3}
@@ -32,12 +34,12 @@ MonoBehaviour:
   showCastBar: 1
   cancelCastIfTargetDied: 0
   allowMovement: 0
-  predecessor: {fileID: 0}
+  predecessor: {fileID: 11400000, guid: d8e7eaf27794b4382977cb2cef976a83, type: 2}
   predecessorLevel: 1
-  requiredWeaponCategory: 
+  requiredWeaponCategory: 0
   requiredLevel:
-    baseValue: 2
-    bonusPerLevel: 1
+    baseValue: 30
+    bonusPerLevel: 0
   requiredSkillExperience:
     baseValue: 10
     bonusPerLevel: 10
@@ -55,6 +57,8 @@ MonoBehaviour:
     baseValue: 10
     bonusPerLevel: 0
   castSound: {fileID: 0}
+  contentSlot: 0
+  treeInSlot: 0
   healsHealth:
     baseValue: 50
     bonusPerLevel: 0

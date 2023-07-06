@@ -24,11 +24,11 @@ public class GatherQuest : ScriptableQuest
     }
 
     // tooltip /////////////////////////////////////////////////////////////////
-    public override string ToolTip(Player player, Quest quest)
+    public override string ToolTip(Player player, Quest quest, bool isShort = false)
     {
         // we use a StringBuilder so that addons can modify tooltips later too
         // ('string' itself can't be passed as a mutable object)
-        StringBuilder tip = new StringBuilder(base.ToolTip(player, quest));
+        StringBuilder tip = new StringBuilder(base.ToolTip(player, quest, isShort));
         tip.Replace("{GATHERAMOUNT}", gatherAmount.ToString());
         if (gatherItem != null)
         {

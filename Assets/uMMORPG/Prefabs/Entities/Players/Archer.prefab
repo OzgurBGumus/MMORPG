@@ -841,7 +841,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncDirection: 0
   syncMode: 1
-  syncInterval: 1
+  syncInterval: 0
   player: {fileID: 11448894}
   connections: 0
   maxConnections: 0
@@ -1323,6 +1323,7 @@ MonoBehaviour:
   overlayContainer: {fileID: 3351712855172025832}
   merchantPlayer: {fileID: 0}
   isInMerchant: 0
+  title: 
   removeFromMerchantSlot: -1
   selectedInventorySlot: -1
   selectedMerchantSlot: -1

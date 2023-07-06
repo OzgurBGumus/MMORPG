@@ -56,7 +56,8 @@ public partial struct Quest
     public string predecessor => data.predecessor != null ? data.predecessor.name : "";
     public long rewardGold => data.rewardGold;
     public long rewardExperience => data.rewardExperience;
-    public ScriptableItem rewardItem => data.rewardItem;
+    public List<ScriptableItem> rewardItem => data.rewardItem;
+    public List<int> rewardItemCount => data.rewardItemCount;
 
     // events
     public void OnKilled(Player player, int questIndex, Entity victim) { data.OnKilled(player, questIndex, victim); }
@@ -72,12 +73,12 @@ public partial struct Quest
     // would end up with some variables not replaced in the string when calling
     // Tooltip() from the data.
     // -> note: each tooltip can have any variables, or none if needed
-    public string ToolTip(Player player)
+    public string ToolTip(Player player, bool isShort = false)
     {
         // note: caching StringBuilder is worse for GC because .Clear frees the internal array and reallocates.
         // note: field0 tooltip part is done in the scriptable quest, because it
         //       might be a number, might be 'Yes'/'No', etc.
-        StringBuilder tip = new StringBuilder(data.ToolTip(player, this));
+        StringBuilder tip = new StringBuilder(data.ToolTip(player, this, isShort));
         tip.Replace("{STATUS}", IsFulfilled(player) ? "<i>Complete!</i>" : "");
 
         // addon system hooks

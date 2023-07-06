@@ -15,7 +15,8 @@ MonoBehaviour:
   followupDefaultAttack: 1
   toolTip: '<b>{NAME} Lvl {LEVEL}</b>
 
-    Hits the enemy hard with a chance of stunning it.
+    Hits the enemy hard with a chance of stunning
+    it.
 
 
     Damage: {DAMAGE}
@@ -24,24 +25,26 @@ MonoBehaviour:
 
     Stun Time: {STUNTIME}s
 
-    Cast Time: {CASTTIME}
+    Cast
+    Time: {CASTTIME}
 
     Cooldown: {COOLDOWN}
 
     Cast Range: {CASTRANGE}
 
-    Mana Costs: {MANACOSTS}'
+    Mana
+    Costs: {MANACOSTS}'
   image: {fileID: 21300000, guid: edf2e2bac529148efb1181430f51dcc5, type: 3}
   learnDefault: 0
   showCastBar: 1
   cancelCastIfTargetDied: 1
   allowMovement: 0
-  predecessor: {fileID: 0}
+  predecessor: {fileID: 11400000, guid: 19830c5062d224dad813a9b7473428af, type: 2}
   predecessorLevel: 1
-  requiredWeaponCategory: WeaponBow
+  requiredWeaponCategory: 0
   requiredLevel:
-    baseValue: 1
-    bonusPerLevel: 1
+    baseValue: 20
+    bonusPerLevel: 0
   requiredSkillExperience:
     baseValue: 5
     bonusPerLevel: 5
@@ -59,6 +62,8 @@ MonoBehaviour:
     baseValue: 15
     bonusPerLevel: 0
   castSound: {fileID: 0}
+  contentSlot: 0
+  treeInSlot: 0
   damage:
     baseValue: 15
     bonusPerLevel: 5

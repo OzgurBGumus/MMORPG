@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Linq;
 
 // talk-to-npc quests work by adding the same quest to two npcs, one with
 // accept=true and complete=false, the other with accept=false and complete=true
@@ -52,10 +53,20 @@ public class NpcQuests : NpcOffer
         List<ScriptableQuest> visibleQuests = new List<ScriptableQuest>();
         foreach (ScriptableQuestOffer entry in quests)
             if (entry.acceptHere && player.quests.CanAccept(entry.quest) ||
-                entry.completeHere && player.quests.HasActive(entry.quest.name))
+                entry.completeHere && player.quests.HasActive(entry.quest.name) && player.quests.CanComplete(entry.quest.name))
                 visibleQuests.Add(entry.quest);
         return visibleQuests;
     }
+
+    public ScriptableQuest GetQuestsFor(Player player, string name)
+    {
+        ScriptableQuestOffer response = Array.Find(quests, quest => quest.quest.name == name);
+        if (response.acceptHere && player.quests.CanAccept(response.quest) ||
+               response.completeHere && player.quests.HasActive(response.quest.name))
+            return response.quest;
+        return null;
+    }
+
 
     public bool CanPlayerCompleteAnyQuestHere(PlayerQuests playerQuests)
     {
