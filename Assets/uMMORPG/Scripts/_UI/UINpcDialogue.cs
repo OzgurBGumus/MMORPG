@@ -1,5 +1,6 @@
 ﻿// Note: this script has to be on an always-active UI parent, so that we can
 // always find it from other code. (GameObject.Find doesn't find inactive ones)
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -38,8 +39,9 @@ public partial class UINpcDialogue : MonoBehaviour
                 if (offer.HasOffer(player))
                     ++validOffers;
 
+            List<ScriptableQuest> questsAvailable = npc.quests.QuestsVisibleFor(player);
             // instantiate enough buttons
-            UIUtils.BalancePrefabs(offerButtonPrefab, validOffers, offerPanel);
+            UIUtils.BalancePrefabs(offerButtonPrefab, validOffers+ questsAvailable.Count, offerPanel);
 
             // show a button for each valid offer
             int index = 0;
@@ -54,6 +56,15 @@ public partial class UINpcDialogue : MonoBehaviour
                     });
                     ++index;
                 }
+            }
+            foreach(ScriptableQuest npcQuest in questsAvailable)
+            {
+                Button button = offerPanel.GetChild(index).GetComponent<Button>();
+                button.GetComponentInChildren<Text>().text = npcQuest.name;
+                button.onClick.SetListener(() => {
+                    npcQuest.OnSelect(player, npcQuest.name);
+                });
+                ++index;
             }
         }
         else panel.SetActive(false);

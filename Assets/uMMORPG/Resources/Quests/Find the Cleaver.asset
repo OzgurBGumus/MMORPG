@@ -21,21 +21,25 @@ MonoBehaviour:
 
     Tasks:
 
-    * Gather {GATHERITEM}: {GATHERED}/{GATHERAMOUNT}
+    *
+    Gather {GATHERITEM}: {GATHERED}/{GATHERAMOUNT}
 
 
     Rewards:
 
-    * {REWARDGOLD} Gold
+    * {REWARDGOLD}
+    Gold
 
     * {REWARDEXPERIENCE} Experience
 
 
     {STATUS}'
+  toolTipShort: 'Gather {GATHERITEM}: {GATHERED}/{GATHERAMOUNT}'
   requiredLevel: 2
   predecessor: {fileID: 11400000, guid: 1d577c57b33bf497a92a27d9529bc0b0, type: 2}
   rewardGold: 100
   rewardExperience: 20
-  rewardItem: {fileID: 0}
+  rewardItem: []
+  rewardItemCount: 
   gatherItem: {fileID: 11400000, guid: ebde5c85fd92e499493a5ae898bef3cb, type: 2}
   gatherAmount: 3

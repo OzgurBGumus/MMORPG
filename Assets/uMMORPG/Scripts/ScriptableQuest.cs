@@ -22,6 +22,7 @@ public abstract class ScriptableQuest : ScriptableObject
 {
     [Header("General")]
     [SerializeField, TextArea(1, 30)] protected string toolTip; // not public, use ToolTip()
+    [SerializeField, TextArea(1, 30)] protected string toolTipShort; // not public, use ToolTip()
 
     [Header("Requirements")]
     public int requiredLevel; // player.level
@@ -30,9 +31,20 @@ public abstract class ScriptableQuest : ScriptableObject
     [Header("Rewards")]
     public long rewardGold;
     public long rewardExperience;
-    public ScriptableItem rewardItem;
+    public List<ScriptableItem> rewardItem;
+    public List<int> rewardItemCount;
+
+    protected int missionCount;
+
+
 
     // events to hook into /////////////////////////////////////////////////////
+    public virtual void OnSelect(Player player, string questName) {
+
+        UINpcQuests.singleton.currentQuestName = questName;
+        UINpcQuests.singleton.panel.SetActive(true);
+        UINpcDialogue.singleton.panel.SetActive(false);
+    }
     public virtual void OnKilled(Player player, int questIndex, Entity victim) {}
     public virtual void OnLocation(Player player, int questIndex, Collider location) {}
 
@@ -69,15 +81,23 @@ public abstract class ScriptableQuest : ScriptableObject
 
     {STATUS}
     */
-    public virtual string ToolTip(Player player, Quest quest)
+    public virtual string ToolTip(Player player, Quest quest, bool isShort = false)
     {
         // note: caching StringBuilder is worse for GC because .Clear frees the internal array and reallocates.
-        StringBuilder tip = new StringBuilder(toolTip);
-        tip.Replace("{NAME}", name);
-        tip.Replace("{REWARDGOLD}", rewardGold.ToString());
-        tip.Replace("{REWARDEXPERIENCE}", rewardExperience.ToString());
-        tip.Replace("{REWARDITEM}", rewardItem != null ? rewardItem.name : "");
-        return tip.ToString();
+        if (!isShort)
+        {
+            StringBuilder tip = new StringBuilder(toolTip);
+            tip.Replace("{NAME}", name);
+            tip.Replace("{REWARDGOLD}", rewardGold.ToString());
+            tip.Replace("{REWARDEXPERIENCE}", rewardExperience.ToString());
+            //tip.Replace("{REWARDITEM}", rewardItem != null ? rewardItem.name : "");
+            return tip.ToString();
+        }
+        else
+        {
+            StringBuilder tip = new StringBuilder(toolTipShort);
+            return tip.ToString();
+        }
     }
 
     // caching /////////////////////////////////////////////////////////////////

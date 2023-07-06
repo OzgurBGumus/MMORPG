@@ -883,42 +883,42 @@ MonoBehaviour:
   inventory: {fileID: 6069428826967279425}
   avatarCamera: {fileID: 20985865562952620}
   slotInfo:
-  - requiredCategory: WeaponSword
+  - requiredCategory: 0
     location: {fileID: 3260684721294232768}
     defaultItem:
       item: {fileID: 11400000, guid: ebde5c85fd92e499493a5ae898bef3cb, type: 2}
       amount: 1
-  - requiredCategory: Head
+  - requiredCategory: 0
     location: {fileID: 6359539802073659614}
     defaultItem:
       item: {fileID: 11400000, guid: df9480ec2425a7a499afe43d7382c90f, type: 2}
       amount: 1
-  - requiredCategory: Chest
+  - requiredCategory: 0
     location: {fileID: 5090905495289615881}
     defaultItem:
       item: {fileID: 0}
       amount: 0
-  - requiredCategory: Legs
+  - requiredCategory: 0
     location: {fileID: 5110146273399208608}
     defaultItem:
       item: {fileID: 11400000, guid: f333f84f9d70f374f972bff071125e84, type: 2}
       amount: 1
-  - requiredCategory: Shield
+  - requiredCategory: 0
     location: {fileID: 3620846816411877730}
     defaultItem:
       item: {fileID: 11400000, guid: 8383cafc85a494a16b426cb11e5efa49, type: 2}
       amount: 1
-  - requiredCategory: Shoulders
+  - requiredCategory: 0
     location: {fileID: 2008925516675637431}
     defaultItem:
       item: {fileID: 11400000, guid: 2e5dac48a0614284792833aa10285daa, type: 2}
       amount: 1
-  - requiredCategory: Hands
+  - requiredCategory: 0
     location: {fileID: 4529036699774671513}
     defaultItem:
       item: {fileID: 11400000, guid: 4b60f1ea0e0ec9649a2be355fc45e912, type: 2}
       amount: 1
-  - requiredCategory: Feet
+  - requiredCategory: 0
     location: {fileID: 5058964076666356890}
     defaultItem:
       item: {fileID: 11400000, guid: 309effbfef0501442aab32ff2a3f9a72, type: 2}
@@ -964,8 +964,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncDirection: 0
   syncMode: 1
-  syncInterval: 1
-  player: {fileID: 11460454}
+  syncInterval: 0
+  player: {fileID: 0}
   connections: 0
   maxConnections: 0
   onlinePlayers: 0
@@ -1395,8 +1395,16 @@ MonoBehaviour:
   syncInterval: 0
   player: {fileID: 11460454}
   inventory: {fileID: 6069428826967279425}
+  overlay: {fileID: 0}
+  overlayContainer: {fileID: 0}
   merchantPlayer: {fileID: 0}
   isInMerchant: 0
+  title: 
+  removeFromMerchantSlot: -1
+  selectedInventorySlot: -1
+  selectedMerchantSlot: -1
+  selectedBuyMerchantSlot: -1
+  selectedBuyInventorySlot: -1
 --- !u!1 &137938
 GameObject:
   m_ObjectHideFlags: 0

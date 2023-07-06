@@ -3,6 +3,7 @@
 // 'kill a player 10 levels above you' or 'kill a pet in a guild war' etc.
 using UnityEngine;
 using System.Text;
+using System.Collections.Generic;
 
 [CreateAssetMenu(menuName="uMMORPG Quest/Kill Quest", order=999)]
 public class KillQuest : ScriptableQuest
@@ -22,6 +23,7 @@ public class KillQuest : ScriptableQuest
             ++quest.progress;
             player.quests.quests[questIndex] = quest;
         }
+
     }
 
     // fulfillment /////////////////////////////////////////////////////////////
@@ -31,11 +33,11 @@ public class KillQuest : ScriptableQuest
     }
 
     // tooltip /////////////////////////////////////////////////////////////////
-    public override string ToolTip(Player player, Quest quest)
+    public override string ToolTip(Player player, Quest quest, bool isShort = false)
     {
         // we use a StringBuilder so that addons can modify tooltips later too
         // ('string' itself can't be passed as a mutable object)
-        StringBuilder tip = new StringBuilder(base.ToolTip(player, quest));
+        StringBuilder tip = new StringBuilder(base.ToolTip(player, quest, isShort));
         tip.Replace("{KILLTARGET}", killTarget != null ? killTarget.name : "");
         tip.Replace("{KILLAMOUNT}", killAmount.ToString());
         tip.Replace("{KILLED}", quest.progress.ToString());

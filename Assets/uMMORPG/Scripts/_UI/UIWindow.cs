@@ -81,4 +81,18 @@ public class UIWindow : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         if (onClose == CloseOption.DestroyWindow)
             Destroy(window.gameObject);
     }
+
+    public void TriggerWindowSmaller()
+    {
+        // send message in case it's needed
+        // note: it's important to not name it the same as THIS function to avoid
+        //       a deadlock
+        if (window.gameObject.activeSelf)
+        {
+            panelsParent.SendMessage("OnWindowClose", SendMessageOptions.DontRequireReceiver);
+        }
+        Transform sibling = window.GetChild(1);
+        sibling.gameObject.SetActive(!sibling.gameObject.activeSelf);
+
+    }
 }

@@ -50,6 +50,10 @@ public abstract partial class ScriptableSkill : ScriptableObject
     [Header("Sound")]
     public AudioClip castSound;
 
+    [Header("SkillPanelPlace")]
+    public int contentSlot;
+    public int treeInSlot;
+
     // the skill casting process ///////////////////////////////////////////////
     // some skills requires certain weapons.
     // -> check the weapon type
