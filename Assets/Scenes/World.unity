@@ -2758,6 +2758,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 64912804}
     m_Modifications:
+    - target: {fileID: 2201498438989603058, guid: a9cf0dc2bccee5b488e609e3bef60bc0,
+        type: 3}
+      propertyPath: m_Text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2201498439486892862, guid: a9cf0dc2bccee5b488e609e3bef60bc0,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 49.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 2201498439486892863, guid: a9cf0dc2bccee5b488e609e3bef60bc0,
+        type: 3}
+      propertyPath: m_Text
+      value: 'Chance:'
+      objectReference: {fileID: 0}
     - target: {fileID: 2201498440057788793, guid: a9cf0dc2bccee5b488e609e3bef60bc0,
         type: 3}
       propertyPath: m_Pivot.x
@@ -2871,7 +2886,7 @@ PrefabInstance:
     - target: {fileID: 2201498440412761144, guid: a9cf0dc2bccee5b488e609e3bef60bc0,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2201498440412761145, guid: a9cf0dc2bccee5b488e609e3bef60bc0,
         type: 3}
@@ -2883,11 +2898,11 @@ PrefabInstance:
         type: 3}
       propertyPath: panelSuccessfullyEnchanted
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 67799853}
     - target: {fileID: 2201498440601241882, guid: a9cf0dc2bccee5b488e609e3bef60bc0,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5222357062320598193, guid: a9cf0dc2bccee5b488e609e3bef60bc0, type: 3}
@@ -2898,6 +2913,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 67799851}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &67799853 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2657826167840217712, guid: a9cf0dc2bccee5b488e609e3bef60bc0,
+    type: 3}
+  m_PrefabInstance: {fileID: 67799851}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caa0326d97cb6d44f8f0717101bc9f38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &69291969
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22723,10 +22750,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70c8ab39afa9d4e33bed7501dd4e62fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  title: {fileID: 0}
+  NpcAvatar: {fileID: 0}
   panel: {fileID: 748428607}
-  slotPrefab: {fileID: 114548606182546652, guid: 9d79077bcc9be4eb9abb9d3b62647b94,
-    type: 3}
-  content: {fileID: 208290123}
+  slotMissionPrefab: {fileID: 0}
+  slotRewardPrefab: {fileID: 0}
+  descriptionText: {fileID: 0}
+  contentMission: {fileID: 0}
+  contentReward: {fileID: 0}
+  accept: {fileID: 0}
+  currentQuestName: 
 --- !u!114 &748428610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60674,7 +60707,8 @@ MonoBehaviour:
   panel: {fileID: 357075630}
   slotPrefab: {fileID: 114763234018988344, guid: 499615dc942954df3a501059adab9262,
     type: 3}
-  content: {fileID: 1864994415}
+  content:
+  - {fileID: 0}
   skillExperienceText: {fileID: 1728566797}
 --- !u!1 &2137708313
 GameObject:
