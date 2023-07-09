@@ -48,6 +48,9 @@ public class MonsterInventory : Inventory
         // generate items (note: can't use Linq because of SyncList)
         foreach (ItemDropChance itemChance in dropChances)
             if (Random.value <= itemChance.probability)
-                slots.Add(new ItemSlot(new Item(itemChance.item)));
+            {
+                Item item = new Item(itemChance.item);
+                slots.Add(new ItemSlot(item));
+            }
     }
 }

@@ -26,7 +26,7 @@ public enum ItemCategory { None,
     Potion, Pet, Mount, Usable, Material,
     WeaponBow, WeaponSword, WeaponStaff, WeaponPriestWeapon, WeaponShield,
     Helmet, Gloves, Boots, Armor, Panth, 
-    Belt, Necklage, Earring, Ring}
+    Belt, Necklage, Earring, Ring, upgradeMaterial}
 
 [CreateAssetMenu(menuName="uMMORPG Item/General", order=999)]
 public partial class ScriptableItem : ScriptableObject
@@ -44,6 +44,9 @@ public partial class ScriptableItem : ScriptableObject
     public bool destroyable;
     [SerializeField, TextArea(1, 30)] protected string toolTip; // not public, use ToolTip()
     public Sprite image;
+
+    public float[] upgradeBonusesPercent;
+    public float[] upgradeChances;
 
     // tooltip /////////////////////////////////////////////////////////////////
     // fill in all variables into the tooltip

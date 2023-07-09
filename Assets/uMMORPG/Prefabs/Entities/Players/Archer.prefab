@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 11487752}
   - component: {fileID: 1970961225953634095}
   - component: {fileID: 8800218624224055961}
+  - component: {fileID: 4521734194411720887}
   m_Layer: 8
   m_Name: Archer
   m_TagString: Player
@@ -309,6 +310,7 @@ MonoBehaviour:
   specialisation_1: 
   specialisation_2: 
   customization: {fileID: 1970961225953634095}
+  upgrade: {fileID: 4521734194411720887}
   itemRarityConfig: {fileID: 11400000, guid: dd350f5007de8874cb433e69b78b8c95, type: 2}
   experience: {fileID: 7224164981670902446}
   intelligence: {fileID: 5337225809773296567}
@@ -911,6 +913,7 @@ MonoBehaviour:
   splitKeys: 300100002f010000
   trash:
     item:
+      currentUpgradeLevel: 0
       hash: 0
       durability: 0
       summoned: {fileID: 0}
@@ -1323,11 +1326,32 @@ MonoBehaviour:
   overlayContainer: {fileID: 3351712855172025832}
   merchantPlayer: {fileID: 0}
   isInMerchant: 0
+  title: 
   removeFromMerchantSlot: -1
   selectedInventorySlot: -1
   selectedMerchantSlot: -1
   selectedBuyMerchantSlot: -1
   selectedBuyInventorySlot: -1
+--- !u!114 &4521734194411720887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 142034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a86dbdaa2cbe584a89d0b87f92a25f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  player: {fileID: 11448894}
+  data: {fileID: 11400000, guid: 9b452ae4e2d9aa94d8d016d8d8f9760b, type: 2}
+  upgradeIndices: ffffffffffffffffffffffffffffffffffffffffffffffff
+  upgradeTimeEnd: 0
+  rarityIndex: 0
 --- !u!1 &168058
 GameObject:
   m_ObjectHideFlags: 0

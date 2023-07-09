@@ -37,7 +37,7 @@ public abstract class Equipment : ItemContainer, IHealthBonus, IManaBonus, IComb
         int bonus = 0;
         foreach (ItemSlot slot in slots)
             if (slot.amount > 0 && slot.item.CheckDurability())
-                bonus += ((EquipmentItem)slot.item.data).damageBonus;
+                bonus += slot.item.BonusAsPercentageOfUpgrade(((EquipmentItem)slot.item.data).damageBonus);
         return bonus;
     }
 
@@ -48,7 +48,7 @@ public abstract class Equipment : ItemContainer, IHealthBonus, IManaBonus, IComb
         int bonus = 0;
         foreach (ItemSlot slot in slots)
             if (slot.amount > 0 && slot.item.CheckDurability())
-                bonus += ((EquipmentItem)slot.item.data).defenseBonus;
+                bonus += slot.item.BonusAsPercentageOfUpgrade(((EquipmentItem)slot.item.data).defenseBonus);
         return bonus;
     }
 

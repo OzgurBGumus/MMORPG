@@ -40,18 +40,28 @@ MonoBehaviour:
     Level: {MINLEVEL}
 
 
+    Enchantment: {UPGRADE}
+
+
     Amount: {AMOUNT}
 
-    Price: {BUYPRICE} Gold
+    Price:
+    {BUYPRICE} Gold
 
-    <i>Sells
-    for: {SELLPRICE} Gold</i>'
+    <i>Sells for: {SELLPRICE} Gold</i>'
   image: {fileID: 21300000, guid: 496c3159dd4584e3c8bd5b886097f454, type: 3}
+  upgradeBonusesPercent:
+  - 100
+  upgradeChances:
+  - 10000
   race: 0
   clases: 0
   minLevel: 1
   cooldown: 0
   _cooldownCategory: 
+  materials: []
+  difficultyOfEnchantment: 1
+  considerItemLevel: 0
   healthBonus: 0
   manaBonus: 0
   damageBonus: 0

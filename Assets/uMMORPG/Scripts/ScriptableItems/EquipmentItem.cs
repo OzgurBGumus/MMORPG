@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using UnityEngine;
 [CreateAssetMenu(menuName="uMMORPG Item/Equipment", order=999)]
-public class EquipmentItem : UsableItem
+public partial class EquipmentItem : UsableItem
 {
     [Header("Equipment")]
     public int healthBonus;
@@ -69,8 +69,8 @@ public class EquipmentItem : UsableItem
     {
         StringBuilder tip = new StringBuilder(base.ToolTip());
         tip.Replace("{CATEGORY}", category.ToString());
-        tip.Replace("{DAMAGEBONUS}", damageBonus.ToString());
-        tip.Replace("{DEFENSEBONUS}", defenseBonus.ToString());
+        //tip.Replace("{DAMAGEBONUS}", damageBonus.ToString());
+        //tip.Replace("{DEFENSEBONUS}", defenseBonus.ToString());
         tip.Replace("{HEALTHBONUS}", healthBonus.ToString());
         tip.Replace("{MANABONUS}", manaBonus.ToString());
         tip.Replace("{BLOCKCHANCEBONUS}", Mathf.RoundToInt(blockChanceBonus * 100).ToString());

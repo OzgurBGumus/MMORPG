@@ -9,10 +9,10 @@ public partial class UIInventory : MonoBehaviour
     public KeyCode hotKey = KeyCode.I;
     public GameObject panel;
     public GameObject equipmentPanel;
-    public UIInventorySlot inventorySlotPrefab;
-    public UIEquipmentSlot equipmentSlotPrefab;
+    public UniversalSlot slotPrefab;
     public Transform inventoryContent;
     public Transform equipmentContent;
+    public bool categories;
     public Text goldText;
     public UIDragAndDropable trash;
     public Image trashImage;
@@ -52,13 +52,13 @@ public partial class UIInventory : MonoBehaviour
                     equipmentPanel.SetActive(false);
                 }
                 // instantiate/destroy enough slots
-                UIUtils.BalancePrefabs(inventorySlotPrefab.gameObject, player.inventory.slots.Count, inventoryContent);
-                UIUtils.BalancePrefabs(equipmentSlotPrefab.gameObject, player.equipment.slots.Count, equipmentContent);
+                UIUtils.BalancePrefabs(slotPrefab.gameObject, player.inventory.slots.Count, inventoryContent);
+                UIUtils.BalancePrefabs(slotPrefab.gameObject, player.equipment.slots.Count, equipmentContent);
 
                 // refresh all items
                 for (int i = 0; i < player.inventory.slots.Count; ++i)
                 {
-                    UIInventorySlot slot = inventoryContent.GetChild(i).GetComponent<UIInventorySlot>();
+                    UniversalSlot slot = inventoryContent.GetChild(i).GetComponent<UniversalSlot>();
                     slot.dragAndDropable.name = i.ToString(); // drag and drop index
                     ItemSlot itemSlot = player.inventory.slots[i];
 
@@ -100,6 +100,7 @@ public partial class UIInventory : MonoBehaviour
                         else slot.cooldownCircle.fillAmount = 0;
                         slot.amountOverlay.SetActive(itemSlot.amount > 1);
                         slot.amountText.text = itemSlot.amount.ToString();
+                        slot.upgradeText.text = "+" + itemSlot.item.currentUpgradeLevel;
                         slot.GetComponent<Image>().sprite = player.itemRarityConfig.GetSprite;
                         slot.GetComponent<Image>().color = player.itemRarityConfig.GetColor(itemSlot.item);
                     }
@@ -113,6 +114,7 @@ public partial class UIInventory : MonoBehaviour
                         slot.image.sprite = null;
                         slot.cooldownCircle.fillAmount = 0;
                         slot.amountOverlay.SetActive(false);
+                        slot.upgradeText.text = "";
                         slot.GetComponent<Image>().sprite = player.itemRarityConfig.GetSprite;
                         slot.GetComponent<Image>().color = player.itemRarityConfig.GetColorForEmptySlot();
                     }
@@ -121,15 +123,17 @@ public partial class UIInventory : MonoBehaviour
                 //refresh all equipments
                 for (int i = 0; i < player.equipment.slots.Count; ++i)
                 {
-                    UIEquipmentSlot slot = equipmentContent.GetChild(i).GetComponent<UIEquipmentSlot>();
+                    UniversalSlot slot = equipmentContent.GetChild(i).GetComponent<UniversalSlot>();
                     slot.dragAndDropable.name = i.ToString(); // drag and drop slot
                     ItemSlot itemSlot = player.equipment.slots[i];
+                    slot.dragAndDropable.tag = "EquipmentSlot";
 
                     // set category overlay in any case. we use the last noun in the
                     // category string, for example EquipmentWeaponBow => Bow
                     // (disabled if no category, e.g. for archer shield slot)
                     EquipmentInfo slotInfo = ((PlayerEquipment)player.equipment).slotInfo[i];
-                    slot.categoryOverlay.SetActive(slotInfo.requiredCategory != ItemCategory.None);
+                    //slot.categoryOverlay.SetActive(slotInfo.requiredCategory != ItemCategory.None);
+                    slot.categoryOverlay.SetActive(categories);
                     string overlay = Utils.ParseLastNoun(slotInfo.requiredCategory.ToString());
                     slot.categoryText.text = overlay != "" ? overlay : "?";
 
@@ -166,6 +170,7 @@ public partial class UIInventory : MonoBehaviour
                         else slot.cooldownCircle.fillAmount = 0;
                         slot.amountOverlay.SetActive(itemSlot.amount > 1);
                         slot.amountText.text = itemSlot.amount.ToString();
+                        slot.upgradeText.text = "+" + itemSlot.item.currentUpgradeLevel;
                         slot.GetComponent<UnityEngine.UI.Image>().sprite = player.itemRarityConfig.GetSprite;
                         slot.GetComponent<UnityEngine.UI.Image>().color = player.itemRarityConfig.GetColor(itemSlot.item);
                     }
@@ -178,6 +183,7 @@ public partial class UIInventory : MonoBehaviour
                         slot.image.sprite = null;
                         slot.cooldownCircle.fillAmount = 0;
                         slot.amountOverlay.SetActive(false);
+                        slot.upgradeText.text = "";
                         slot.GetComponent<UnityEngine.UI.Image>().sprite = player.itemRarityConfig.GetSprite;
                         slot.GetComponent<UnityEngine.UI.Image>().color = player.itemRarityConfig.GetColorForEmptySlot();
                     }

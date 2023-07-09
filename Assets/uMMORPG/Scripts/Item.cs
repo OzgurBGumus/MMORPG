@@ -34,6 +34,8 @@ public partial struct Item
     {
         hash = data.name.GetStableHashCode();
         durability = data.maxDurability;
+
+        currentUpgradeLevel = 0;
         summoned = null;
         summonedHealth = data is SummonableItem summonable ? summonable.summonPrefab.health.max : 0;
         summonedLevel = data is SummonableItem ? 1 : 0;
