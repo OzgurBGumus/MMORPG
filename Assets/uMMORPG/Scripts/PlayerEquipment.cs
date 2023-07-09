@@ -13,7 +13,7 @@ public partial struct EquipmentInfo
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(PlayerInventory))]
-public class PlayerEquipment : Equipment
+public partial class PlayerEquipment : Equipment
 {
     [Header("Components")]
     public Player player;

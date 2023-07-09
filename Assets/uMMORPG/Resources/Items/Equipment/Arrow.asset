@@ -29,11 +29,18 @@ MonoBehaviour:
 
     Amount: {AMOUNT}'
   image: {fileID: 21300000, guid: 45f2df20e580e40edac68cdb712d1335, type: 3}
+  upgradeBonusesPercent:
+  - 100
+  upgradeChances:
+  - 10000
   race: 0
   clases: 0
   minLevel: 1
   cooldown: 0
   _cooldownCategory: 
+  materials: []
+  difficultyOfEnchantment: 1
+  considerItemLevel: 0
   healthBonus: 0
   manaBonus: 0
   damageBonus: 0

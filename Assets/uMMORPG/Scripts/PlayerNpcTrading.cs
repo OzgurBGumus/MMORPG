@@ -34,6 +34,7 @@ public class PlayerNpcTrading : NetworkBehaviour
                 {
                     // pay for it, add to inventory
                     player.gold -= price;
+                    npcItem.currentUpgradeLevel = 0;
                     inventory.Add(npcItem, amount);
                 }
             }

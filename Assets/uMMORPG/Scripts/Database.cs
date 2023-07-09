@@ -122,6 +122,7 @@ public partial class Database : MonoBehaviour
         public int slot { get; set; }
         public string name { get; set; }
         public int amount { get; set; }
+        public int currentUpgradeValue { get; set; }
         public int durability { get; set; }
         public int summonedHealth { get; set; }
         public int summonedLevel { get; set; }
@@ -367,6 +368,7 @@ public partial class Database : MonoBehaviour
                 if (ScriptableItem.All.TryGetValue(row.name.GetStableHashCode(), out ScriptableItem itemData))
                 {
                     Item item = new Item(itemData);
+                    item.currentUpgradeLevel = row.currentUpgradeValue;
                     item.durability = Mathf.Min(row.durability, item.maxDurability);
                     item.summonedHealth = row.summonedHealth;
                     item.summonedLevel = row.summonedLevel;
@@ -622,6 +624,7 @@ public partial class Database : MonoBehaviour
                     slot = i,
                     name = slot.item.name,
                     amount = slot.amount,
+                    currentUpgradeValue = slot.item.currentUpgradeLevel,
                     durability = slot.item.durability,
                     summonedHealth = slot.item.summonedHealth,
                     summonedLevel = slot.item.summonedLevel,
