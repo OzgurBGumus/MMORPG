@@ -18,13 +18,15 @@ MonoBehaviour:
     Increases movement speed for a while.
 
 
-    Cast Time: {CASTTIME}
+    Cast
+    Time: {CASTTIME}
 
     Cooldown: {COOLDOWN}
 
     Buff Time: {BUFFTIME}
 
-    Buffs speed: {SPEEDBONUS}
+    Buffs
+    speed: {SPEEDBONUS}
 
     Mana Costs: {MANACOSTS}'
   image: {fileID: 21300000, guid: 51681a10a01f345a681a7ede63ffc6c0, type: 3}
@@ -32,12 +34,12 @@ MonoBehaviour:
   showCastBar: 1
   cancelCastIfTargetDied: 1
   allowMovement: 0
-  predecessor: {fileID: 0}
+  predecessor: {fileID: 11400000, guid: 79b445cb027e245b8ba286ee1a52d44c, type: 2}
   predecessorLevel: 1
-  requiredWeaponCategory: 
+  requiredWeaponCategory: 0
   requiredLevel:
-    baseValue: 1
-    bonusPerLevel: 1
+    baseValue: 50
+    bonusPerLevel: 0
   requiredSkillExperience:
     baseValue: 5
     bonusPerLevel: 5
@@ -55,6 +57,8 @@ MonoBehaviour:
     baseValue: 3
     bonusPerLevel: 0
   castSound: {fileID: 0}
+  contentSlot: 0
+  treeInSlot: 0
   healthMaxBonus:
     baseValue: 0
     bonusPerLevel: 0

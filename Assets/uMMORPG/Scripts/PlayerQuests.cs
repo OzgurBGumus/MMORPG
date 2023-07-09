@@ -98,8 +98,7 @@ public class PlayerQuests : NetworkBehaviour
             if(quest.IsFulfilled(player))
             {
                 // enough space for reward item (if any)?
-                return quest.rewardItem == null ||
-                       inventory.CanAdd(new Item(quest.rewardItem), 1);
+                return quest.rewardItem == null || inventory.SlotsFree() >= quest.rewardItem.Count;
             }
         }
         return false;
@@ -135,8 +134,12 @@ public class PlayerQuests : NetworkBehaviour
                         player.gold += quest.rewardGold;
                         player.experience.current += quest.rewardExperience;
                         if (quest.rewardItem != null)
-                            inventory.Add(new Item(quest.rewardItem), 1);
-
+                        {
+                            for(int i = 0; i< quest.rewardItem.Count; i++)
+                            {
+                                inventory.Add(new Item(quest.rewardItem[i]), quest.rewardItemCount[i]);
+                            }
+                        }
                         // complete quest
                         quest.completed = true;
                         quests[index] = quest;

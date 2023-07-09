@@ -14,25 +14,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   toolTip: '<b>{NAME}</b>
 
-    Find out what happened at the Blocked Path, then report back to the Guardian near
-    the forest.
+    Find out what happened at the Blocked Path, then report
+    back to the Guardian near the forest.
 
 
     Tasks:
 
-    * Inspect the Blocked Path: {LOCATIONSTATUS}
+    * Inspect the Blocked
+    Path: {LOCATIONSTATUS}
 
 
     Rewards:
 
     * {REWARDGOLD} Gold
 
-    * {REWARDEXPERIENCE} Experience
+    * {REWARDEXPERIENCE}
+    Experience
 
 
     {STATUS}'
+  toolTipShort: 'Inspect the Blocked Path: {LOCATIONSTATUS}'
   requiredLevel: 0
   predecessor: {fileID: 0}
   rewardGold: 50
   rewardExperience: 50
-  rewardItem: {fileID: 0}
+  rewardItem: []
+  rewardItemCount: 
