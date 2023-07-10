@@ -12,6 +12,11 @@ public partial class UIParty : MonoBehaviour
     public Toggle experienceShareToggle;
     public Toggle goldShareToggle;
 
+    public static UIParty singleton;
+    public UIParty()
+    {
+        singleton = this;
+    }
     void Update()
     {
         Player player = Player.localPlayer;

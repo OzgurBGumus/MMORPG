@@ -15,6 +15,11 @@ public partial class UIQuests : MonoBehaviour
     public string expandPrefix = "[+] ";
     public string hidePrefix = "[-] ";
 
+    public static UIQuests singleton;
+    public UIQuests()
+    {
+        singleton = this;
+    }
     void Update()
     {
         Player player = Player.localPlayer;

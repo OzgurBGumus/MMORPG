@@ -45,22 +45,22 @@ public partial class UIShortcuts : MonoBehaviour
             panel.SetActive(true);
 
             inventoryButton.onClick.SetListener(() => {
-                inventoryPanel.SetActive(!inventoryPanel.activeSelf);
+                inventoryPanel.transform.parent.GetComponent<UIInventory>().Toggle();
             });
 
             merchantButton.onClick.SetListener(() => {
                 if (player.state != "MERCHANT" && merchantPanel.activeSelf != true) {
                     player.merchant.Cleanup();
                 }
-                merchantPanel.SetActive(!merchantPanel.activeSelf);
+                merchantPanel.transform.parent.GetComponent<UIMerchant>().Toggle();
             });
 
             skillsButton.onClick.SetListener(() => {
-                skillsPanel.SetActive(!skillsPanel.activeSelf);
+                skillsPanel.transform.parent.GetComponent<UISkills>().Toggle();
             });
 
             characterInfoButton.onClick.SetListener(() => {
-                characterInfoPanel.SetActive(!characterInfoPanel.activeSelf);
+                characterInfoPanel.transform.parent.GetComponent<UICharacterInfo>().Toggle();
             });
 
             questsButton.onClick.SetListener(() => {
@@ -68,7 +68,7 @@ public partial class UIShortcuts : MonoBehaviour
             });
 
             craftingButton.onClick.SetListener(() => {
-                craftingPanel.SetActive(!craftingPanel.activeSelf);
+                craftingPanel.transform.parent.GetComponent<UIMerchant>().Toggle();
             });
 
             partyButton.onClick.SetListener(() => {

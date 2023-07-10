@@ -23,6 +23,12 @@ public partial class UICrafting : MonoBehaviour
     public Color lowDurabilityColor = Color.magenta;
     [Range(0.01f, 0.99f)] public float lowDurabilityThreshold = 0.1f;
 
+
+    public static UICrafting singleton;
+    public UICrafting()
+    {
+        singleton = this;
+    }
     void Update()
     {
         Player player = Player.localPlayer;
@@ -163,5 +169,28 @@ public partial class UICrafting : MonoBehaviour
             }
         }
         else panel.SetActive(false);
+    }
+
+    public void Toggle()
+    {
+        if (panel.activeSelf)
+        {
+            Close();
+        }
+        else
+        {
+            Open();
+        }
+
+    }
+    public void Open()
+    {
+        FindObjectOfType<Canvas>().GetComponent<UIUniqueWindow>().CloseWindows();
+        UIInventory.singleton.Open();
+        panel.SetActive(true);
+    }
+    public void Close()
+    {
+        panel.SetActive(false);
     }
 }
