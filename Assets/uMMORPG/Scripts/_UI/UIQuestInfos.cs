@@ -55,27 +55,31 @@ public class UIQuestInfos : MonoBehaviour
             if (linkIndex > -1)
             {
                 string linkID = text.textInfo.linkInfo[linkIndex].GetLinkID();
-                if (linkID.Equals("Bandit"))
+                Vector3 bestDestination = new Vector3 (0,0,0);
+                Player player = Player.localPlayer;
+                PlayerNavMeshMovement playerNavMeshMovement = player.GetComponent<PlayerNavMeshMovement>();
+                switch (linkID)
                 {
-                    Player player = Player.localPlayer;
-                    PlayerNavMeshMovement playerNavMeshMovement = player.GetComponent<PlayerNavMeshMovement>();
-                    Vector3 targetCoordinat = Targets.positionBandit;
-                    Vector3 bestDestination = playerNavMeshMovement.NearestValidDestination(targetCoordinat);
-                    // casting or stunned? then set pending destination
-                    if (player.state == "STUNNED")
+                    case "Bandit":
+                        bestDestination = playerNavMeshMovement.NearestValidDestination(Targets.positionBandit);
+                        break;
+
+                }
+
+                // casting or stunned? then set pending destination
+                if (player.state == "STUNNED")
+                {
+                    player.pendingDestination = bestDestination;
+                    player.pendingDestinationValid = true;
+                }
+                // otherwise navigate there
+                else
+                {
+                    playerNavMeshMovement.Navigate(bestDestination, 0);
+                    if (player.state == "CASTING")
                     {
-                        player.pendingDestination = bestDestination;
-                        player.pendingDestinationValid = true;
-                    }
-                    // otherwise navigate there
-                    else
-                    {
-                        playerNavMeshMovement.Navigate(bestDestination, 0);
-                        if (player.state == "CASTING")
-                        {
-                            player.SetNextMove(bestDestination);
-                            player.UpdateState();
-                        }
+                        player.SetNextMove(bestDestination);
+                        player.UpdateState();
                     }
                 }
             }
