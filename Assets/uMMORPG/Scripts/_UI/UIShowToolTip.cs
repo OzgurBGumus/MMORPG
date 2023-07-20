@@ -3,13 +3,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class UIShowToolTip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class UIShowToolTip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public GameObject tooltipPrefab;
     [TextArea(1, 30)] public string text = "";
 
     // instantiated tooltip
     GameObject current;
+
+    public bool onClick = false;
 
     void CreateToolTip()
     {
@@ -45,7 +47,10 @@ public class UIShowToolTip : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void OnPointerEnter(PointerEventData d)
     {
-        ShowToolTip(0.5f);
+        if (!onClick)
+        {
+            ShowToolTip(0.5f);
+        }
     }
 
     public void OnPointerExit(PointerEventData d)
@@ -68,5 +73,13 @@ public class UIShowToolTip : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     void OnDestroy()
     {
         DestroyToolTip();
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (onClick)
+        {
+            ShowToolTip(0);
+        }
     }
 }

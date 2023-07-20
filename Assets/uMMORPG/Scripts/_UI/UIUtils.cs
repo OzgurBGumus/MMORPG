@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class UIUtils
 {
@@ -25,7 +26,7 @@ public class UIUtils
     {
         // avoid Linq.Any because it is HEAVY(!) on GC and performance
         foreach (Selectable sel in Selectable.allSelectablesArray)
-            if (sel is InputField inputField && inputField.isFocused)
+            if ((sel is InputField inputField && inputField.isFocused) || (sel is TMP_InputField TMPinputField && TMPinputField.isFocused ))
                 return true;
         return false;
     }
