@@ -26,6 +26,12 @@ public partial class UIPlayerTrading : MonoBehaviour
     public Color lowDurabilityColor = Color.magenta;
     [Range(0.01f, 0.99f)] public float lowDurabilityThreshold = 0.1f;
 
+    public static UIPlayerTrading singleton;
+    public UIPlayerTrading()
+    {
+        singleton = this;
+    }
+
     void Update()
     {
         Player player = Player.localPlayer;

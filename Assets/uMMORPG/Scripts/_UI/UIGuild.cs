@@ -19,6 +19,11 @@ public partial class UIGuild : MonoBehaviour
     public Color offlineColor = Color.gray;
     public Button leaveButton;
 
+    public static UIGuild singleton;
+    public UIGuild()
+    {
+        singleton = this;
+    }
     void Update()
     {
         Player player = Player.localPlayer;

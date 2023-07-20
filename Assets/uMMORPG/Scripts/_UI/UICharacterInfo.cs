@@ -27,6 +27,12 @@ public partial class UICharacterInfo : MonoBehaviour
     // remember default attributes header text so we can append "(remaining)"
     string attributesTextDefault;
 
+    public static UICharacterInfo singleton;
+    public UICharacterInfo()
+    {
+        singleton = this;
+    }
+
     void Awake()
     {
         attributesTextDefault = attributesText.text;
@@ -39,7 +45,7 @@ public partial class UICharacterInfo : MonoBehaviour
         {
             // hotkey (not while typing in chat, etc.)
             if (Input.GetKeyDown(hotKey) && !UIUtils.AnyInputActive())
-                panel.SetActive(!panel.activeSelf);
+                Toggle();
 
             // only refresh the panel while it's active
             if (panel.activeSelf)
@@ -79,5 +85,27 @@ public partial class UICharacterInfo : MonoBehaviour
             }
         }
         else panel.SetActive(false);
+    }
+
+    public void Toggle()
+    {
+        if (panel.activeSelf)
+        {
+            Close();
+        }
+        else
+        {
+            Open();
+        }
+
+    }
+    public void Open()
+    {
+        FindObjectOfType<Canvas>().GetComponent<UIUniqueWindow>().CloseWindows(skills: false, crafting: false, guild: false, party: false, gameMasterTool: false, characterInfo: false);
+        panel.SetActive(true);
+    }
+    public void Close()
+    {
+        panel.SetActive(false);
     }
 }

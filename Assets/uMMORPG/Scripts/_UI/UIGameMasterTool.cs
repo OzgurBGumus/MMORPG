@@ -35,6 +35,11 @@ public partial class UIGameMasterTool : MonoBehaviour
     public Button killButton;
     public Button kickButton;
 
+    public static UIGameMasterTool singleton;
+    public UIGameMasterTool()
+    {
+        singleton = this;
+    }
     void Update()
     {
         Player player = Player.localPlayer;

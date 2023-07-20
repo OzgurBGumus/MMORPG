@@ -16,6 +16,13 @@ public partial class UISkills : MonoBehaviour
     private Dictionary<Skill, int> rootSkills;
     private Player player;
     private int currentContent;
+
+    public static UISkills singleton;
+    private bool lastFrameIsFalse = false;
+    public UISkills()
+    {
+        singleton = this;
+    }
     private void Start()
     {
 
@@ -39,33 +46,40 @@ public partial class UISkills : MonoBehaviour
             }
             // hotkey (not while typing in chat, etc.)
             if (Input.GetKeyDown(hotKey) && !UIUtils.AnyInputActive())
-                panel.SetActive(!panel.activeSelf);
+            {
+                Toggle();
+            }
 
             // only update the panel if it's active
             if (panel.activeSelf)
             {
+                FirstActiveFrame();
                 // instantiate/destroy enough slots
                 // (we only care about non status skills)
 
-                for(int i = 0; i < 3; i++)
-                {
-                    UIUtils.BalancePrefabs(slotPrefab.gameObject, 8, content[i]);
-                }
+                //for (int i = 0; i < 3; i++)
+                //{
+                //    UIUtils.BalancePrefabs(slotPrefab.gameObject, 8, content[i]);
+                //}
                 
 
-                // refresh all
-                foreach(var skill in rootSkills)
-                {
-                    int contentIndex = player.skills.skills[skill.Value].data.contentSlot;
-                    if (contentIndex == currentContent)
-                    {
+                //// refresh all
+                //foreach(var skill in rootSkills)
+                //{
+                //    int contentIndex = player.skills.skills[skill.Value].data.contentSlot;
+                //    if (contentIndex == currentContent)
+                //    {
 
-                        RefreshRootSkill(skill.Value);
-                    }
-                }
+                //        RefreshRootSkill(skill.Value);
+                //    }
+                //}
 
                 // skill experience
                 skillExperienceText.text = ((PlayerSkills)player.skills).skillExperience.ToString();
+            }
+            else
+            {
+                FirstInActiveFrame();
             }
         }
         else panel.SetActive(false);
@@ -156,5 +170,43 @@ public partial class UISkills : MonoBehaviour
         slot.cooldownOverlay.SetActive(skill.level > 0 && cooldown > 0);
         slot.cooldownText.text = cooldown.ToString("F0");
         slot.cooldownCircle.fillAmount = skill.cooldown > 0 ? cooldown / skill.cooldown : 0;
+    }
+
+    private void FirstActiveFrame()
+    {
+        if (lastFrameIsFalse)
+        {
+            //FindObjectOfType<Canvas>().GetComponent<UIUniqueWindow>().CloseWindows();
+            lastFrameIsFalse = false;
+        }
+    }
+    private void FirstInActiveFrame()
+    {
+        if (!lastFrameIsFalse)
+        {
+            lastFrameIsFalse = true;
+        }
+    }
+
+    public void Toggle()
+    {
+        if (panel.activeSelf)
+        {
+            Close();
+        }
+        else
+        {
+            Open();
+        }
+
+    }
+    public void Open()
+    {
+        FindObjectOfType<Canvas>().GetComponent<UIUniqueWindow>().CloseWindows(skills: false, crafting: false, guild: false, party: false, gameMasterTool: false, characterInfo: false);
+        panel.SetActive(true);
+    }
+    public void Close()
+    {
+        panel.SetActive(false);
     }
 }

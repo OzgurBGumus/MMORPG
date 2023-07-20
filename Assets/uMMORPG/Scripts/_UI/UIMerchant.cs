@@ -44,6 +44,8 @@ public class UIMerchant : MonoBehaviour
     private List<int> offerItems = new List<int>();
     private List<int> itemPrices = new List<int>();
     private List<int> itemAmounts = new List<int>();
+
+    private bool lastFrameIsFalse = false;
     public UIMerchant()
     {
         // assign singleton only once (to work with DontDestroyOnLoad when
@@ -367,5 +369,28 @@ public class UIMerchant : MonoBehaviour
 
 
 
+    }
+
+
+    public void Toggle()
+    {
+        if (panel.activeSelf)
+        {
+            Close();
+        }
+        else
+        {
+            Open();
+        }
+    }
+    public void Open()
+    {
+        FindObjectOfType<Canvas>().GetComponent<UIUniqueWindow>().CloseWindows();
+        UIInventory.singleton.Open();
+        panel.SetActive(true);
+    }
+    public void Close()
+    {
+        panel.SetActive(false);
     }
 }
