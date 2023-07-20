@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UIQuestInfos : MonoBehaviour
@@ -43,4 +45,45 @@ public class UIQuestInfos : MonoBehaviour
             }
         }
     }
+
+    public void OnEntryClicked(PointerEventData eventData, UIQuestInfoSlot slot)
+    {
+        var text = slot.descriptionText;
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            int linkIndex = TMP_TextUtilities.FindIntersectingLink(text, Input.mousePosition, null);
+            if (linkIndex > -1)
+            {
+                string linkID = text.textInfo.linkInfo[linkIndex].GetLinkID();
+                Vector3 bestDestination = new Vector3 (0,0,0);
+                Player player = Player.localPlayer;
+                PlayerNavMeshMovement playerNavMeshMovement = player.GetComponent<PlayerNavMeshMovement>();
+                switch (linkID)
+                {
+                    case "Bandit":
+                        bestDestination = playerNavMeshMovement.NearestValidDestination(Targets.positionBandit);
+                        break;
+
+                }
+
+                // casting or stunned? then set pending destination
+                if (player.state == "STUNNED")
+                {
+                    player.pendingDestination = bestDestination;
+                    player.pendingDestinationValid = true;
+                }
+                // otherwise navigate there
+                else
+                {
+                    playerNavMeshMovement.Navigate(bestDestination, 0);
+                    if (player.state == "CASTING")
+                    {
+                        player.SetNextMove(bestDestination);
+                        player.UpdateState();
+                    }
+                }
+            }
+        }
+    }
+
 }

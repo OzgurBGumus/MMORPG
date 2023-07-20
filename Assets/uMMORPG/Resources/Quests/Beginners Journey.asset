@@ -36,7 +36,8 @@ MonoBehaviour:
 
 
     {STATUS}'
-  toolTipShort: 'Kill {KILLTARGET}: {KILLED}/{KILLAMOUNT}'
+  toolTipShort: 'Kill  <color=red><link={KILLTARGET}>{KILLTARGET}</link></color>:
+    {KILLED}/{KILLAMOUNT}'
   requiredLevel: 0
   predecessor: {fileID: 0}
   rewardGold: 100

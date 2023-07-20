@@ -31,7 +31,7 @@ public partial class UINpcQuests : MonoBehaviour
         Player player = Player.localPlayer;
 
         // use collider point(s) to also work with big entities
-        if (player != null &&
+        if (panel.activeSelf && player != null &&
             player.target != null &&
             player.target is Npc npc &&
             Utils.ClosestDistance(player, player.target) <= player.interactionRange)
