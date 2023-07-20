@@ -21,6 +21,13 @@ public partial class UIItemMall : MonoBehaviour
     public Button couponButton;
     public GameObject inventoryPanel;
 
+
+    public static UIItemMall singleton;
+
+    public UIItemMall()
+    {
+        singleton = this;
+    }
     void ScrollToBeginning()
     {
         // update first so we don't ignore recently added messages, then scroll

@@ -40,7 +40,10 @@ public partial class UIInventory : MonoBehaviour
         {
             // hotkey (not while typing in chat, etc.)
             if (Input.GetKeyDown(hotKey) && !UIUtils.AnyInputActive())
-                panel.SetActive(!panel.activeSelf);
+            {
+                Toggle();
+            }
+                
 
             ((PlayerEquipment)player.equipment).avatarCamera.enabled = panel.activeSelf;
 
@@ -222,5 +225,27 @@ public partial class UIInventory : MonoBehaviour
             }
         }
         else panel.SetActive(false);
+    }
+
+    public void Toggle()
+    {
+        if (panel.activeSelf)
+        {
+            Close();
+        }
+        else
+        {
+            Open();
+        }
+        
+    }
+    public void Open()
+    {
+        FindObjectOfType<Canvas>().GetComponent<UIUniqueWindow>().CloseWindows(merchant: false, skills: false, crafting: false, guild: false, playerTrading: false, party: false, gameMasterTool: false, npcTrading: false);
+        panel.SetActive(true);
+    }
+    public void Close()
+    {
+        panel.SetActive(false);
     }
 }

@@ -34,6 +34,8 @@ public partial class UIUpgrade : MonoBehaviour
     public Sprite UpgradeIndImage;
     //singleton
     public static UIUpgrade singleton;
+
+    private bool lastFrameIsFalse = false;
     public UIUpgrade()
     {
         // assign singleton only once (to work with DontDestroyOnLoad when
@@ -44,6 +46,8 @@ public partial class UIUpgrade : MonoBehaviour
 
     public void Show()
     {
+        FindObjectOfType<Canvas>().GetComponent<UIUniqueWindow>().CloseWindows();
+        UIInventory.singleton.Open();
         panel.SetActive(true);
     }
 
@@ -75,6 +79,23 @@ public partial class UIUpgrade : MonoBehaviour
         foreach (Transform child in contentForUpgradeIND.transform) child.gameObject.SetActive(false);
     }
 
+    private void FirstActiveFrame()
+    {
+        if (lastFrameIsFalse)
+        {
+            Show();
+            lastFrameIsFalse = false;
+        }
+    }
+    private void FirstInActiveFrame()
+    {
+        if (!lastFrameIsFalse)
+        {
+            Сlose();
+            lastFrameIsFalse = true;
+        }
+    }
+
     void Update()
     {
         // only update the panel if it's active
@@ -85,6 +106,7 @@ public partial class UIUpgrade : MonoBehaviour
             {
                 if (player.upgrade.data.AllowedToShowPanel(player))
                 {
+                    FirstActiveFrame();
                     // refresh all items
                     for (int i = 0; i < player.upgrade.upgradeIndices.Count; ++i)
                     {
@@ -140,6 +162,10 @@ public partial class UIUpgrade : MonoBehaviour
                 else Сlose();
             }
             else panel.SetActive(false);
+        }
+        else
+        {
+            FirstInActiveFrame();
         }
     }
 

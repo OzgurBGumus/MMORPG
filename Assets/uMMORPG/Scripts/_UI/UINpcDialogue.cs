@@ -70,5 +70,8 @@ public partial class UINpcDialogue : MonoBehaviour
         else panel.SetActive(false);
     }
 
-    public void Show() { panel.SetActive(true); }
+    public void Show() {
+        FindObjectOfType<Canvas>().GetComponent<UIUniqueWindow>().CloseWindows();
+        panel.SetActive(true); 
+    }
 }
