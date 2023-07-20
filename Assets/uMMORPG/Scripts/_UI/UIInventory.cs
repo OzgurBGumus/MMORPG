@@ -1,5 +1,7 @@
 ﻿// Note: this script has to be on an always-active UI parent, so that we can
 // always react to the hotkey.
+using System;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -67,7 +69,16 @@ public partial class UIInventory : MonoBehaviour
                         // refresh valid item
                         int icopy = i; // needed for lambdas, otherwise i is Count
                         slot.button.onClick.SetListener(() => {
-                            if (itemSlot.item.data is UsableItem usable &&
+                            if(Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt))
+                            {
+                                string color = "#"+ColorUtility.ToHtmlStringRGBA(player.itemRarityConfig.GetColor(itemSlot.item));
+                                string param1 = "item";
+                                //SHOULD CREATE THE JSON OF THE ITEM'S CURRENT DATA AND PUT THAT JSON TO LINK WITH param2
+                                string param2 = EncodeToBase64(itemSlot.ToolTip());
+                                string htmlElement = "[<color="+color+"><link="+param1+":"+param2+">" + itemSlot.item.name + "</link></color>]";
+                                UIChat.singleton.AppendText(htmlElement);
+                            }
+                            else if (itemSlot.item.data is UsableItem usable &&
                                 usable.CanUse(player, icopy))
                                 player.inventory.CmdUseItem(icopy);
                         });
@@ -222,5 +233,11 @@ public partial class UIInventory : MonoBehaviour
             }
         }
         else panel.SetActive(false);
+    }
+
+    public string EncodeToBase64(string input)
+    {
+        byte[] bytes = Encoding.UTF8.GetBytes(input);
+        return Convert.ToBase64String(bytes);
     }
 }

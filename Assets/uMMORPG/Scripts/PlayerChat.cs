@@ -15,6 +15,8 @@
 using System;
 using UnityEngine;
 using Mirror;
+using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 [Serializable]
 public class ChannelInfo
@@ -42,13 +44,25 @@ public struct ChatMessage
     public string replyPrefix; // copied to input when clicking the message
     public GameObject textPrefab;
 
-    public ChatMessage(string sender, string identifier, string message, string replyPrefix, GameObject textPrefab)
+
+    public Dictionary<int, string> links;
+
+    public ChatMessage(string sender, string identifier, string message, string replyPrefix, GameObject textPrefab, List<int> keys = null, List<string> values = null)
     {
         this.sender = sender;
         this.identifier = identifier;
         this.message = message;
         this.replyPrefix = replyPrefix;
         this.textPrefab = textPrefab;
+        links = new Dictionary<int, string>();
+        if(keys != null)
+        {
+            for (int i = 0; i < keys.Count; i++)
+            {
+                links.Add(keys[i], values[i]);
+            }
+        }
+        
     }
 
     // construct the message
@@ -123,7 +137,14 @@ public class PlayerChat : NetworkBehaviour
             {
                 // local chat is special: it has no command
                 lastCommand = "";
-                CmdMsgLocal(text);
+                List<int> keys = new List<int>();
+                List<string> values = new List<string>();
+                foreach (var KVP in UIChat.singleton.links)
+                {
+                    keys.Add(KVP.Key);
+                    values.Add(KVP.Value);
+                }
+                CmdMsgLocal(text, keys, values);
             }
             else if (text.StartsWith(partyChannel.command))
             {
@@ -187,12 +208,12 @@ public class PlayerChat : NetworkBehaviour
 
     // networking //////////////////////////////////////////////////////////////
     [Command]
-    void CmdMsgLocal(string message)
+    void CmdMsgLocal(string message, List<int> keys, List<string> values)
     {
-        if (message.Length > maxLength) return;
+        if (Regex.Replace(message, "<.*?>", "").Length > maxLength) return;
 
         // it's local chat, so let's send it to all observers via ClientRpc
-        RpcMsgLocal(name, message);
+        RpcMsgLocal(name, message, keys, values);
     }
 
     [Command]
@@ -276,12 +297,12 @@ public class PlayerChat : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void RpcMsgLocal(string sender, string message)
+    public void RpcMsgLocal(string sender, string message, List<int> linkKeys, List<string> linkValues)
     {
         // add message with identifierIn or Out depending on who sent it
         string identifier = sender != name ? localChannel.identifierIn : localChannel.identifierOut;
         string reply = whisperChannel.command + " " + sender + " "; // whisper
-        UIChat.singleton.AddMessage(new ChatMessage(sender, identifier, message, reply, localChannel.textPrefab));
+        UIChat.singleton.AddMessage(new ChatMessage(sender, identifier, message, reply, localChannel.textPrefab, linkKeys, linkValues));
     }
 
     [TargetRpc]
