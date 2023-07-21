@@ -1599,6 +1599,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipPrefab: {fileID: 171736, guid: f234d5ec9358c46668b3c1b044ba66b8, type: 3}
   text: Guild
+  onClick: 0
 --- !u!114 &40835921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2589,7 +2590,7 @@ MonoBehaviour:
   NpcTrading: {fileID: 74766660}
   NpcGuildManagement: {fileID: 1847768974}
   NpcRevive: {fileID: 104013752}
-  CharacterInfo: {fileID: 1935596274}
+  CharacterInfo: {fileID: 1384156262}
 --- !u!1 &65395846
 GameObject:
   m_ObjectHideFlags: 0
@@ -3424,6 +3425,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipPrefab: {fileID: 171736, guid: f234d5ec9358c46668b3c1b044ba66b8, type: 3}
   text: Merchant
+  onClick: 0
 --- !u!114 &80448146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3655,6 +3657,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipPrefab: {fileID: 171736, guid: f234d5ec9358c46668b3c1b044ba66b8, type: 3}
   text: 
+  onClick: 0
 --- !u!114 &88697202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12363,6 +12366,7 @@ MonoBehaviour:
 
     they will be destroyed
     soon afterwards.'
+  onClick: 0
 --- !u!114 &344438991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15619,6 +15623,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipPrefab: {fileID: 171736, guid: f234d5ec9358c46668b3c1b044ba66b8, type: 3}
   text: Latency (Ping)
+  onClick: 0
 --- !u!1001 &456516675
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16391,6 +16396,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipPrefab: {fileID: 171736, guid: f234d5ec9358c46668b3c1b044ba66b8, type: 3}
   text: Character Info
+  onClick: 0
 --- !u!1 &490569349
 GameObject:
   m_ObjectHideFlags: 0
@@ -22874,6 +22880,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipPrefab: {fileID: 171736, guid: f234d5ec9358c46668b3c1b044ba66b8, type: 3}
   text: 'Auto Attack: makes the pet automatically attack whoever the owner attacks.'
+  onClick: 0
 --- !u!114 &734441055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23798,6 +23805,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipPrefab: {fileID: 171736, guid: f234d5ec9358c46668b3c1b044ba66b8, type: 3}
   text: 
+  onClick: 0
 --- !u!1001 &754663581
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24412,6 +24420,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipPrefab: {fileID: 171736, guid: f234d5ec9358c46668b3c1b044ba66b8, type: 3}
   text: Game Master
+  onClick: 0
 --- !u!114 &791176543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27726,7 +27735,7 @@ RectTransform:
   m_Children:
   - {fileID: 344438989}
   m_Father: {fileID: 1394922959}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -29217,6 +29226,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipPrefab: {fileID: 171736, guid: f234d5ec9358c46668b3c1b044ba66b8, type: 3}
   text: Quests
+  onClick: 0
 --- !u!1 &969076109
 GameObject:
   m_ObjectHideFlags: 0
@@ -29290,6 +29300,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipPrefab: {fileID: 171736, guid: f234d5ec9358c46668b3c1b044ba66b8, type: 3}
   text: 
+  onClick: 0
 --- !u!114 &969076113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30956,6 +30967,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipPrefab: {fileID: 171736, guid: f234d5ec9358c46668b3c1b044ba66b8, type: 3}
   text: Quit
+  onClick: 0
 --- !u!1 &1028880805
 GameObject:
   m_ObjectHideFlags: 0
@@ -31419,6 +31431,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipPrefab: {fileID: 171736, guid: f234d5ec9358c46668b3c1b044ba66b8, type: 3}
   text: Inventory
+  onClick: 0
 --- !u!1 &1036824579
 GameObject:
   m_ObjectHideFlags: 0
@@ -31903,6 +31916,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipPrefab: {fileID: 171736, guid: f234d5ec9358c46668b3c1b044ba66b8, type: 3}
   text: 
+  onClick: 0
 --- !u!114 &1060475984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34620,11 +34634,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hotKey: 105
   panel: {fileID: 1394922958}
-  equipmentPanel: {fileID: 1494038145}
   slotPrefab: {fileID: 8406492716854405801, guid: 45bbc3a468d08614b97b19ba4d87ff1f,
     type: 3}
   inventoryContent: {fileID: 2019394836}
-  equipmentContent: {fileID: 1286002453}
   categories: 0
   goldText: {fileID: 859265873}
   trash: {fileID: 344438995}
@@ -36011,6 +36023,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipPrefab: {fileID: 171736, guid: f234d5ec9358c46668b3c1b044ba66b8, type: 3}
   text: Crafting
+  onClick: 0
 --- !u!114 &1215000662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37684,82 +37697,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1283746886}
   m_CullTransparentMesh: 0
---- !u!1 &1286002452
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1286002453}
-  - component: {fileID: 1286002455}
-  - component: {fileID: 1286002454}
-  m_Layer: 5
-  m_Name: Items
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1286002453
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1286002452}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1494038146}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -1.1999512, y: 157.3}
-  m_SizeDelta: {x: 168, y: 1}
-  m_Pivot: {x: 0.5, y: 1}
---- !u!114 &1286002454
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1286002452}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 2
-  m_VerticalFit: 2
---- !u!114 &1286002455
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1286002452}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 2
-    m_Right: 2
-    m_Top: 2
-    m_Bottom: 2
-  m_ChildAlignment: 1
-  m_StartCorner: 0
-  m_StartAxis: 1
-  m_CellSize: {x: 32, y: 32}
-  m_Spacing: {x: 100, y: 3}
-  m_Constraint: 1
-  m_ConstraintCount: 2
 --- !u!1 &1289470540
 GameObject:
   m_ObjectHideFlags: 0
@@ -38979,6 +38916,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipPrefab: {fileID: 171736, guid: f234d5ec9358c46668b3c1b044ba66b8, type: 3}
   text: Summon Player here.
+  onClick: 0
 --- !u!1 &1321362824
 GameObject:
   m_ObjectHideFlags: 0
@@ -40306,12 +40244,12 @@ RectTransform:
   - {fileID: 898710092}
   - {fileID: 2084586149}
   m_Father: {fileID: 1394922959}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 1, y: -94.34998}
-  m_SizeDelta: {x: -2, y: -253.70001}
+  m_AnchoredPosition: {x: 1, y: -3.7498322}
+  m_SizeDelta: {x: -2, y: -72.50028}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1372931455
 MonoBehaviour:
@@ -40453,6 +40391,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipPrefab: {fileID: 171736, guid: f234d5ec9358c46668b3c1b044ba66b8, type: 3}
   text: 
+  onClick: 0
 --- !u!225 &1377993836
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -41084,7 +41023,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1125266435}
-  - {fileID: 1494038146}
   - {fileID: 914779490}
   - {fileID: 1595752414}
   - {fileID: 1372931454}
@@ -41094,7 +41032,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 688, y: -55.5}
-  m_SizeDelta: {x: 200, y: 507.6}
+  m_SizeDelta: {x: 200, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1394922960
 MonoBehaviour:
@@ -42889,6 +42827,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipPrefab: {fileID: 171736, guid: f234d5ec9358c46668b3c1b044ba66b8, type: 3}
   text: Item Mall
+  onClick: 0
 --- !u!114 &1464521199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43840,44 +43779,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &1494038145
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1494038146}
-  m_Layer: 5
-  m_Name: Equipment
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1494038146
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1494038145}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1952184249}
-  - {fileID: 1286002453}
-  m_Father: {fileID: 1394922959}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1497535040
 GameObject:
   m_ObjectHideFlags: 0
@@ -47471,6 +47372,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipPrefab: {fileID: 171736, guid: f234d5ec9358c46668b3c1b044ba66b8, type: 3}
   text: Party
+  onClick: 0
 --- !u!114 &1591707438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47622,7 +47524,7 @@ RectTransform:
   - {fileID: 1301508910}
   - {fileID: 859265872}
   m_Father: {fileID: 1394922959}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -50107,6 +50009,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipPrefab: {fileID: 171736, guid: f234d5ec9358c46668b3c1b044ba66b8, type: 3}
   text: Skills
+  onClick: 0
 --- !u!1 &1676839188
 GameObject:
   m_ObjectHideFlags: 0
@@ -53903,6 +53806,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipPrefab: {fileID: 171736, guid: f234d5ec9358c46668b3c1b044ba66b8, type: 3}
   text: Warp self to Player
+  onClick: 0
 --- !u!1001 &1799131161
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54833,6 +54737,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipPrefab: {fileID: 171736, guid: f234d5ec9358c46668b3c1b044ba66b8, type: 3}
   text: 'Defend Owner: makes the pet attack whoever attacks the owner.'
+  onClick: 0
 --- !u!114 &1828851005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57353,6 +57258,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 64912804}
     m_Modifications:
+    - target: {fileID: 4739773611627399562, guid: fe4c4929e99c29247b45d069b0a1b589,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -210
+      objectReference: {fileID: 0}
     - target: {fileID: 5670293013693630051, guid: fe4c4929e99c29247b45d069b0a1b589,
         type: 3}
       propertyPath: m_IsActive
@@ -57468,16 +57378,43 @@ PrefabInstance:
       propertyPath: m_Name
       value: CharacterInfo
       objectReference: {fileID: 0}
-    - target: {fileID: 5670293013773223649, guid: fe4c4929e99c29247b45d069b0a1b589,
+    - target: {fileID: 5670293013773223651, guid: fe4c4929e99c29247b45d069b0a1b589,
         type: 3}
-      propertyPath: m_IsActive
+      propertyPath: slotPrefab
+      value: 
+      objectReference: {fileID: 8406492716854405801, guid: 45bbc3a468d08614b97b19ba4d87ff1f,
+        type: 3}
+    - target: {fileID: 5670293013773223651, guid: fe4c4929e99c29247b45d069b0a1b589,
+        type: 3}
+      propertyPath: equipmentPanel
+      value: 
+      objectReference: {fileID: 1935596275}
+    - target: {fileID: 5670293013773223651, guid: fe4c4929e99c29247b45d069b0a1b589,
+        type: 3}
+      propertyPath: equipmentContent
+      value: 
+      objectReference: {fileID: 1935596276}
+    - target: {fileID: 8108746429768443064, guid: fe4c4929e99c29247b45d069b0a1b589,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 168
+      objectReference: {fileID: 0}
+    - target: {fileID: 8108746429768443064, guid: fe4c4929e99c29247b45d069b0a1b589,
+        type: 3}
+      propertyPath: m_SizeDelta.y
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe4c4929e99c29247b45d069b0a1b589, type: 3}
---- !u!1 &1935596274 stripped
+--- !u!1 &1935596275 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 5670293013773223649, guid: fe4c4929e99c29247b45d069b0a1b589,
+  m_CorrespondingSourceObject: {fileID: 7948195865138014268, guid: fe4c4929e99c29247b45d069b0a1b589,
+    type: 3}
+  m_PrefabInstance: {fileID: 1935596273}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &1935596276 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8108746429768443064, guid: fe4c4929e99c29247b45d069b0a1b589,
     type: 3}
   m_PrefabInstance: {fileID: 1935596273}
   m_PrefabAsset: {fileID: 0}
@@ -58283,79 +58220,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 2.3}
   m_SizeDelta: {x: 0, y: 20.75}
   m_Pivot: {x: 0.5, y: 0}
---- !u!1 &1952184248
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1952184249}
-  - component: {fileID: 1952184251}
-  - component: {fileID: 1952184250}
-  m_Layer: 5
-  m_Name: ImageAvatar
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1952184249
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1952184248}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1494038146}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.1999512, y: 137.1}
-  m_SizeDelta: {x: 128, y: 128}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1952184250
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1952184248}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Texture: {fileID: 8400000, guid: 6e90ee2e1c49b4213bb3503fbc6ed2fe, type: 2}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
---- !u!222 &1952184251
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1952184248}
-  m_CullTransparentMesh: 0
 --- !u!1001 &1952577576
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -59542,6 +59406,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipPrefab: {fileID: 171736, guid: f234d5ec9358c46668b3c1b044ba66b8, type: 3}
   text: 
+  onClick: 0
 --- !u!1 &1994211459
 GameObject:
   m_ObjectHideFlags: 0
@@ -63854,6 +63719,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipPrefab: {fileID: 171736, guid: f234d5ec9358c46668b3c1b044ba66b8, type: 3}
   text: Unsummon the pet. Only allowed while not fighting.
+  onClick: 0
 --- !u!114 &2139468069
 MonoBehaviour:
   m_ObjectHideFlags: 0
