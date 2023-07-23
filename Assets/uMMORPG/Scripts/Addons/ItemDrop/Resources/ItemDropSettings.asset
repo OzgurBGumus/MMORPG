@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fa14517b5bce824cb25831977640514, type: 3}
+  m_Name: ItemDropSettings
+  m_EditorClassIdentifier: 
+  isInstalled: 0
+  uniqueItem: {r: 0.85490197, g: 0.64705884, b: 0.1254902, a: 1}
+  rareItem: {r: 0.11764706, g: 0.5647059, b: 1, a: 1}
+  normalItem: {r: 1, g: 1, b: 1, a: 1}
+  gold: {r: 0.4117647, g: 0.4117647, b: 0.4117647, a: 1}
+  label: {r: 0, g: 0, b: 0, a: 0.7254902}
+  highlightedLabel: {r: 0.09803922, g: 0.09803922, b: 0.4392157, a: 1}
+  itemTag: Item
+  itemMask:
+    serializedVersion: 2
+    m_Bits: 32768
+  labelMask:
+    serializedVersion: 2
+    m_Bits: 131072
+  pointMask:
+    serializedVersion: 2
+    m_Bits: 65536
+  itemHighlightKey: 308
+  highlightAlways: 1
+  itemPickupKey: 102
+  itemLinkKey: 306
+  decayTime: 3600
+  saveInterval: 1800
+  labelCamera: {fileID: 7694487021227441202, guid: 775fb953214b06d4f80352130c1fa6d5,
+    type: 3}
+  lootManager: {fileID: 3942045149419048180, guid: 0ea19813f7ca9a0419cdad058f37f166,
+    type: 3}
+  itemPrefab: {fileID: 1274669810748452, guid: ac443a514deaf1c429eeb672bc54aa0a, type: 3}
+  itemPart: {fileID: 2971702248113940294, guid: 775c1299177e07a4abca0bce84a29c18,
+    type: 3}
+  itemLabel: {fileID: 7618101312434122072, guid: ebe76d32b52678a4eb61f4c9a20c0f3b,
+    type: 3}
+  folderPrefabs: Assets/uMMORPG/Scripts/Addons/ItemDrop/Prefabs/Items
+  itemDropSpeed: 2
+  itemDropRadius: 3
+  labelVisibilityRange: 15
+  itemPickupRadius: 4
+  pixelsPerUnit: 13.47
+  fitLabelsIntoScreen: 1
+  showMessages: 1
+  individualLoot: 1
+  goldLoss:
+    isActive: 0
+    percentageLoss: 50
+  itemLoss:
+    isActive: 0
+    amount: 1

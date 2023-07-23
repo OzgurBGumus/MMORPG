@@ -13,6 +13,14 @@ MonoBehaviour:
   m_Name: Archer Boots
   m_EditorClassIdentifier: 
   rarity: 1
+  gold: 0
+  prefab: {fileID: 322981974380160318, guid: 8bfe38abe01432643b4e7f6f7d418e86, type: 3}
+  offsetX: 0
+  offsetY: 0
+  offsetZ: 0
+  rotX: -90
+  rotY: 0
+  rotZ: 0
   category: 13
   maxStack: 1
   maxDurability: 1000
@@ -59,7 +67,6 @@ MonoBehaviour:
   minLevel: 1
   cooldown: 0
   _cooldownCategory: 
-  materials: []
   difficultyOfEnchantment: 1
   considerItemLevel: 0
   healthBonus: 0

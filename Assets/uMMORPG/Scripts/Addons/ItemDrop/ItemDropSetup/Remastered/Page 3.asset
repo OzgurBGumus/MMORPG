@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0ccb5b9faa8a514fb2e7bf037bb48a3, type: 3}
+  m_Name: Page 3
+  m_EditorClassIdentifier: 
+  title: Step 5
+  description: 
+  path: Assets/uMMORPG/Scripts
+  fileName: Monster.cs
+  text:
+  - installed: 0
+    search: "protected override void UpdateClient()\n    {\n        if (state ==
+      \"CASTING\")\n        {\n            // keep looking at the target for server
+      & clients (only Y rotation)\n            if (target)\n                movement.LookAtY(target.transform.position);\n       
+      }\n    }"
+    replace: "protected override void UpdateClient()\n    {\n        if (state ==
+      \"CASTING\")\n        {\n            // keep looking at the target for server
+      & clients (only Y rotation)\n            if (target)\n                movement.LookAtY(target.transform.position);\n       
+      }\r\n#if ITEM_DROP_R\n        UpdateClient_ItemDrop();\n#endif\n    }"
+  - installed: 0
+    search: "else if (health.current == 0 &&\r\n                 Utils.ClosestDistance(player,
+      this) <= player.interactionRange &&\r\n                 inventory.HasLoot())\r\n       
+      {\r\n            UILoot.singleton.Show();\r\n        }"
+    replace: "/*\r\n        else if (health.current == 0 &&\r\n                 Utils.ClosestDistance(player,
+      this) <= player.interactionRange &&\r\n                 inventory.HasLoot())\r\n       
+      {\r\n            UILoot.singleton.Show();\r\n        }\r\n        */"

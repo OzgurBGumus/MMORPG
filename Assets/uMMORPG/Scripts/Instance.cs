@@ -100,7 +100,17 @@ public class Instance : MonoBehaviour
             Collider co = hitsBuffer[i];
             NetworkIdentity identity = co.GetComponentInParent<NetworkIdentity>();
             if (identity != null)
+            {
+                if (identity.CompareTag(ItemDropSettings.Settings.itemTag))
+                {
+                    if (identity.TryGetComponent(out ItemDrop item))
+                    {
+                        AddonItemDrop.DeleteItem(item.uniqueId);
+                    }
+                }
                 NetworkServer.Destroy(identity.gameObject);
+            }
+
         }
     }
 

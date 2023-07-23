@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0ccb5b9faa8a514fb2e7bf037bb48a3, type: 3}
+  m_Name: Page 1
+  m_EditorClassIdentifier: 
+  title: Step 1
+  description: 
+  path: Assets/uMMORPG/Scripts/MovementSystems
+  fileName: PlayerCharacterControllerMovement.cs
+  text:
+  - installed: 0
+    search: "public override void Navigate(Vector3 destination, float stoppingDistance)\r\n   
+      {\r\n        // character controller movement doesn't allow navigation (yet)\r\n   
+      }"
+    replace: "public override void Navigate(Vector3 destination, float stoppingDistance)\r\n   
+      {\r\n        // character controller movement doesn't allow navigation (yet)\r\n       
+      if (player.targetItem != null)\r\n        {\r\n            StartCoroutine(GoToItem(destination,
+      stoppingDistance));\r\n        }\r\n    }\r\n\r\n    System.Collections.IEnumerator
+      GoToItem(Vector3 destination, float stoppingDistance)\r\n    {\r\n        Quaternion
+      rotation = Quaternion.LookRotation(destination - transform.position);\r\n       
+      rotation.x = 0;\r\n        rotation.z = 0;\r\n\r\n        while (player.targetItem
+      != null)\r\n        {\r\n            yield return AddonItemDrop.FixedUpdate;\r\n\r\n           
+      if (!player.IsMovementAllowed())\r\n            {\r\n                player.targetItem
+      = null;\r\n                yield break;\r\n            }\r\n\r\n           
+      if (GetInputDirection() != Vector2.zero)\r\n            {\r\n               
+      player.targetItem = null;\r\n                yield break;\r\n            }\r\n\r\n           
+      if (stoppingDistance >= Vector3.Distance(transform.position, destination))\r\n               
+      yield break;\r\n\r\n            bool blocked = UnityEngine.AI.NavMesh.Raycast(transform.position,
+      destination, out var hit, 1);\r\n            if (!blocked)\r\n            {               
+      \r\n                float step = runSpeed * Time.deltaTime;\r\n               
+      transform.rotation = Quaternion.Slerp(transform.rotation, rotation, step);\r\n\r\n               
+      Vector2 inputDir = new Vector2(0, 1f);\r\n                Vector3 desiredDir
+      = GetDesiredDirection(inputDir);\r\n                \r\n                if
+      (state == MoveState.IDLE) state = UpdateIDLE(inputDir, desiredDir);\r\n               
+      else if (state == MoveState.RUNNING) state = UpdateRUNNING(inputDir, desiredDir);\r\n               
+      else if (state == MoveState.AIRBORNE) state = UpdateAIRBORNE(inputDir, desiredDir);\r\n               
+      else if (state == MoveState.SWIMMING) state = UpdateSWIMMING(inputDir, desiredDir);\r\n               
+      else if (state == MoveState.MOUNTED) state = UpdateMOUNTED(inputDir, desiredDir);\r\n               
+      else if (state == MoveState.MOUNTED_AIRBORNE) state = UpdateMOUNTED_AIRBORNE(inputDir,
+      desiredDir);\r\n                else if (state == MoveState.MOUNTED_SWIMMING)
+      state = UpdateMOUNTED_SWIMMING(inputDir, desiredDir);\r\n                else
+      if (state == MoveState.DEAD) state = UpdateDEAD(inputDir, desiredDir);\r\n               
+      else Debug.LogError(\"Unhandled Movement State: \" + state);\r\n               
+      \r\n                if (!controller.isGrounded) lastFall = controller.velocity;\r\n\r\n               
+      controller.Move(moveDir * Time.fixedDeltaTime);\r\n                velocity
+      = controller.velocity;\r\n\r\n                CmdFixedMove(new Move(route,
+      state, transform.position, transform.rotation.eulerAngles.y));\r\n\r\n               
+      float runCycle = Mathf.Repeat(animator.GetCurrentAnimatorStateInfo(0).normalizedTime
+      + runCycleLegOffset, 1);\r\n                jumpLeg = runCycle < 0.5f ? 1 :
+      -1;\r\n\r\n                jumpKeyPressed = false;                \r\n           
+      }\r\n            else\r\n            {\r\n                player.indicator?.SetViaParent(player.transform);\r\n               
+      player.targetItem = null;\r\n                yield break;\r\n            }\r\n       
+      }\r\n    }"
+  - installed: 0
+    search: camera = Camera.main;
+    replace: "camera = Camera.main;\r\n\r\n        viewBlockingLayers = AddonItemDrop.DisableLayers(viewBlockingLayers);"

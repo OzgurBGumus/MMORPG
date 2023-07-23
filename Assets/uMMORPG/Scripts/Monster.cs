@@ -518,6 +518,10 @@ public partial class Monster : Entity
             }
                 
         }
+    #if ITEM_DROP_R
+    UpdateClient_ItemDrop();
+    #endif
+
     }
 
     // DrawGizmos can be used for debug info
@@ -605,12 +609,12 @@ public partial class Monster : Entity
         }
         // dead, has loot, close enough?
         // use collider point(s) to also work with big entities
-        else if (health.current == 0 &&
-                 Utils.ClosestDistance(player, this) <= player.interactionRange &&
-                 inventory.HasLoot())
-        {
-            UILoot.singleton.Show();
-        }
+        //else if (health.current == 0 &&
+        //         Utils.ClosestDistance(player, this) <= player.interactionRange &&
+        //         inventory.HasLoot())
+        //{
+        //    UILoot.singleton.Show();
+        //}
         // otherwise just walk there
         // (e.g. if clicking on it in a safe zone where we can't attack)
         else

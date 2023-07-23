@@ -13,6 +13,14 @@ MonoBehaviour:
   m_Name: Arrow
   m_EditorClassIdentifier: 
   rarity: 0
+  gold: 0
+  prefab: {fileID: 109900, guid: 0f4948efce538432191cef46aef01d26, type: 3}
+  offsetX: -0.3
+  offsetY: 0
+  offsetZ: 0
+  rotX: 0
+  rotY: 90
+  rotZ: 0
   category: 5
   maxStack: 5000
   maxDurability: 0
@@ -38,7 +46,6 @@ MonoBehaviour:
   minLevel: 1
   cooldown: 0
   _cooldownCategory: 
-  materials: []
   difficultyOfEnchantment: 1
   considerItemLevel: 0
   healthBonus: 0

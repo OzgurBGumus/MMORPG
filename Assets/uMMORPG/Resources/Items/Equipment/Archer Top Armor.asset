@@ -13,6 +13,14 @@ MonoBehaviour:
   m_Name: Archer Top Armor
   m_EditorClassIdentifier: 
   rarity: 1
+  gold: 0
+  prefab: {fileID: 1706230180450481635, guid: f85b36292d670fc43b4a8ab311d8b551, type: 3}
+  offsetX: 0
+  offsetY: 0
+  offsetZ: -1.5
+  rotX: 0
+  rotY: 0
+  rotZ: -180
   category: 14
   maxStack: 1
   maxDurability: 1000
@@ -59,7 +67,6 @@ MonoBehaviour:
   minLevel: 1
   cooldown: 0
   _cooldownCategory: 
-  materials: []
   difficultyOfEnchantment: 1
   considerItemLevel: 0
   healthBonus: 0

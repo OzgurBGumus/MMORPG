@@ -13,6 +13,14 @@ MonoBehaviour:
   m_Name: Warrior Gloves
   m_EditorClassIdentifier: 
   rarity: 1
+  gold: 0
+  prefab: {fileID: 5287146433477747558, guid: ca4ba48125b2aa348b9f2fc386fe9334, type: 3}
+  offsetX: -0.65
+  offsetY: -1.4
+  offsetZ: 0
+  rotX: 0
+  rotY: 0
+  rotZ: 0
   category: 12
   maxStack: 1
   maxDurability: 1000
@@ -47,11 +55,15 @@ MonoBehaviour:
     <i>Sells
     for: {SELLPRICE} Gold</i>'
   image: {fileID: 21300000, guid: 496c3159dd4584e3c8bd5b886097f454, type: 3}
+  upgradeBonusesPercent: []
+  upgradeChances: []
   race: 0
   clases: 0
   minLevel: 1
   cooldown: 0
   _cooldownCategory: 
+  difficultyOfEnchantment: 1
+  considerItemLevel: 0
   healthBonus: 0
   manaBonus: 0
   damageBonus: 0

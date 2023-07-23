@@ -25,9 +25,12 @@ public partial class UIChat : MonoBehaviour
 
     private void Awake()
     {
-        inputFromBackend = false;
-        messageInput.onValueChanged.AddListener(HandleValueChanged);
-        messageInput.inputValidator = new TMP_InputValidation();
+        if(messageInput != null)
+        {
+            inputFromBackend = false;
+            messageInput.onValueChanged.AddListener(HandleValueChanged);
+            messageInput.inputValidator = new TMP_InputValidation();
+        }
     }
 
     void Update()

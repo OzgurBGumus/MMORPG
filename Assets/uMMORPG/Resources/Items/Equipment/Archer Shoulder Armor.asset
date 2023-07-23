@@ -13,6 +13,14 @@ MonoBehaviour:
   m_Name: Archer Shoulder Armor
   m_EditorClassIdentifier: 
   rarity: 1
+  gold: 0
+  prefab: {fileID: 56495151115380956, guid: a0e39d642ec056f4fac7e873a37bc81e, type: 3}
+  offsetX: 0
+  offsetY: 0
+  offsetZ: -1.5
+  rotX: 0
+  rotY: 0
+  rotZ: -180
   category: 0
   maxStack: 1
   maxDurability: 1000
@@ -59,7 +67,6 @@ MonoBehaviour:
   minLevel: 1
   cooldown: 0
   _cooldownCategory: 
-  materials: []
   difficultyOfEnchantment: 1
   considerItemLevel: 0
   healthBonus: 0

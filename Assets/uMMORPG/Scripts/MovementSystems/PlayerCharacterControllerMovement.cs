@@ -210,6 +210,10 @@ public class PlayerCharacterControllerMovement : Movement
 
     public override void Navigate(Vector3 destination, float stoppingDistance)
     {
+        if (player.targetItem != null)
+        {
+            StartCoroutine(GoToItem(destination, stoppingDistance));
+        }
         // character controller movement doesn't allow navigation (yet)
     }
 
@@ -236,6 +240,7 @@ public class PlayerCharacterControllerMovement : Movement
     void Awake()
     {
         camera = Camera.main;
+        viewBlockingLayers = AddonItemDrop.DisableLayers(viewBlockingLayers);
     }
 
     void Start()
@@ -1625,4 +1630,59 @@ public class PlayerCharacterControllerMovement : Movement
     {
         camera.transform.SetParent(transform, false);
     }
+
+    System.Collections.IEnumerator GoToItem(Vector3 destination, float stoppingDistance)
+    {
+        Quaternion rotation = Quaternion.LookRotation(destination - transform.position);
+        rotation.x = 0;
+        rotation.z = 0;
+        while (player.targetItem != null)
+        {
+            yield return AddonItemDrop.FixedUpdate;
+            if (!player.IsMovementAllowed())
+            {
+                player.targetItem = null;
+                yield break;
+            }
+            if (GetInputDirection() != Vector2.zero)
+            {
+                player.targetItem = null;
+                yield break;
+            }
+            if (stoppingDistance >= Vector3.Distance(transform.position, destination))
+                yield break;
+            bool blocked = UnityEngine.AI.NavMesh.Raycast(transform.position, destination, out var hit, 1);
+            if (!blocked)
+            {
+                float step = runSpeed * Time.deltaTime;
+                transform.rotation = Quaternion.Slerp(transform.rotation, rotation, step);
+                Vector2 inputDir = new Vector2(0, 1f);
+                Vector3 desiredDir = GetDesiredDirection(inputDir);
+                if (state == MoveState.IDLE) state = UpdateIDLE(inputDir, desiredDir);
+                else if (state == MoveState.RUNNING) state = UpdateRUNNING(inputDir, desiredDir);
+                else if (state == MoveState.AIRBORNE) state = UpdateAIRBORNE(inputDir, desiredDir);
+                else if (state == MoveState.SWIMMING) state = UpdateSWIMMING(inputDir, desiredDir);
+                else if (state == MoveState.MOUNTED) state = UpdateMOUNTED(inputDir, desiredDir);
+                else if (state == MoveState.MOUNTED_AIRBORNE) state = UpdateMOUNTED_AIRBORNE(inputDir, desiredDir);
+                else if (state == MoveState.MOUNTED_SWIMMING) state = UpdateMOUNTED_SWIMMING(inputDir, desiredDir);
+                else if (state == MoveState.DEAD) state = UpdateDEAD(inputDir, desiredDir);
+                else Debug.LogError("Unhandled Movement State: " + state);
+                if (!controller.isGrounded) lastFall = controller.velocity;
+                controller.Move(moveDir * Time.fixedDeltaTime);
+                velocity = controller.velocity;
+                CmdFixedMove(new Move(route, state, transform.position, transform.rotation.eulerAngles.y));
+                float runCycle = Mathf.Repeat(animator.GetCurrentAnimatorStateInfo(0).normalizedTime +
+                runCycleLegOffset, 1);
+                jumpLeg = runCycle < 0.5f ? 1 : -1;
+                jumpKeyPressed = false;
+            }
+            else
+            {
+                player.indicator?.SetViaParent(player.transform);
+                player.targetItem = null;
+                yield break;
+            }
+        }
+    }
+
 }

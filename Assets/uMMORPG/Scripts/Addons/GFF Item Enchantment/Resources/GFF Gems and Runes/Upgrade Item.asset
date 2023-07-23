@@ -12,31 +12,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42d7ce18a5aefd846a8e905a736474b4, type: 3}
   m_Name: Upgrade Item
   m_EditorClassIdentifier: 
-  Group: 
-  subGroup: 
-  auction: 1
-  isPremiumItem: 0
-  BonusExp: 0
-  BonusExpSkill: 0
-  BonusDrop: 0
-  BonusGold: 0
-  durability: 1
-  destroyIfDurabilityEnd: 0
-  rarityType: 0
-  itemWeight: 1
-  canSendOnMail: 1
-  description: 
+  rarity: 0
+  gold: 0
+  prefab: {fileID: 0}
+  offsetX: 0
+  offsetY: 0
+  offsetZ: 0
+  rotX: 0
+  rotY: 0
+  rotZ: 0
+  category: 0
   maxStack: 99
+  maxDurability: 0
   buyPrice: 1
   sellPrice: 1
   itemMallPrice: 1
   sellable: 1
   tradable: 1
   destroyable: 1
-  toolTip: "<b>{NAME}</b>\ncan be used on: Close and long range weapons\r\nattribute:
-    Increases attack power\n\nTradable: {TRADABLE}\n\nPrice: {BUYPRICE} Gold\n<i>Sells
-    for: {SELLPRICE} Gold</i>"
+  toolTip: '<b>{NAME}</b>
+
+    can be used on: Close and long range weapons
+
+    attribute:
+    Increases attack power
+
+
+    Tradable: {TRADABLE}
+
+
+    Price: {BUYPRICE} Gold
+
+    <i>Sells
+    for: {SELLPRICE} Gold</i>'
   image: {fileID: 21300000, guid: db786fe9e05c144df87a459618de3aa5, type: 3}
+  upgradeBonusesPercent: []
+  upgradeChances: []
+  race: 0
+  clases: 0
   minLevel: 0
   cooldown: 0
   _cooldownCategory: 

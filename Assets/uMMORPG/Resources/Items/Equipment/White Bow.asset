@@ -13,6 +13,14 @@ MonoBehaviour:
   m_Name: White Bow
   m_EditorClassIdentifier: 
   rarity: 2
+  gold: 0
+  prefab: {fileID: 158574, guid: dc4770faca127481a9e26e78f01c6dee, type: 3}
+  offsetX: 0
+  offsetY: 0
+  offsetZ: 0
+  rotX: 180
+  rotY: 0
+  rotZ: 90
   category: 6
   maxStack: 1
   maxDurability: 1000

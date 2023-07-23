@@ -12,21 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48accaeb8682847f29f12fab972a2710, type: 3}
   m_Name: Cloth bag
   m_EditorClassIdentifier: 
-  auction: 1
-  fishingExp: 20
-  isPremiumItem: 0
-  recoveryOption: 0
-  recoveryTime: 3
-  probabilitySuccess: 0.9
-  restorationCost: 1
-  restorationItems: []
-  destroyIfDurabilityEnd: 0
   rarity: 0
-  itemWeight: 0
-  canSendOnMail: 0
-  canPutInTheStorageGuild: 1
-  canPutInTheStorage: 1
-  description: 
+  gold: 0
+  prefab: {fileID: 0}
+  offsetX: 0
+  offsetY: 0
+  offsetZ: 0
+  rotX: 0
+  rotY: 0
+  rotZ: 0
+  category: 0
   maxStack: 0
   maxDurability: 0
   buyPrice: 0
@@ -37,47 +32,15 @@ MonoBehaviour:
   destroyable: 0
   toolTip: 
   image: {fileID: 0}
+  upgradeBonusesPercent: []
+  upgradeChances: []
   race: 0
   clases: 0
   minLevel: 0
   cooldown: 0
   _cooldownCategory: 
-  armorType: 0
-  stunChanceBonus: 0
-  loweringBlockChance: 0
-  loweringCriticalChance: 0
-  loweringStunChance: 0
-  attackRangeBonus: 0
-  attackSpeedBonus: 0
-  healthPercent: 0
-  manaPercent: 0
-  staminaPercent: 0
-  damagePercent: 0
-  defensePercent: 0
-  requiredCombatSkill: {fileID: 0}
-  requiredLevel: 1
-  accuracyBonus: 0
-  dodgeBonus: 0
-  damageMinBonus: 0
-  damageMaxBonus: 0
-  moveSpeedBonus: 0
-  vampirismHealthBonus: 0
-  elementAndBonus:
-    elementType: 0
-    elementDamageBonus: 0
-  fireResistance: 0
-  waterResistance: 0
-  windResistance: 0
-  earthResistance: 0
-  reducedFishingTime: 0
-  loweringGatheringTime: 0
-  _addSlots: 0
-  runes: []
   difficultyOfEnchantment: 1
   considerItemLevel: 0
-  weightBonus: 0
-  staminaBonus: 0
-  category: 
   healthBonus: 0
   manaBonus: 0
   damageBonus: 0
