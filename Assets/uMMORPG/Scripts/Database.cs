@@ -361,7 +361,8 @@ public partial class Database : MonoBehaviour
 
         // then load valid items and put into their slots
         // (one big query is A LOT faster than querying each slot separately)
-        foreach (character_inventory row in connection.Query<character_inventory>("SELECT * FROM character_inventory WHERE character=?", inventory.name))
+        List<character_inventory> inventoryItems = connection.Query<character_inventory>("SELECT * FROM character_inventory WHERE character=?", inventory.name);
+        foreach (character_inventory row in inventoryItems)
         {
             if (row.slot < inventory.size)
             {
