@@ -34,8 +34,8 @@ public class LootLabelLayout
         {
             ItemDrop loot = entry.Key;
             Label label = entry.Value;
-
-            Vector3 position = loot.transform.position + loot.TitleOffset;
+            Vector3 position = loot.transform.position;
+            position.y = position.y - 0.1f;
             Vector2 viewportPoint = LootManager.instance.mainCamera.WorldToViewportPoint(position);
             Vector2 worldPoint = LootManager.instance.labelCamera.ViewportToWorldPoint(viewportPoint);
             label.Show(worldPoint, loot.Title);
