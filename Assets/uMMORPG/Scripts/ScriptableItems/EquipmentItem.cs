@@ -37,33 +37,6 @@ public partial class EquipmentItem : UsableItem
         return -1;
     }
 
-    public override void Use(Player player, int inventoryIndex)
-    {
-        // always call base function too
-        base.Use(player, inventoryIndex);
-
-        // find a slot that accepts this category, then equip it
-        int equipmentIndex = FindEquipableSlotFor(player, inventoryIndex);
-        if (equipmentIndex != -1)
-        {
-            ItemSlot inventorySlot = player.inventory.slots[inventoryIndex];
-            ItemSlot equipmentSlot = player.equipment.slots[equipmentIndex];
-
-            // merge? check Equals because name AND dynamic variables matter (petLevel etc.)
-            // => merge is important when dragging more arrows into an arrow slot!
-            if (inventorySlot.amount > 0 && equipmentSlot.amount > 0 &&
-                inventorySlot.item.Equals(equipmentSlot.item))
-            {
-                ((PlayerEquipment)player.equipment).MergeInventoryEquip(inventoryIndex, equipmentIndex);
-            }
-            // swap?
-            else
-            {
-                ((PlayerEquipment)player.equipment).SwapInventoryEquip(inventoryIndex, equipmentIndex);
-            }
-        }
-    }
-
     // tooltip
     public override string ToolTip()
     {

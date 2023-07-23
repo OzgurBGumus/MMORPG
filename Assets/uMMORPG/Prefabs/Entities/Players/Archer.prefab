@@ -790,7 +790,7 @@ MonoBehaviour:
   - requiredCategory: 0
     location: {fileID: 7959201922250125787}
     defaultItem:
-      item: {fileID: 11400000, guid: 173f216f5a6989b44967f7da10aa7d06, type: 2}
+      item: {fileID: 0}
       amount: 1
   - requiredCategory: 12
     location: {fileID: 2839232906101701881}
@@ -801,6 +801,36 @@ MonoBehaviour:
     location: {fileID: 3234991683164535446}
     defaultItem:
       item: {fileID: 11400000, guid: f948f3abf7bba37478f1b366b3da2cee, type: 2}
+      amount: 1
+  - requiredCategory: 17
+    location: {fileID: 0}
+    defaultItem:
+      item: {fileID: 0}
+      amount: 1
+  - requiredCategory: 0
+    location: {fileID: 0}
+    defaultItem:
+      item: {fileID: 0}
+      amount: 1
+  - requiredCategory: 19
+    location: {fileID: 8613461014104339036}
+    defaultItem:
+      item: {fileID: 0}
+      amount: 1
+  - requiredCategory: 19
+    location: {fileID: 8613461014104339036}
+    defaultItem:
+      item: {fileID: 0}
+      amount: 1
+  - requiredCategory: 18
+    location: {fileID: 0}
+    defaultItem:
+      item: {fileID: 0}
+      amount: 1
+  - requiredCategory: 18
+    location: {fileID: 2839232906101701881}
+    defaultItem:
+      item: {fileID: 0}
       amount: 1
 --- !u!114 &7224164981670902446
 MonoBehaviour:
