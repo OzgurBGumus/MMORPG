@@ -3,7 +3,7 @@ using Mirror;
 using UnityEditor;
 
 [RequireComponent(typeof(PlayerTrading))]
-public class PlayerInventory : Inventory
+public partial class PlayerInventory : Inventory
 {
     [Header("Components")]
     public Player player;

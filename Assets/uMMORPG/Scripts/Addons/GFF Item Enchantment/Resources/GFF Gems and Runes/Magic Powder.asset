@@ -13,6 +13,14 @@ MonoBehaviour:
   m_Name: Magic Powder
   m_EditorClassIdentifier: 
   rarity: 0
+  gold: 0
+  prefab: {fileID: 0}
+  offsetX: 0
+  offsetY: 0
+  offsetZ: 0
+  rotX: 0
+  rotY: 0
+  rotZ: 0
   category: 20
   maxStack: 99
   maxDurability: 0

@@ -12,25 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6b33fe956fe7cc46ae8d608dfd1b27b, type: 3}
   m_Name: Rune Extract
   m_EditorClassIdentifier: 
-  itemType: 13
-  subType: 0
-  auction: 1
-  isPremiumItem: 0
-  BonusExp: 0
-  BonusExpSkill: 0
-  BonusDrop: 0
-  BonusGold: 0
-  maxDurability: 0
-  destroyIfDurabilityEnd: 0
-  canBeRestored: 0
-  restorationCost: 1
-  canRestoreDurabilityOtherItems: 0
-  addDurabilityValue: 1
   rarity: 0
-  itemWeight: 1
-  canSendOnMail: 1
-  description: 
+  gold: 0
+  prefab: {fileID: 0}
+  offsetX: 0
+  offsetY: 0
+  offsetZ: 0
+  rotX: 0
+  rotY: 0
+  rotZ: 0
+  category: 0
   maxStack: 99
+  maxDurability: 0
   buyPrice: 10
   sellPrice: 1
   itemMallPrice: 5
@@ -50,7 +43,9 @@ MonoBehaviour:
 
     <i>Sells for: {SELLPRICE} Gold</i>'
   image: {fileID: 21300000, guid: b390bab1f3d5446ffbe91f691e25184d, type: 3}
-  runeType: 0
-  runeName: Extract
+  upgradeBonusesPercent: []
+  upgradeChances: []
+  upgradeMaterialType: 0
+  materialName: 
   textInfo: 
-  effect: 00000000000000000000000000000000000000000000000000000000
+  chanceOfUpgrade: 0

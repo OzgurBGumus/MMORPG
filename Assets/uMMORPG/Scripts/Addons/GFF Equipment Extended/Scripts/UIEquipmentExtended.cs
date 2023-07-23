@@ -60,7 +60,7 @@ public partial class UIEquipmentExtended : MonoBehaviour
             if (panel.activeSelf)
             {
                 // refresh all equipment items
-                for (int i = 0; i < 16; ++i)
+                for (int i = 0; i < content.childCount; ++i)
                 {
                     UniversalSlot slot = content.GetChild(i).transform.GetChild(0).GetComponent<UniversalSlot>();
                     slot.dragAndDropable.name = i.ToString(); // drag and drop slot

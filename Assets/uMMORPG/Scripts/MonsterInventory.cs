@@ -2,7 +2,7 @@
 using Mirror;
 
 [DisallowMultipleComponent]
-public class MonsterInventory : Inventory
+public partial class MonsterInventory : Inventory
 {
     [Header("Components")]
     public Monster monster;
@@ -16,21 +16,21 @@ public class MonsterInventory : Inventory
     //       it's better than .RemoveAt() because we won't run into index-out-of
     //       range issues
 
-    [ClientCallback]
-    void Update()
-    {
-        // show loot indicator on clients while it still has items
-        if (lootIndicator != null)
-        {
-            // only set active once. we don't want to reset the particle
-            // system all the time.
-            bool hasLoot = HasLoot();
-            if (hasLoot && !lootIndicator.isPlaying)
-                lootIndicator.Play();
-            else if (!hasLoot && lootIndicator.isPlaying)
-                lootIndicator.Stop();
-        }
-    }
+    //[ClientCallback]
+    //void Update()
+    //{
+    //    // show loot indicator on clients while it still has items
+    //    if (lootIndicator != null)
+    //    {
+    //        // only set active once. we don't want to reset the particle
+    //        // system all the time.
+    //        bool hasLoot = HasLoot();
+    //        if (hasLoot && !lootIndicator.isPlaying)
+    //            lootIndicator.Play();
+    //        else if (!hasLoot && lootIndicator.isPlaying)
+    //            lootIndicator.Stop();
+    //    }
+    //}
 
     // other scripts need to know if it still has valid loot (to show UI etc.)
     public bool HasLoot()
@@ -52,5 +52,9 @@ public class MonsterInventory : Inventory
                 Item item = new Item(itemChance.item);
                 slots.Add(new ItemSlot(item));
             }
+    #if ITEM_DROP_R
+            OnDeath_ItemDrop();
+    #endif
+
     }
 }

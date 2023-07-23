@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0ccb5b9faa8a514fb2e7bf037bb48a3, type: 3}
+  m_Name: Page 2
+  m_EditorClassIdentifier: 
+  title: Step 2
+  description: 
+  path: Assets/uMMORPG/Scripts/MovementSystems
+  fileName: PlayerNavMeshMovement.cs
+  text:
+  - installed: 0
+    search: "if (horizontal != 0 || vertical != 0)\n            {"
+    replace: "if (horizontal != 0 || vertical != 0)\n            {\n               
+      if (player.targetItem != null)\n                {\n                    player.targetItem
+      = null;\n                }"
+  - installed: 0
+    search: Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+    replace: "if (player.lockRaycast)\r\n                return;\r\n\r\n           
+      Ray ray = cam.ScreenPointToRay(Input.mousePosition);"
+  - installed: 0
+    search: "// otherwise navigate there\r\n                    else Navigate(bestDestination,
+      0);"
+    replace: "// otherwise navigate there\r\n                    else Navigate(bestDestination,
+      0);\r\n\r\n                    if (player.targetItem != null)\r\n                   
+      {\r\n                        player.targetItem = null;\r\n                   
+      }"

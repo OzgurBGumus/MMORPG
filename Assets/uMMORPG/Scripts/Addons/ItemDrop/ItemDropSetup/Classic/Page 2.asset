@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0ccb5b9faa8a514fb2e7bf037bb48a3, type: 3}
+  m_Name: Page 2
+  m_EditorClassIdentifier: 
+  title: Step 2
+  description: 
+  path: Assets/uMMORPG/Scripts
+  fileName: Player.cs
+  text:
+  - installed: 0
+    search: "if (Input.GetKeyDown(cancelActionKey))\n                {\n                   
+      agent.ResetPath(); // reset locally because we use rubberband movement\n                   
+      CmdCancelAction();\n                }"
+    replace: "/*\r\n                if (Input.GetKeyDown(cancelActionKey))\r\n               
+      {\r\n                    agent.ResetPath(); // reset locally because we use
+      rubberband movement\r\n                    CmdCancelAction();\r\n               
+      }\r\n                */\r\n                if (Input.GetKeyDown(cancelActionKey))\r\n               
+      {\r\n                    CancelAction();\r\n                }\r\n\r\n               
+      if (Input.GetKeyDown(ItemDropSettings.Settings.itemPickupKey))\r\n               
+      {\r\n                    if (!Utils.IsCursorOverUserInterface() && Input.touchCount
+      <= 1)\r\n                    {\r\n                        FindNearestItem();\r\n                   
+      }\r\n                }\r\n\r\n                if (EventMoveEnd())\r\n               
+      {\r\n                    if (targetItem != null)\r\n                    {\r\n                       
+      // check distance between character and target item\r\n                       
+      if (AddonItemDrop.ClosestDistance(this, targetItem) <= 1.5f)\r\n                       
+      {\r\n                            ItemPickup(targetItem);\r\n                       
+      }\r\n                    }\r\n                }"
+  - installed: 0
+    search: "[Client]\r\n    void SelectionHandling()\r\n    {"
+    replace: "[Client]\r\n    void SelectionHandling()\r\n    {\r\n        if (lockRaycast)\r\n           
+      return;"
+  - installed: 0
+    search: "else if (entity is Monster && entity.health == 0 &&\r\n                                
+      Utils.ClosestDistance(this, entity) <= interactionRange &&\r\n                                
+      ((Monster)entity).HasLoot())\r\n                        {\r\n                           
+      UILoot.singleton.Show();\r\n                        }"
+    replace: "/*\r\n                        else if (entity is Monster && entity.health
+      == 0 &&\r\n                                 Utils.ClosestDistance(this, entity)
+      <= interactionRange &&\r\n                                 ((Monster)entity).HasLoot())\r\n                       
+      {\r\n                            UILoot.singleton.Show();\r\n                       
+      }\r\n                        */"
+  - installed: 0
+    search: "Vector3 bestDestination = agent.NearestValidDestination(hit.point);\n                   
+      SetIndicatorViaPosition(bestDestination);\n\n                    // casting
+      or stunned? then set pending destination\n                    if (state ==
+      \"CASTING\" || state == \"STUNNED\")\n                    {\n                       
+      pendingDestination = bestDestination;\n                        pendingDestinationValid
+      = true;\n                    }\n                    else Navigate(bestDestination,
+      0);"
+    replace: "/*\r\n                    Vector3 bestDestination = agent.NearestValidDestination(hit.point);\r\n                   
+      SetIndicatorViaPosition(bestDestination);\r\n\r\n                    // casting
+      or stunned? then set pending destination\r\n                    if (state ==
+      \"CASTING\" || state == \"STUNNED\")\r\n                    {\r\n                       
+      pendingDestination = bestDestination;\r\n                        pendingDestinationValid
+      = true;\r\n                    }\r\n                    else Navigate(bestDestination,
+      0);\r\n                    */\r\n                    if (hit.transform.CompareTag(ItemDropSettings.Settings.itemTag))\r\n                   
+      {\r\n                        if (state == \"IDLE\" || state == \"MOVING\")\r\n                       
+      {\r\n                            if (hit.collider.TryGetComponent(out ItemDrop
+      item))\r\n                            {\r\n                               
+      SetTargetItem(item);\r\n                            }\r\n                       
+      }\r\n                    }\r\n                    else\r\n                   
+      {\r\n                        Vector3 bestDestination = agent.NearestValidDestination(hit.point);\r\n                       
+      SetIndicatorViaPosition(bestDestination);\r\n\r\n                        //
+      casting or stunned? then set pending destination\r\n                       
+      if (state == \"CASTING\" || state == \"STUNNED\")\r\n                       
+      {\r\n                            pendingDestination = bestDestination;\r\n                           
+      pendingDestinationValid = true;\r\n                        }\r\n                       
+      else Navigate(bestDestination, 0);\r\n\r\n                        if (targetItem
+      != null)\r\n                        {\r\n                            targetItem
+      = null;\r\n                        }\r\n                    }"
+  - installed: 0
+    search: "if (horizontal != 0 || vertical != 0)\n            {"
+    replace: "if (horizontal != 0 || vertical != 0)\r\n            {\r\n               
+      if (targetItem != null)\r\n                {\r\n                    targetItem
+      = null;\r\n                }\r"

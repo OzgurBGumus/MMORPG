@@ -13,6 +13,14 @@ MonoBehaviour:
   m_Name: Archer Leg Armor
   m_EditorClassIdentifier: 
   rarity: 1
+  gold: 0
+  prefab: {fileID: 4157155416241828305, guid: 5f25d91afdd2107499d8ee8a86e8b9b8, type: 3}
+  offsetX: 0
+  offsetY: 0
+  offsetZ: -1
+  rotX: 0
+  rotY: 0
+  rotZ: -180
   category: 15
   maxStack: 1
   maxDurability: 1000
@@ -56,7 +64,6 @@ MonoBehaviour:
   minLevel: 1
   cooldown: 0
   _cooldownCategory: 
-  materials: []
   difficultyOfEnchantment: 1
   considerItemLevel: 0
   healthBonus: 0

@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0ccb5b9faa8a514fb2e7bf037bb48a3, type: 3}
+  m_Name: Page 3
+  m_EditorClassIdentifier: 
+  title: Step 3
+  description: 
+  path: Assets/uMMORPG/Scripts/_UI
+  fileName: UIChatEntry.cs
+  text:
+  - installed: 0
+    search: "public void OnPointerEnter(PointerEventData pointerEventData)\n    {\n       
+      // can we reply to this message?\n        if (!string.IsNullOrWhiteSpace(message.replyPrefix))\n       
+      {\n            defaultStyle = text.fontStyle;\n            text.fontStyle =
+      mouseOverStyle;\n        }\n    }"
+    replace: "public UIShowToolTip tooltip;\r\n\r\n    void Awake()\r\n    {\r\n       
+      tooltip = GetComponent<UIShowToolTip>();\r\n    }\r\n\r\n    public void OnPointerEnter(PointerEventData
+      pointerEventData)\r\n    {\r\n        // can we reply to this message?\r\n       
+      if (!string.IsNullOrWhiteSpace(message.replyPrefix))\r\n        {\r\n           
+      defaultStyle = text.fontStyle;\r\n            text.fontStyle = mouseOverStyle;\r\n       
+      }\r\n\r\n        string stringToCheck = message.Construct();\r\n        int
+      start = stringToCheck.IndexOf(\"[\");\r\n        int stop = stringToCheck.IndexOf(\"]\");\r\n       
+      if (stop > -1)\r\n        {\r\n            string output = stringToCheck.Substring(start
+      + 1, stop - start - 1);\r\n            int key = output.GetStableHashCode();\r\n\r\n           
+      if (ScriptableItem.dict.TryGetValue(key, out var data))\r\n            {\r\n               
+      Item item = new Item(data);\r\n                tooltip.text = new ItemSlot(item).ToolTip();\r\n           
+      }\r\n        }\r\n    }"

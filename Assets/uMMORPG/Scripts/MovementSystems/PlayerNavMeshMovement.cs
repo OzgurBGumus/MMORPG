@@ -127,6 +127,11 @@ public class PlayerNavMeshMovement : NavMeshMovement
 
         if (horizontal != 0 || vertical != 0)
         {
+            if (player.targetItem != null)
+            {
+                player.targetItem = null;
+            }
+
             // create input vector, normalize in case of diagonal movement
             Vector3 input = new Vector3(horizontal, 0, vertical);
             if (input.magnitude > 1) input = input.normalized;
@@ -182,6 +187,9 @@ public class PlayerNavMeshMovement : NavMeshMovement
             !Utils.IsCursorOverUserInterface() &&
             Input.touchCount <= 1)
         {
+            if (player.lockRaycast)
+                return;
+
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
             // raycast with local player ignore option
@@ -209,6 +217,10 @@ public class PlayerNavMeshMovement : NavMeshMovement
                     // otherwise navigate there
                     else
                     {
+                        if (player.targetItem != null)
+                        {
+                            player.targetItem = null;
+                        }
                         Navigate(bestDestination, 0);
                         if (player.state == "CASTING")
                         {

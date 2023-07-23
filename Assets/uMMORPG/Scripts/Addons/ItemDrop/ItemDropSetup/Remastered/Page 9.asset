@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0ccb5b9faa8a514fb2e7bf037bb48a3, type: 3}
+  m_Name: Page 9
+  m_EditorClassIdentifier: 
+  title: Step 11
+  description: 
+  path: Assets/uMMORPG/Scripts
+  fileName: Instance.cs
+  text:
+  - installed: 0
+    search: "if (identity != null)\r\n                NetworkServer.Destroy(identity.gameObject);"
+    replace: "if (identity != null)\r\n            {\r\n                if (identity.CompareTag(ItemDropSettings.Settings.itemTag))\r\n               
+      {\r\n                    if (identity.TryGetComponent(out ItemDrop item))\r\n                   
+      {\r\n                        AddonItemDrop.DeleteItem(item.uniqueId);\r\n                   
+      }\r\n                }\r\n                NetworkServer.Destroy(identity.gameObject);\r\n           
+      }"

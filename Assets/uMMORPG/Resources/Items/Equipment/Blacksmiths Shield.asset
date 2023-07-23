@@ -13,6 +13,14 @@ MonoBehaviour:
   m_Name: Blacksmiths Shield
   m_EditorClassIdentifier: 
   rarity: 2
+  gold: 0
+  prefab: {fileID: 4095429523861981063, guid: 9ec39539e18bb42b9b0be3c158c9b7bd, type: 3}
+  offsetX: 0
+  offsetY: 0
+  offsetZ: 0
+  rotX: -90
+  rotY: 0
+  rotZ: 0
   category: 10
   maxStack: 1
   maxDurability: 1000
@@ -54,11 +62,15 @@ MonoBehaviour:
 
     <i>Sells for: {SELLPRICE} Gold</i>'
   image: {fileID: 21300000, guid: ae3e76d10f08c4ffc9f2b1f4d8f056a9, type: 3}
+  upgradeBonusesPercent: []
+  upgradeChances: []
   race: 0
   clases: 0
   minLevel: 1
   cooldown: 0
   _cooldownCategory: 
+  difficultyOfEnchantment: 1
+  considerItemLevel: 0
   healthBonus: 2
   manaBonus: 0
   damageBonus: 0

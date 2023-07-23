@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0ccb5b9faa8a514fb2e7bf037bb48a3, type: 3}
+  m_Name: Page 4
+  m_EditorClassIdentifier: 
+  title: Step 6
+  description: 
+  path: Assets/uMMORPG/Scripts
+  fileName: MonsterInventory.cs
+  text:
+  - installed: 0
+    search: public class
+    replace: public partial class
+  - installed: 0
+    search: "[ClientCallback]\n    void Update()\n    {\n        // show loot indicator
+      on clients while it still has items\n        if (lootIndicator != null)\n       
+      {\n            // only set active once. we don't want to reset the particle\n           
+      // system all the time.\n            bool hasLoot = HasLoot();\n           
+      if (hasLoot && !lootIndicator.isPlaying)\n                lootIndicator.Play();\n           
+      else if (!hasLoot && lootIndicator.isPlaying)\n                lootIndicator.Stop();\n       
+      }\n    }"
+    replace: "/*\n    [ClientCallback]\n    void Update()\n    {\n        // show
+      loot indicator on clients while it still has items\n        if (lootIndicator
+      != null)\n        {\n            // only set active once. we don't want to
+      reset the particle\n            // system all the time.\n            bool hasLoot
+      = HasLoot();\n            if (hasLoot && !lootIndicator.isPlaying)\n               
+      lootIndicator.Play();\n            else if (!hasLoot && lootIndicator.isPlaying)\n               
+      lootIndicator.Stop();\n        }\n    }\n    */"
+  - installed: 0
+    search: "// generate items (note: can't use Linq because of SyncList)\r\n       
+      foreach (ItemDropChance itemChance in dropChances)\r\n            if (Random.value
+      <= itemChance.probability)\r\n                slots.Add(new ItemSlot(new Item(itemChance.item)));"
+    replace: "// generate items (note: can't use Linq because of SyncList)\r\n       
+      foreach (ItemDropChance itemChance in dropChances)\r\n            if (Random.value
+      <= itemChance.probability)\r\n                slots.Add(new ItemSlot(new Item(itemChance.item)));\r\n#if
+      ITEM_DROP_R\r\n        OnDeath_ItemDrop();\r\n#endif"

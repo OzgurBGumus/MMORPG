@@ -871,17 +871,41 @@ public partial class Player : Entity
     [Client]
     protected override void UpdateClient()
     {
+        UpdateClient_HighlightLoot();
         if (state == "IDLE" || state == "MOVING")
         {
             if (isLocalPlayer)
             {
                 // cancel action if escape key was pressed
+                //if (Input.GetKeyDown(cancelActionKey))
+                //{
+                //    // reset locally because we use rubberband movement
+                //    movement.Reset();
+                //    CmdCancelAction();
+                //}
                 if (Input.GetKeyDown(cancelActionKey))
                 {
-                    // reset locally because we use rubberband movement
-                    movement.Reset();
-                    CmdCancelAction();
+                    CancelAction();
                 }
+                if (Input.GetKeyDown(ItemDropSettings.Settings.itemPickupKey))
+                {
+                    if (!Utils.IsCursorOverUserInterface() && Input.touchCount <= 1)
+                    {
+                        FindNearestItem();
+                    }
+                }
+                if (EventMoveEnd())
+                {
+                    if (targetItem != null)
+                    {
+                        // check distance between character and target item
+                        if (AddonItemDrop.ClosestDistance(this, targetItem) <= ItemDropSettings.Settings.itemPickupRadius)
+                        {
+                            ItemPickup(targetItem);
+                        }
+                    }
+                }
+
 
                 // trying to cast a skill on a monster that wasn't in range?
                 // then check if we walked into attack range by now
@@ -1093,6 +1117,8 @@ public partial class Player : Entity
 
         // reset movement and navigation
         movement.Reset();
+
+        OnDeath_ItemDrop();
     }
 
     // item cooldowns //////////////////////////////////////////////////////////

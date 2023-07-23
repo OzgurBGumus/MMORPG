@@ -13,6 +13,14 @@ MonoBehaviour:
   m_Name: WarShoulders
   m_EditorClassIdentifier: 
   rarity: 1
+  gold: 0
+  prefab: {fileID: 4011061379401016971, guid: c0d02d0c9cd00224498ce680eeca398c, type: 3}
+  offsetX: 0
+  offsetY: 0
+  offsetZ: -1.5
+  rotX: -90
+  rotY: 180
+  rotZ: 0
   category: 0
   maxStack: 1
   maxDurability: 1000
@@ -56,7 +64,6 @@ MonoBehaviour:
   minLevel: 1
   cooldown: 0
   _cooldownCategory: 
-  materials: []
   difficultyOfEnchantment: 1
   considerItemLevel: 0
   healthBonus: 0

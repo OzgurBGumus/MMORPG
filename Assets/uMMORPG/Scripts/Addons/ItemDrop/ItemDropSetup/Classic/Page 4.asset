@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0ccb5b9faa8a514fb2e7bf037bb48a3, type: 3}
+  m_Name: Page 4
+  m_EditorClassIdentifier: 
+  title: Step 4
+  description: 
+  path: Assets/uMMORPG/Scripts/_UI
+  fileName: UIChat.cs
+  text:
+  - installed: 0
+    search: bool eatActivation;
+    replace: "bool eatActivation;\r\n\r\n    public bool itemLink;\r\n\r\n    void
+      Start()\r\n    {\r\n        messageInput.onValidateInput += delegate (string
+      input, int charIndex, char addedChar) { return MyValidate(addedChar); };\r\n   
+      }\r\n\r\n    char MyValidate(char charToValidate)\r\n    {\r\n        if (charToValidate
+      == '[' || ']' == charToValidate)\r\n        {\r\n            if (!itemLink)\r\n           
+      {\r\n                charToValidate = '\\0';\r\n            }\r\n        }\r\n       
+      return charToValidate;\r\n    }"
+  - installed: 0
+    search: "go.GetComponent<Text>().text = message.Construct();\n        go.GetComponent<UIChatEntry>().message
+      = message;"
+    replace: "//go.GetComponent<Text>().text = message.Construct();\r\n        //go.GetComponent<UIChatEntry>().message
+      = message;\r\n        Text chatMessage = go.GetComponent<Text>();\r\n       
+      chatMessage.text = message.Construct();\r\n\r\n        UIChatEntry chatEntry
+      = go.GetComponent<UIChatEntry>();\r\n        chatEntry.message = message;\r\n\r\n       
+      string stringToCheck = message.Construct();\r\n        int start = stringToCheck.IndexOf(\"[\");\r\n       
+      int stop = stringToCheck.IndexOf(\"]\");\r\n        if (stop > -1)\r\n       
+      {\r\n            string output = stringToCheck.Substring(start + 1, stop -
+      start - 1);\r\n            int key = output.GetStableHashCode();\r\n\r\n           
+      if (ScriptableItem.dict.TryGetValue(key, out var data))\r\n            {\r\n               
+      chatMessage.text = chatMessage.text.Replace(output, data.GetTitle());\r\n               
+      chatEntry.tooltip.enabled = true;\r\n            }\r\n        }"

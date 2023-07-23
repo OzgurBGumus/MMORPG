@@ -13,6 +13,14 @@ MonoBehaviour:
   m_Name: Warrior Boots
   m_EditorClassIdentifier: 
   rarity: 1
+  gold: 0
+  prefab: {fileID: 4226167172095022618, guid: ac90f5690937ff141ac22689c9286b58, type: 3}
+  offsetX: 0
+  offsetY: 0
+  offsetZ: 0
+  rotX: 0
+  rotY: 0
+  rotZ: 0
   category: 13
   maxStack: 1
   maxDurability: 1000
@@ -47,11 +55,15 @@ MonoBehaviour:
     <i>Sells
     for: {SELLPRICE} Gold</i>'
   image: {fileID: 21300000, guid: 496c3159dd4584e3c8bd5b886097f454, type: 3}
+  upgradeBonusesPercent: []
+  upgradeChances: []
   race: 0
   clases: 0
   minLevel: 1
   cooldown: 0
   _cooldownCategory: 
+  difficultyOfEnchantment: 1
+  considerItemLevel: 0
   healthBonus: 0
   manaBonus: 0
   damageBonus: 0

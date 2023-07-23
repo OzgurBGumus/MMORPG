@@ -13,6 +13,14 @@ MonoBehaviour:
   m_Name: Warrior Helmet
   m_EditorClassIdentifier: 
   rarity: 1
+  gold: 0
+  prefab: {fileID: 5720572872597476263, guid: 4b25d56a23ebe4143a93743bc0f5d9e1, type: 3}
+  offsetX: 0
+  offsetY: -1.6
+  offsetZ: 0
+  rotX: 0
+  rotY: 0
+  rotZ: 0
   category: 11
   maxStack: 1
   maxDurability: 1000
@@ -56,7 +64,6 @@ MonoBehaviour:
   minLevel: 1
   cooldown: 0
   _cooldownCategory: 
-  materials: []
   difficultyOfEnchantment: 1
   considerItemLevel: 0
   healthBonus: 0
