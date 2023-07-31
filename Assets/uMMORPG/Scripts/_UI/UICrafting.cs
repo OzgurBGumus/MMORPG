@@ -25,6 +25,8 @@ public partial class UICrafting : MonoBehaviour
 
 
     public static UICrafting singleton;
+
+    private bool lastFrameWasInactive = true;
     public UICrafting()
     {
         singleton = this;
@@ -41,6 +43,7 @@ public partial class UICrafting : MonoBehaviour
             // only update the panel if it's active
             if (panel.activeSelf)
             {
+                FirstActiveFrame();
                 // instantiate/destroy enough slots
                 UIUtils.BalancePrefabs(ingredientSlotPrefab.gameObject, player.crafting.indices.Count, ingredientContent);
 
@@ -168,29 +171,53 @@ public partial class UICrafting : MonoBehaviour
                 });
             }
         }
-        else panel.SetActive(false);
+        else FirstInActiveFrame();
     }
 
     public void Toggle()
     {
         if (panel.activeSelf)
         {
-            Close();
+            panel.SetActive(false);
         }
         else
         {
-            Open();
+            panel.SetActive(true);
         }
 
     }
     public void Open()
     {
+        Player.localPlayer.inventory.ItemUsingBlocked = true;
         FindObjectOfType<Canvas>().GetComponent<UIUniqueWindow>().CloseWindows();
         UIInventory.singleton.Open();
         panel.SetActive(true);
     }
     public void Close()
     {
+        Player.localPlayer.inventory.ItemUsingBlocked = false;
         panel.SetActive(false);
+    }
+    private void FirstActiveFrame()
+    {
+        if (lastFrameWasInactive)
+        {
+            Open();
+            lastFrameWasInactive = false;
+        }
+    }
+    private void FirstInActiveFrame()
+    {
+        if (!lastFrameWasInactive)
+        {
+            Close();
+            lastFrameWasInactive = true;
+        }
+    }
+
+    public void OnInventoryItemClick(Player player, ItemSlot itemSlot, int i)
+    {
+        
+
     }
 }

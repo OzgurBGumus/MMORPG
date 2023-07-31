@@ -87,9 +87,10 @@ public static class AddonItemDrop
     /// <summary>
     /// Returns an item created without a unique ID.
     /// </summary>
-    public static ItemDrop GenerateLoot(string itemName, bool currency, long gold, Vector3 center, Vector3 point)
+    public static ItemDrop GenerateLoot(string owner, string itemName, bool currency, long gold, Vector3 center, Vector3 point)
     {
         ItemDrop clone = UnityEngine.Object.Instantiate(ItemPrefab, center, Quaternion.identity);
+        clone.owner = owner;
         clone.name = itemName;
         clone.stack = currency ? Convert.ToInt32(gold) : 1;
         clone.endingPoint = point;
@@ -255,14 +256,19 @@ public partial class ScriptableItem
     [Range(-180, 180)] public float rotY;
     [Range(-180, 180)] public float rotZ;
 
-    public string GetTitle(int stack = 1)
+    public string GetTitle(int stack = 1, string owner = "")
     {
         StringBuilder stringBuilder = new StringBuilder();
         Color color = ItemDropSettings.Settings.gold;
 
         if (!gold)
         {
-            color = Player.localPlayer.itemRarityConfig.GetColor(rarity);
+            if(string.IsNullOrEmpty(owner) || Player.localPlayer.name == owner)
+                color = Player.localPlayer.itemRarityConfig.GetColor(rarity);
+            else
+            {
+                color = Color.red;
+            }
         }
 
         if (stack == 1)

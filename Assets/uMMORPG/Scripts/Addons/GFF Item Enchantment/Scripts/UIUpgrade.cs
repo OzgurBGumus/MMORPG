@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public partial class UIUpgrade : MonoBehaviour
 {
+    //singleton
+    public static UIUpgrade singleton;
+
     public Sprite spriteRuneNull;
 
     [Header("Settings : Info")]
@@ -32,10 +35,9 @@ public partial class UIUpgrade : MonoBehaviour
 
 
     public Sprite UpgradeIndImage;
-    //singleton
-    public static UIUpgrade singleton;
+    
 
-    private bool lastFrameIsFalse = false;
+    private bool lastFrameWasInactive = true;
     public UIUpgrade()
     {
         // assign singleton only once (to work with DontDestroyOnLoad when
@@ -49,10 +51,12 @@ public partial class UIUpgrade : MonoBehaviour
         FindObjectOfType<Canvas>().GetComponent<UIUniqueWindow>().CloseWindows();
         UIInventory.singleton.Open();
         panel.SetActive(true);
+        Player.localPlayer.inventory.ItemUsingBlocked = true;
     }
 
     public void Сlose()
     {
+        Player.localPlayer.inventory.ItemUsingBlocked = false;
         panel.SetActive(false);
         Player player = Player.localPlayer;
         player.upgrade.ClearUpgradeIndices();
@@ -81,21 +85,46 @@ public partial class UIUpgrade : MonoBehaviour
 
     private void FirstActiveFrame()
     {
-        if (lastFrameIsFalse)
+        if (lastFrameWasInactive)
         {
             Show();
-            lastFrameIsFalse = false;
+            lastFrameWasInactive = false;
         }
     }
     private void FirstInActiveFrame()
     {
-        if (!lastFrameIsFalse)
+        if (!lastFrameWasInactive)
         {
-            Сlose();
-            lastFrameIsFalse = true;
+            if(Player.localPlayer != null)
+            {
+                Сlose();
+                lastFrameWasInactive = true;
+            }
         }
     }
+    public void OnInventoryItemClick(Player player, ItemSlot itemSlot, int i)
+    {
+        int firstEmptyRuneSlot = 1;
+        while (firstEmptyRuneSlot < 5 && player.upgrade.upgradeIndices[firstEmptyRuneSlot] != -1)
+        {
+            firstEmptyRuneSlot++;
+        }
 
+        //if this armor or weapon
+        if (itemSlot.item.data is EquipmentItem item && itemSlot.item.currentUpgradeLevel < itemSlot.item.data.upgradeBonusesPercent.Length - 1)
+        {
+            // swap them
+            player.upgrade.upgradeIndices[0] = i;
+        }
+        //if this is rune
+        else if (itemSlot.item.data is UpgradeMaterialItem && firstEmptyRuneSlot != 0)
+        {
+            // swap them
+            player.upgrade.upgradeIndices[firstEmptyRuneSlot] = i;
+            firstEmptyRuneSlot++;
+        }
+
+    }
     void Update()
     {
         // only update the panel if it's active
@@ -165,6 +194,7 @@ public partial class UIUpgrade : MonoBehaviour
         }
         else
         {
+
             FirstInActiveFrame();
         }
     }

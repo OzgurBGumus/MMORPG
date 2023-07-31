@@ -44,9 +44,9 @@ public class AggroAreaSkill : TargetProjectileSkill
             //SpawnEffect(caster, candidate);
 
             // deal damage directly with base damage + skill damage
-            caster.combat.DealDamageAt(candidate,
+            caster.combat.DealDamageAt(candidate, caster.name,
                                 caster.combat.damage + damage.Get(skillLevel),
-
+                                
                                 //gff
                                 //caster.combat.damage + damage.Get(skillLevel) + caster.ammoDamageBonuses(),
 

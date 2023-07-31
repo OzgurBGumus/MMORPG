@@ -43,6 +43,7 @@ public class LootHighlighter
                 labels.Add(loot, label);
                 lootsByGameObjects.Add(label.gameObject, loot);
             }
+            labels[loot].SetTitle(loot.data.GetTitle(loot.stack, loot.owner));
         }
     }
 

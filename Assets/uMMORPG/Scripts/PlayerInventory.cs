@@ -12,6 +12,7 @@ public partial class PlayerInventory : Inventory
     public int size = 30;
     public ScriptableItemAndAmount[] defaultItems;
     public KeyCode[] splitKeys = { KeyCode.LeftShift, KeyCode.RightShift };
+    public bool ItemUsingBlocked = false;
 
     [Header("Trash")]
     [SyncVar] public ItemSlot trash;

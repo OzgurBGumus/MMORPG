@@ -11,11 +11,8 @@ namespace GFFAddons
 
         public override void OnSelect(Player player)
         {
-            UIUpgrade.singleton.Show();
-            UIInventory.singleton.panel.SetActive(true); // better feedback
-
-            UIMerchant.singleton.panel.SetActive(false);
-            UINpcDialogue.singleton.panel.SetActive(false);
+            UIUpgrade.singleton.panel.SetActive(true); // better feedback
+            UIInventory.singleton.panel.SetActive(true);
         }
 
         private bool OpenCheck(Player player)

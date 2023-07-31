@@ -23,7 +23,7 @@ public partial class UIItemMall : MonoBehaviour
 
 
     public static UIItemMall singleton;
-
+    private bool lastFrameWasInactive = true;
     public UIItemMall()
     {
         singleton = this;
@@ -42,11 +42,12 @@ public partial class UIItemMall : MonoBehaviour
         {
             // hotkey (not while typing in chat, etc.)
             if (Input.GetKeyDown(hotKey) && !UIUtils.AnyInputActive())
-                panel.SetActive(!panel.activeSelf);
+                Toggle();
 
             // only update the panel if it's active
             if (panel.activeSelf)
             {
+                FirstActiveFrame();
                 // instantiate/destroy enough category slots
                 ScriptableItemMall config = player.itemMall.config;
                 UIUtils.BalancePrefabs(categorySlotPrefab.gameObject, config.categories.Length, categoryContent);
@@ -110,6 +111,45 @@ public partial class UIItemMall : MonoBehaviour
                 });
             }
         }
-        else panel.SetActive(false);
+        else FirstInActiveFrame();
+    }
+    public void Toggle()
+    {
+        if (panel.activeSelf)
+        {
+            panel.SetActive(false);
+        }
+        else
+        {
+            panel.SetActive(true);
+        }
+
+    }
+    public void Open()
+    {
+        Player.localPlayer.inventory.ItemUsingBlocked = true;
+        FindObjectOfType<Canvas>().GetComponent<UIUniqueWindow>().CloseWindows();
+        panel.SetActive(true);
+    }
+    public void Close()
+    {
+        Player.localPlayer.inventory.ItemUsingBlocked = false;
+        panel.SetActive(false);
+    }
+    private void FirstActiveFrame()
+    {
+        if (lastFrameWasInactive)
+        {
+            Open();
+            lastFrameWasInactive = false;
+        }
+    }
+    private void FirstInActiveFrame()
+    {
+        if (!lastFrameWasInactive)
+        {
+            Close();
+            lastFrameWasInactive = true;
+        }
     }
 }

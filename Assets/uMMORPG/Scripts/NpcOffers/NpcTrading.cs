@@ -15,8 +15,8 @@ public class NpcTrading : NpcOffer
 
     public override void OnSelect(Player player)
     {
-        UINpcTrading.singleton.panel.SetActive(true);
-        UIInventory.singleton.panel.SetActive(true); // better feedback
-        UINpcDialogue.singleton.panel.SetActive(false);
+        UINpcTrading.singleton.FirstActiveFrame();
+        //UIInventory.singleton.panel.SetActive(true); // better feedback
+        //UINpcDialogue.singleton.panel.SetActive(false);
     }
 }

@@ -43,6 +43,7 @@ public class ItemDropSettings : ScriptableObject
     public KeyCode itemLinkKey = KeyCode.LeftControl;
 
     [Header("Timer")]
+    public float ownerRemoveTime = 10f;     // 2 min
     [Min(600f)] public float decayTime = 3600f;     // 1 hour
     [Min(600f)] public float saveInterval = 1800f;  // 30 minutes
 

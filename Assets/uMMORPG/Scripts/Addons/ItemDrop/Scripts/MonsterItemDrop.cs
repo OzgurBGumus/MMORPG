@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using System.Collections.Generic;
 using UnityEngine;
 
 public partial class Monster
@@ -91,7 +92,7 @@ public partial class Monster
     [ClientRpc]
     public void RpcDropItem(string itemName, bool currency, long gold, Vector3 center, Vector3 point)
     {
-        AddonItemDrop.GenerateLoot(itemName, currency, gold, center, point);
+        AddonItemDrop.GenerateLoot("", itemName, currency, gold, center, point);
     }
 }
 #if ITEM_DROP_R
@@ -108,6 +109,8 @@ public partial class MonsterInventory
         if (AddonItemDrop.ItemPrefab == null)
             return;
 
+        List<string> owners = monster.DroppedItemOwners(slots.Count);
+
         if (monster.gold > 0)
         {
             if (ScriptableItem.All.TryGetValue(AddonItemDrop.goldHashCode, out var data))
@@ -115,7 +118,7 @@ public partial class MonsterInventory
                 slots.Add(new ItemSlot(new Item(data)));
             }
         }
-
+        
         Vector3 center = new Vector3(transform.position.x, transform.position.y - regularMovement.agent.baseOffset, transform.position.z);
 
         for (int i = 0; i < slots.Count; i++)
@@ -138,8 +141,9 @@ public partial class MonsterInventory
                     {
                         if (AddonItemDrop.RandomPoint3D(center, out var point))
                         {
+                            string lootOwner = string.IsNullOrEmpty(owners[i]) ? "" : owners[i];
                             // spawn an item without generating a unique ID
-                            ItemDrop loot = AddonItemDrop.GenerateLoot(itemData.name, itemData.gold, monster.gold, center, point);
+                            ItemDrop loot = AddonItemDrop.GenerateLoot(lootOwner, itemData.name, itemData.gold, monster.gold, center, point);
                             NetworkServer.Spawn(loot.gameObject);
                         }
                     }

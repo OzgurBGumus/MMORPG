@@ -8,6 +8,7 @@ public class ItemDrop : NetworkBehaviour
 {
     [HideInInspector] public ScriptableItem data;
     [HideInInspector, SyncVar] public int stack;
+    [SyncVar] public string owner;
     [HideInInspector, SyncVar] public Vector3 endingPoint;
     [HideInInspector] public string uniqueId;
     [HideInInspector] public bool isMarked;
@@ -37,14 +38,18 @@ public class ItemDrop : NetworkBehaviour
 
     IEnumerator coroutineDrop;
     IEnumerator coroutineDestroy;
+    IEnumerator courtineRemoveOwner;
     WaitForSeconds updateInterval;
+    WaitForSeconds removeOwnerInterval;
 
     void Awake()
     {
         coroutineDrop = Drop();
         coroutineDestroy = DestroyAfter();
+        courtineRemoveOwner = RemoveOwnerAfter();
 
         updateInterval = new WaitForSeconds(ItemDropSettings.Settings.decayTime);
+        removeOwnerInterval = new WaitForSeconds(ItemDropSettings.Settings.ownerRemoveTime);
     }
 
     void Start()
@@ -151,6 +156,7 @@ public class ItemDrop : NetworkBehaviour
                     if (uniqueId == "")
                     {
                         StartCoroutine(coroutineDestroy);
+                        StartCoroutine(courtineRemoveOwner);
                     }
 
                     foreach (Renderer rend in renderers)
@@ -161,7 +167,7 @@ public class ItemDrop : NetworkBehaviour
 
                 LootManager.instance.Add(this);
 
-                Title = data.GetTitle(stack);
+                Title = data.GetTitle(stack, owner);
 
                 StartCoroutine(coroutineDrop);
             }
@@ -198,7 +204,13 @@ public class ItemDrop : NetworkBehaviour
         yield return updateInterval;
         NetworkServer.Destroy(gameObject);
     }
-  
+    IEnumerator RemoveOwnerAfter()
+    {
+        yield return removeOwnerInterval;
+        owner = "";
+        Title = data.GetTitle(stack, owner);
+    }
+
     [Client]
     void OnMouseEnter()
     {

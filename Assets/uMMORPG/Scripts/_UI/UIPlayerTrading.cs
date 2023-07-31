@@ -27,6 +27,8 @@ public partial class UIPlayerTrading : MonoBehaviour
     [Range(0.01f, 0.99f)] public float lowDurabilityThreshold = 0.1f;
 
     public static UIPlayerTrading singleton;
+
+    private bool lastFrameWasInactive = true;
     public UIPlayerTrading()
     {
         singleton = this;
@@ -42,8 +44,7 @@ public partial class UIPlayerTrading : MonoBehaviour
             player.target != null &&
             player.target is Player other)
         {
-            panel.SetActive(true);
-
+            if (!panel.activeSelf) FirstActiveFrame();
             // OTHER ///////////////////////////////////////////////////////////
             // status text
             if (other.trading.state == TradingState.Accepted) otherStatusText.text = "[ACCEPTED]";
@@ -195,8 +196,47 @@ public partial class UIPlayerTrading : MonoBehaviour
         }
         else
         {
-            panel.SetActive(false);
+            FirstInActiveFrame();
             myGoldInput.text = "0"; // reset
+        }
+    }
+    public void Toggle()
+    {
+        if (panel.activeSelf)
+        {
+            panel.SetActive(false);
+        }
+        else
+        {
+            panel.SetActive(true);
+        }
+
+    }
+    public void Open()
+    {
+        Player.localPlayer.inventory.ItemUsingBlocked = true;
+        FindObjectOfType<Canvas>().GetComponent<UIUniqueWindow>().CloseWindows();
+        panel.SetActive(true);
+    }
+    public void Close()
+    {
+        Player.localPlayer.inventory.ItemUsingBlocked = false;
+        panel.SetActive(false);
+    }
+    private void FirstActiveFrame()
+    {
+        if (lastFrameWasInactive)
+        {
+            Open();
+            lastFrameWasInactive = false;
+        }
+    }
+    private void FirstInActiveFrame()
+    {
+        if (!lastFrameWasInactive)
+        {
+            Close();
+            lastFrameWasInactive = true;
         }
     }
 }

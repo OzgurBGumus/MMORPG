@@ -30,6 +30,8 @@ public partial class UICharacterInfo : MonoBehaviour
     string attributesTextDefault;
 
     public static UICharacterInfo singleton;
+
+    private bool lastFrameWasInactive = true;
     public UICharacterInfo()
     {
         singleton = this;
@@ -52,6 +54,7 @@ public partial class UICharacterInfo : MonoBehaviour
             // only refresh the panel while it's active
             if (panel.activeSelf)
             {
+                FirstActiveFrame();
                 //refresh all equipments
                 //for (int i = 0; i < player.equipment.slots.Count; ++i)
                 //{
@@ -155,18 +158,18 @@ public partial class UICharacterInfo : MonoBehaviour
                 });
             }
         }
-        else panel.SetActive(false);
+        else FirstInActiveFrame();
     }
 
     public void Toggle()
     {
         if (panel.activeSelf)
         {
-            Close();
+            panel.SetActive(false);
         }
         else
         {
-            Open();
+            panel.SetActive(true);
         }
 
     }
@@ -178,5 +181,21 @@ public partial class UICharacterInfo : MonoBehaviour
     public void Close()
     {
         panel.SetActive(false);
+    }
+    private void FirstActiveFrame()
+    {
+        if (lastFrameWasInactive)
+        {
+            Open();
+            lastFrameWasInactive = false;
+        }
+    }
+    private void FirstInActiveFrame()
+    {
+        if (!lastFrameWasInactive)
+        {
+            Close();
+            lastFrameWasInactive = true;
+        }
     }
 }
