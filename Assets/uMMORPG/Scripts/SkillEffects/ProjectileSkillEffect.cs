@@ -59,7 +59,7 @@ public class ProjectileSkillEffect : SkillEffect
                 if (target.health.current > 0)
                 {
                     // find the skill that we casted this effect with
-                    caster.combat.DealDamageAt(target, caster.combat.damage + damage, stunChance, stunTime);
+                    caster.combat.DealDamageAt(target, caster.name, caster.combat.damage + damage, stunChance, stunTime);
                 }
                 NetworkServer.Destroy(gameObject);
             }

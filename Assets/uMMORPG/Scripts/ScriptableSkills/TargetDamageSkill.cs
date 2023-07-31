@@ -24,7 +24,7 @@ public class TargetDamageSkill : DamageSkill
     public override void Apply(Entity caster, int skillLevel)
     {
         // deal damage directly with base damage + skill damage
-        caster.combat.DealDamageAt(caster.target,
+        caster.combat.DealDamageAt(caster.target, caster.name,
                                    caster.combat.damage + damage.Get(skillLevel),
                                    stunChance.Get(skillLevel),
                                    stunTime.Get(skillLevel));

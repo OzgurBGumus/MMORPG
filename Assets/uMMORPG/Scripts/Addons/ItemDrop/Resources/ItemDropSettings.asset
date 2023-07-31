@@ -52,7 +52,7 @@ MonoBehaviour:
   pixelsPerUnit: 13.47
   fitLabelsIntoScreen: 1
   showMessages: 1
-  individualLoot: 1
+  individualLoot: 0
   goldLoss:
     isActive: 0
     percentageLoss: 50

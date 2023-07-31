@@ -46,6 +46,7 @@ public class UIMerchant : MonoBehaviour
     private List<int> itemAmounts = new List<int>();
 
     private bool lastFrameIsFalse = false;
+    private bool lastFrameWasInactive = true;
     public UIMerchant()
     {
         // assign singleton only once (to work with DontDestroyOnLoad when
@@ -76,6 +77,7 @@ public class UIMerchant : MonoBehaviour
             }
             if (panel.activeSelf)
             {
+                FirstActiveFrame();
                 //Check is player still allowed to stay in Merchant tab.
                 if ((player.state != "IDLE" && player.state != "MERCHANT" && player.state != "MOVING") &&
                     (player.merchant.merchantPlayer == null || player.merchant.merchantPlayer.state != "MERCHANT")
@@ -229,6 +231,7 @@ public class UIMerchant : MonoBehaviour
             }
             else
             {
+                FirstInActiveFrame();
                 if (player.merchant.merchantPlayer != null)
                 {
                     player.merchant.merchantPlayer = null;
@@ -271,15 +274,25 @@ public class UIMerchant : MonoBehaviour
             {
                 if (
                     player.state == "IDLE" &&
-                    player.merchant.selectedMerchantSlot >= 0 && player.merchant.selectedMerchantSlot < offerItems.Count &&
-                    !offerItems.Contains(player.merchant.selectedInventorySlot)
-
-                )
+                    player.merchant.selectedMerchantSlot >= 0 && player.merchant.selectedMerchantSlot < offerItems.Count)
                 {
                     ItemSlot slot = player.inventory.slots[player.merchant.selectedInventorySlot];
+                    if (offerItems.Contains(player.merchant.selectedInventorySlot))
+                    {
+                        for (int i = 0; i < offerItems.Count; i++)
+                        {
+                            if (offerItems[i] == player.merchant.selectedInventorySlot)
+                            {
+                                offerItems[i] = -1;
+                                itemPrices[i] = -1;
+                                itemAmounts[i] = -1;
+                                break;
+                            }
+                        }
+                    }
                     if (slot.item.tradable &&
-                        !slot.item.summoned &&
-                        slot.amount > 0 && slot.amount >= amount.text.ToInt())
+                            !slot.item.summoned &&
+                            slot.amount > 0 && slot.amount >= amount.text.ToInt())
                     {
                         offerItems[player.merchant.selectedMerchantSlot] = player.merchant.selectedInventorySlot;
                         itemPrices[player.merchant.selectedMerchantSlot] = perPrice.text.ToInt();
@@ -376,21 +389,63 @@ public class UIMerchant : MonoBehaviour
     {
         if (panel.activeSelf)
         {
-            Close();
+            panel.SetActive(false);
         }
         else
         {
-            Open();
+            panel.SetActive(true);
         }
     }
     public void Open()
     {
         FindObjectOfType<Canvas>().GetComponent<UIUniqueWindow>().CloseWindows();
         UIInventory.singleton.Open();
+        Player.localPlayer.inventory.ItemUsingBlocked = true;
         panel.SetActive(true);
     }
     public void Close()
     {
         panel.SetActive(false);
+        Player.localPlayer.inventory.ItemUsingBlocked = false;
+    }
+    private void FirstActiveFrame()
+    {
+        if (lastFrameWasInactive)
+        {
+            Open();
+            lastFrameWasInactive = false;
+        }
+    }
+    private void FirstInActiveFrame()
+    {
+        if (!lastFrameWasInactive)
+        {
+            Close();
+            lastFrameWasInactive = true;
+        }
+    }
+    public void OnInventoryItemClick(Player player, ItemSlot itemSlot, int i)
+    {
+        if ( player.merchant.merchantPlayer == null && player.state != "MERCHANT" && itemSlot.item.tradable)
+        {
+            int firstEmptyMerchantSlot = -1;
+            for (int k = 0; k < offerItems.Count; k++)
+            {
+                if (offerItems[k] < 0)
+                {
+                    firstEmptyMerchantSlot = k;
+                    break;
+                }
+            }
+            if(firstEmptyMerchantSlot >= 0)
+            {
+                clearAddItemFields();
+                player.merchant.selectedInventorySlot = i;
+                player.merchant.selectedMerchantSlot = firstEmptyMerchantSlot;
+
+                addItemPanel.SetActive(true);
+                perPrice.ActivateInputField();
+            }
+        }
     }
 }

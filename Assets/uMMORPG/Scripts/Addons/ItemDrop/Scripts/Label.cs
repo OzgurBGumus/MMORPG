@@ -40,6 +40,16 @@ public class Label : MonoBehaviour
         if (ItemDropSettings.Settings.fitLabelsIntoScreen)
             FitIntoScreen();
     }
+    public void SetTitle(string text)
+    {
+        if (this.text.text != text)
+        {
+            this.text.SetText(text);
+            SetSize();
+        }
+    }
+
+
      
     void FitIntoScreen()
     {        

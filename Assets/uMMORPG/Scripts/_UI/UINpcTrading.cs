@@ -24,6 +24,7 @@ public partial class UINpcTrading : MonoBehaviour
     public Color lowDurabilityColor = Color.magenta;
     [Range(0.01f, 0.99f)] public float lowDurabilityThreshold = 0.1f;
 
+    private bool lastFrameWasInactive = true;
     public UINpcTrading()
     {
         // assign singleton only once (to work with DontDestroyOnLoad when
@@ -39,7 +40,8 @@ public partial class UINpcTrading : MonoBehaviour
         if (player != null &&
             player.target != null &&
             player.target is Npc npc &&
-            Utils.ClosestDistance(player, player.target) <= player.interactionRange)
+            Utils.ClosestDistance(player, player.target) <= player.interactionRange &&
+            panel.activeSelf)
         {
             // items for sale
             UIUtils.BalancePrefabs(slotPrefab.gameObject, npc.trading.saleItems.Length, content);
@@ -50,7 +52,8 @@ public partial class UINpcTrading : MonoBehaviour
 
                 // show item in UI
                 int icopy = i;
-                slot.button.onClick.SetListener(() => {
+                slot.button.onClick.SetListener(() =>
+                {
                     buyIndex = icopy;
                 });
                 slot.image.color = Color.white;
@@ -85,7 +88,8 @@ public partial class UINpcTrading : MonoBehaviour
                 buyCostsText.text = price.ToString();
                 buyButton.interactable = amount > 0 && price <= player.gold &&
                                          player.inventory.CanAdd(new Item(itemData), amount);
-                buyButton.onClick.SetListener(() => {
+                buyButton.onClick.SetListener(() =>
+                {
                     player.npcTrading.CmdBuyItem(buyIndex, amount);
                     buyIndex = -1;
                     buyAmountInput.text = "1";
@@ -136,7 +140,8 @@ public partial class UINpcTrading : MonoBehaviour
                 sellSlot.dragable = true;
                 sellCostsText.text = price.ToString();
                 sellButton.interactable = amount > 0;
-                sellButton.onClick.SetListener(() => {
+                sellButton.onClick.SetListener(() =>
+                {
                     player.npcTrading.CmdSellItem(sellIndex, amount);
                     sellIndex = -1;
                     sellAmountInput.text = "1";
@@ -162,8 +167,10 @@ public partial class UINpcTrading : MonoBehaviour
 
                 repairButton.gameObject.SetActive(true);
                 repairButton.interactable = player.gold >= price;
-                repairButton.onClick.SetListener(() => {
-                    UIConfirmation.singleton.Show("Repair all Items for: " + price + " gold?", () => {
+                repairButton.onClick.SetListener(() =>
+                {
+                    UIConfirmation.singleton.Show("Repair all Items for: " + price + " gold?", () =>
+                    {
                         player.npcTrading.CmdRepairAllItems();
                     });
                 });
@@ -173,6 +180,53 @@ public partial class UINpcTrading : MonoBehaviour
                 repairButton.gameObject.SetActive(false);
             }
         }
-        else panel.SetActive(false);
+        else
+        {
+            if (!lastFrameWasInactive)
+            {
+                FirstInActiveFrame();
+            }
+            
+        }
+    }
+    public void Toggle()
+    {
+        if (panel.activeSelf)
+        {
+            panel.SetActive(false);
+        }
+        else
+        {
+            panel.SetActive(true);
+        }
+
+    }
+    public void Open()
+    {
+        Player.localPlayer.inventory.ItemUsingBlocked = true;
+        FindObjectOfType<Canvas>().GetComponent<UIUniqueWindow>().CloseWindows();
+        UIInventory.singleton.Open();
+        panel.SetActive(true);
+    }
+    public void Close()
+    {
+        Player.localPlayer.inventory.ItemUsingBlocked = false;
+        panel.SetActive(false);
+    }
+    public void FirstActiveFrame()
+    {
+        if (lastFrameWasInactive)
+        {
+            Open();
+            lastFrameWasInactive = false;
+        }
+    }
+    private void FirstInActiveFrame()
+    {
+        if (!lastFrameWasInactive)
+        {
+            Close();
+            lastFrameWasInactive = true;
+        }
     }
 }

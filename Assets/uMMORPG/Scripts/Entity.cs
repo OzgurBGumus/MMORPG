@@ -34,6 +34,8 @@ using UnityEngine.AI;
 using UnityEngine.Events;
 using Mirror;
 using TMPro;
+using System.Collections.Generic;
+using System.Linq;
 
 [Serializable] public class UnityEventEntity : UnityEvent<Entity> {}
 [Serializable] public class UnityEventEntityInt : UnityEvent<Entity, int> {}
@@ -126,6 +128,10 @@ public abstract partial class Entity : NetworkBehaviour
     // -> needs to be in Entity because both player and pet need it
     [HideInInspector] public bool inSafeZone;
 
+    //Received Damage History
+    // --> mostly for Monsters. Will store the Damage and Damage's owner history to Decide Who is the owner of the loot.
+    [HideInInspector] List<ReceivedDamage> receivedDamageHistory;
+
     // networkbehaviour ////////////////////////////////////////////////////////
     public override void OnStartServer()
     {
@@ -141,6 +147,7 @@ public abstract partial class Entity : NetworkBehaviour
         // (!isClient because we don't want to do it in host mode either)
         // (OnStartServer doesn't know isClient yet, Start is the only option)
         if (!isClient) animator.enabled = false;
+        receivedDamageHistory = new List<ReceivedDamage>();
     }
 
     // server function to check which entities need to be updated.
@@ -193,6 +200,10 @@ public abstract partial class Entity : NetworkBehaviour
         // update overlays in any case, except on server-only mode
         // (also update for character selection previews etc. then)
         if (!isServerOnly) UpdateOverlays();
+        if (isServer)
+        {
+            UpdateReceivedDamageList();
+        }
     }
 
     // update for server. should return the new state.
@@ -336,4 +347,68 @@ public abstract partial class Entity : NetworkBehaviour
     {
         _state = state;
     }
+    private void UpdateReceivedDamageList()
+    {
+        for(int i= receivedDamageHistory.Count-1; i>=0; i--)
+        {
+            if (receivedDamageHistory[i].time < DateTime.Now.AddMinutes(-5))
+            {
+                receivedDamageHistory.RemoveAt(i);
+            }
+        }
+    }
+    public void AddReceivedDamage(ReceivedDamage receivedDamage)
+    {
+        int receivedDmgIndex = receivedDamageHistory.FindIndex(x => x.from == receivedDamage.from);
+        if(receivedDmgIndex == -1)
+        {
+            receivedDamageHistory.Add(receivedDamage);
+        }
+        else
+        {
+            receivedDamageHistory[receivedDmgIndex].damage += receivedDamage.damage;
+            receivedDamageHistory[receivedDmgIndex].time = DateTime.Now;
+        }
+    }
+    public List<string> DroppedItemOwners(int lootSize)
+    {
+        List<string> result = new List<string>();
+        int totalReceivedDamage = 0;
+        int currentLoot = 0;
+        receivedDamageHistory = receivedDamageHistory.OrderByDescending(item => item.damage).ToList();
+        for (int i=0; i<receivedDamageHistory.Count; i++)
+        {
+            totalReceivedDamage += receivedDamageHistory[i].damage;
+        }
+        for (int i=0;i<receivedDamageHistory.Count; i++)
+        {
+            int percent = (receivedDamageHistory[i].damage / totalReceivedDamage) * 100;
+            int assignedLootCount = (int)Math.Round((lootSize * percent) / 100.0);
+            for (int j=0; j < assignedLootCount; j++)
+            {
+                if(currentLoot < lootSize)
+                {
+                    result.Add(receivedDamageHistory[i].from);
+                    currentLoot++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            if (currentLoot == lootSize) break;
+            else if (currentLoot > lootSize) Debug.LogError("currentLoot Bigger then LootSize!");
+        }
+
+        return result;
+        
+    }
+}
+
+
+public class ReceivedDamage
+{
+    public int damage;
+    public DateTime time;
+    public string from;
 }

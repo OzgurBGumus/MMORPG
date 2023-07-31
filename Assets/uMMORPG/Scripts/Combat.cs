@@ -105,7 +105,7 @@ public class Combat : NetworkBehaviour
     // deal damage at another entity
     // (can be overwritten for players etc. that need custom functionality)
     [Server]
-    public virtual void DealDamageAt(Entity victim, int amount, float stunChance=0, float stunTime=0)
+    public virtual void DealDamageAt(Entity victim, string from, int amount, float stunChance=0, float stunTime=0)
     {
         Combat victimCombat = victim.combat;
         int damageDealt = 0;
@@ -136,6 +136,10 @@ public class Combat : NetworkBehaviour
                 // deal the damage
                 victim.health.current -= damageDealt;
 
+                //SHOULD ONLY CALL IF VICTIM IS NOT A PLAYER
+                if(!(victim is Player))
+                    victim.AddReceivedDamage(new ReceivedDamage() { from = from, damage = damageDealt, time=DateTime.Now});
+
                 // call OnServerReceivedDamage event on the target
                 // -> can be used for monsters to pull aggro
                 // -> can be used by equipment to decrease durability etc.
@@ -161,9 +165,10 @@ public class Combat : NetworkBehaviour
         // let's make sure to pull aggro in any case so that archers
         // are still attacked if they are outside of the aggro range
         victim.OnAggro(entity);
-
+        
         // show effects on clients
         victimCombat.RpcOnReceivedDamaged(damageDealt, damageType);
+        
 
         // reset last combat time for both
         entity.lastCombatTime = NetworkTime.time;

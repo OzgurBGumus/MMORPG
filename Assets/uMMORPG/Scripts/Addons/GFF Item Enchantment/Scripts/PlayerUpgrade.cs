@@ -174,7 +174,7 @@ namespace GFFAddons
                 //show informational messages
                 if (data.showFailedEnchantmentOnChat)
                 {
-                    string message = "Failed upgrade to" + slot_0.item.name + " +" + slot_0.item.currentUpgradeLevel + 1;
+                    string message = "Failed upgrade to" + slot_0.item.name + " +" + (slot_0.item.currentUpgradeLevel + 1);
 
                     //for original chat
                     player.chat.OnSubmit(message);

@@ -139,11 +139,15 @@ public class PlayerChat : NetworkBehaviour
                 lastCommand = "";
                 List<int> keys = new List<int>();
                 List<string> values = new List<string>();
-                foreach (var KVP in UIChat.singleton.links)
+                if(UIChat.singleton.links != null)
                 {
-                    keys.Add(KVP.Key);
-                    values.Add(KVP.Value);
+                    foreach (var KVP in UIChat.singleton.links)
+                    {
+                        keys.Add(KVP.Key);
+                        values.Add(KVP.Value);
+                    }
                 }
+                
                 CmdMsgLocal(text, keys, values);
             }
             else if (text.StartsWith(partyChannel.command))

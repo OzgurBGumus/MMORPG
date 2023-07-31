@@ -19,6 +19,8 @@ public partial class UISkills : MonoBehaviour
 
     public static UISkills singleton;
     private bool lastFrameIsFalse = false;
+
+    private bool lastFrameWasInactive = true;
     public UISkills()
     {
         singleton = this;
@@ -82,7 +84,7 @@ public partial class UISkills : MonoBehaviour
                 FirstInActiveFrame();
             }
         }
-        else panel.SetActive(false);
+        else FirstInActiveFrame();
     }
 
     private void RefreshChildSkill(ScriptableSkill data, int treeSlot, int parentsIndexInTree)
@@ -172,31 +174,15 @@ public partial class UISkills : MonoBehaviour
         slot.cooldownCircle.fillAmount = skill.cooldown > 0 ? cooldown / skill.cooldown : 0;
     }
 
-    private void FirstActiveFrame()
-    {
-        if (lastFrameIsFalse)
-        {
-            //FindObjectOfType<Canvas>().GetComponent<UIUniqueWindow>().CloseWindows();
-            lastFrameIsFalse = false;
-        }
-    }
-    private void FirstInActiveFrame()
-    {
-        if (!lastFrameIsFalse)
-        {
-            lastFrameIsFalse = true;
-        }
-    }
-
     public void Toggle()
     {
         if (panel.activeSelf)
         {
-            Close();
+            panel.SetActive(false);
         }
         else
         {
-            Open();
+            panel.SetActive(true);
         }
 
     }
@@ -208,5 +194,21 @@ public partial class UISkills : MonoBehaviour
     public void Close()
     {
         panel.SetActive(false);
+    }
+    private void FirstActiveFrame()
+    {
+        if (lastFrameWasInactive)
+        {
+            Open();
+            lastFrameWasInactive = false;
+        }
+    }
+    private void FirstInActiveFrame()
+    {
+        if (!lastFrameWasInactive)
+        {
+            Close();
+            lastFrameWasInactive = true;
+        }
     }
 }

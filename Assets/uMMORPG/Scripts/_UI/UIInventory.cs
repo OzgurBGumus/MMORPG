@@ -26,6 +26,9 @@ public partial class UIInventory : MonoBehaviour
     public Color lowDurabilityColor = Color.magenta;
     [Range(0.01f, 0.99f)] public float lowDurabilityThreshold = 0.1f;
 
+    private bool lastFrameWasInactive=true;
+
+
     public UIInventory()
     {
         // assign singleton only once (to work with DontDestroyOnLoad when
@@ -43,20 +46,17 @@ public partial class UIInventory : MonoBehaviour
             {
                 Toggle();
             }
-                
+
 
             ((PlayerEquipment)player.equipment).avatarCamera.enabled = panel.activeSelf;
 
             // only update the panel if it's active
             if (panel.activeSelf)
             {
-                if (shortcuts.merchantPanel.activeSelf)
-                {
-                    
-                }
+                FirstActiveFrame();
                 // instantiate/destroy enough slots
                 UIUtils.BalancePrefabs(slotPrefab.gameObject, player.inventory.slots.Count, inventoryContent);
-                
+
 
                 // refresh all items
                 for (int i = 0; i < player.inventory.slots.Count; ++i)
@@ -69,19 +69,38 @@ public partial class UIInventory : MonoBehaviour
                     {
                         // refresh valid item
                         int icopy = i; // needed for lambdas, otherwise i is Count
-                        slot.button.onClick.SetListener(() => {
-                            if(Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt))
+                        slot.button.onClick.SetListener(() =>
+                        {
+                            if (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt))
                             {
-                                string color = "#"+ColorUtility.ToHtmlStringRGBA(player.itemRarityConfig.GetColor(itemSlot.item));
+                                string color = "#" + ColorUtility.ToHtmlStringRGBA(player.itemRarityConfig.GetColor(itemSlot.item));
                                 string param1 = "item";
                                 //SHOULD CREATE THE JSON OF THE ITEM'S CURRENT DATA AND PUT THAT JSON TO LINK WITH param2
                                 string param2 = EncodeToBase64(itemSlot.ToolTip());
-                                string htmlElement = "[<color="+color+"><link="+param1+":"+param2+">" + itemSlot.item.name + "</link></color>]";
+                                string htmlElement = "[<color=" + color + "><link=" + param1 + ":" + param2 + ">" + itemSlot.item.name + "</link></color>]";
                                 UIChat.singleton.AppendText(htmlElement);
                             }
                             else if (itemSlot.item.data is UsableItem usable &&
                                 usable.CanUse(player, icopy))
+                            {
                                 player.inventory.CmdUseItem(icopy);
+                            }
+                            else
+                            {
+                                if (UIUpgrade.singleton.panel.activeSelf)
+                                {
+                                    UIUpgrade.singleton.OnInventoryItemClick(player, itemSlot, icopy);
+                                }
+                                else if (UIMerchant.singleton.panel.activeSelf)
+                                {
+                                    UIMerchant.singleton.OnInventoryItemClick(player, itemSlot, icopy);
+                                }
+                                //else if (UICrafting.singleton.panel.activeSelf)
+                                //{
+                                //    UICrafting.singleton.OnInventoryItemClick(player, itemSlot, icopy);
+                                //}
+                            }
+
                         });
                         // only build tooltip while it's actually shown. this
                         // avoids MASSIVE amounts of StringBuilder allocations.
@@ -132,7 +151,7 @@ public partial class UIInventory : MonoBehaviour
                     }
                 }
 
-                
+
 
                 // gold
                 goldText.text = player.gold.ToString();
@@ -166,25 +185,28 @@ public partial class UIInventory : MonoBehaviour
                 }
             }
         }
-        else panel.SetActive(false);
+        else {
+            FirstInActiveFrame();
+        }
+
     }
 
     public void Toggle()
     {
         if (panel.activeSelf)
         {
-            Close();
+            panel.SetActive(false);
         }
         else
         {
-            Open();
+            panel.SetActive(true);
         }
-        
+
     }
     
     public void Open()
     {
-        FindObjectOfType<Canvas>().GetComponent<UIUniqueWindow>().CloseWindows(merchant: false, skills: false, crafting: false, guild: false, playerTrading: false, party: false, gameMasterTool: false, npcTrading: false, characterInfo: false);
+        FindObjectOfType<Canvas>().GetComponent<UIUniqueWindow>().CloseWindows(merchant: false, skills: false, crafting: false, guild: false, playerTrading: false, party: false, gameMasterTool: false, npcTrading: false, characterInfo: false, upgrade:false);
         panel.SetActive(true);
     }
     
@@ -192,7 +214,24 @@ public partial class UIInventory : MonoBehaviour
     {
         panel.SetActive(false);
     }
-    
+
+    private void FirstActiveFrame()
+    {
+        if (lastFrameWasInactive)
+        {
+            Open();
+            lastFrameWasInactive = false;
+        }
+    }
+    private void FirstInActiveFrame()
+    {
+        if (!lastFrameWasInactive)
+        {
+            Close();
+            lastFrameWasInactive = true;
+        }
+    }
+
     public string EncodeToBase64(string input)
     {
         byte[] bytes = Encoding.UTF8.GetBytes(input);

@@ -6,7 +6,6 @@
 
     public override void OnSelect(Player player)
     {
-        UINpcGuildManagement.singleton.panel.SetActive(true);
-        UINpcDialogue.singleton.panel.SetActive(false);
+        UINpcGuildManagement.singleton.FirstActiveFrame();
     }
 }

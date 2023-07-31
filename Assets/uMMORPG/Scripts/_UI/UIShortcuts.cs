@@ -80,7 +80,7 @@ public partial class UIShortcuts : MonoBehaviour
             });
 
             itemMallButton.onClick.SetListener(() => {
-                itemMallPanel.SetActive(!itemMallPanel.activeSelf);
+                itemMallPanel.transform.parent.GetComponent<UIItemMall>().Toggle();
             });
 
             gameMasterButton.gameObject.SetActive(player.isGameMaster);

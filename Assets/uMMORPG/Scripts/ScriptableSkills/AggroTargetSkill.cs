@@ -28,7 +28,7 @@ public class AggroTargetSkill : TargetProjectileSkill
         monster.UpdateAggroList(caster, monster.aggroValueMax);
 
         // deal damage directly with base damage + skill damage
-        caster.combat.DealDamageAt(monster,
+        caster.combat.DealDamageAt(monster, caster.name,
                             caster.combat.damage + damage.Get(skillLevel),
 
                             //gff

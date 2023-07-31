@@ -25,7 +25,8 @@ public abstract partial class UsableItem : ScriptableItem
         // and check durability if a durability item
         return player.level.current >= minLevel &&
                player.GetItemCooldown(cooldownCategory) == 0 &&
-               player.inventory.slots[inventoryIndex].item.CheckDurability();
+               player.inventory.slots[inventoryIndex].item.CheckDurability() &&
+               !player.inventory.ItemUsingBlocked;
     }
 
     // [Server] Use logic: make sure to call base.Use() in overrides too.
