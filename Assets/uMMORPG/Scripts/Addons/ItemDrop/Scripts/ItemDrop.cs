@@ -323,12 +323,15 @@ public class ItemDrop : NetworkBehaviour
     }
 }
 
-public struct Loot
+public class Loot
 {
     public int hashCode;
     public string uniqueId;
     public int stack;
+    public Loot()
+    {
 
+    }
     public Loot(int _hashCode, string _uniqueId, int _stack)
     {
         hashCode = _hashCode;

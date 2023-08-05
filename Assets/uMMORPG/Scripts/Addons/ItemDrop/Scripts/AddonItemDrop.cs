@@ -93,6 +93,7 @@ public static class AddonItemDrop
         clone.owner = owner;
         clone.name = itemName;
         clone.stack = currency ? Convert.ToInt32(gold) : 1;
+        clone.uniqueId = Guid.NewGuid().ToString();
         clone.endingPoint = point;
         return clone;
     }
@@ -263,7 +264,7 @@ public partial class ScriptableItem
 
         if (!gold)
         {
-            if(string.IsNullOrEmpty(owner) || Player.localPlayer.name == owner)
+            if(CanLoot(owner))
                 color = Player.localPlayer.itemRarityConfig.GetColor(rarity);
             else
             {
@@ -280,5 +281,16 @@ public partial class ScriptableItem
             stringBuilder.Append(AddonItemDrop.ColorStack(name, stack, color));
         }
         return stringBuilder.ToString();
+    }
+
+    public bool CanLoot(string checkName)
+    {
+        Player player = Player.localPlayer;
+        if (player == null) return false;
+        if (string.IsNullOrEmpty(checkName) || player.name == checkName) return true;
+        else
+        {
+            return player.party.InParty() && player.party.party.members.Contains(checkName);
+        }
     }
 }

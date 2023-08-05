@@ -1,5 +1,7 @@
 ﻿// Parties have to be structs in order to work with SyncLists.
 
+using System.Collections.Generic;
+
 public struct Party
 {
     // Guild.Empty for ease of use
@@ -11,6 +13,11 @@ public struct Party
     public bool shareExperience;
     public bool shareGold;
 
+    public int shareLoot;
+    public int nextLootOwner;
+    public AuctionItem[] auctionItems;
+    public string endedAuctionWinner;
+    public int endedAuctionHashCode;
     // helper properties
     public string master => members != null && members.Length > 0 ? members[0] : "";
 
@@ -26,6 +33,11 @@ public struct Party
         members = new string[]{master, firstMember};
         shareExperience = false;
         shareGold = false;
+        shareLoot = 0;
+        nextLootOwner = 0;
+        auctionItems = new AuctionItem[] { };
+        endedAuctionWinner = "";
+        endedAuctionHashCode = 0;
     }
 
     public bool Contains(string memberName)
@@ -42,3 +54,25 @@ public struct Party
         return members != null && members.Length == Capacity;
     }
 }
+
+public struct AuctionItem
+{
+
+    public string winnerPlayer { get; set; }
+    public string[] acceptableMembers { get; set; }
+    public string[] bids { get; set; }
+    public string[] rejectedBids { get; set; }
+    public int hashCode;
+    public string uniqueId;
+    public int stack;
+    public AuctionItem(int hashCode, string uniqueId, int stack)
+    {
+        this.hashCode = hashCode;
+        this.uniqueId = uniqueId;
+        this.stack = stack;
+        acceptableMembers = new string[0];
+        bids = new string[0];
+        rejectedBids = new string[0];
+        winnerPlayer = null;
+    }
+} 

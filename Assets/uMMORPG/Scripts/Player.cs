@@ -1235,4 +1235,16 @@ public partial class Player : Entity
             //}
         }
     }
+
+    public static Player GetOnlinePlayer(string name)
+    {
+        if (onlinePlayers.ContainsKey(name))
+        {
+            return onlinePlayers[name];
+        }
+        else
+        {
+            return null;
+        }
+    }
 }

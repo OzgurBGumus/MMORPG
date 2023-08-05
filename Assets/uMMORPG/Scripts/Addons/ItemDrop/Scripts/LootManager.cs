@@ -94,7 +94,7 @@ public class LootManager : MonoBehaviour
         {
             if (player.state == "IDLE" || player.state == "MOVING")
             {
-                player.ControlRaycast(true);
+                //player.ControlRaycast(true);
                 player.SetTargetItem(item);
             }
         }

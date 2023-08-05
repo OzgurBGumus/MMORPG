@@ -11,6 +11,7 @@ public partial class UIParty : MonoBehaviour
     public Transform memberContent;
     public Toggle experienceShareToggle;
     public Toggle goldShareToggle;
+    public Dropdown lootShareDropdown;
 
     public static UIParty singleton;
     public UIParty()
@@ -115,6 +116,13 @@ public partial class UIParty : MonoBehaviour
                 goldShareToggle.isOn = party.shareGold;
                 goldShareToggle.onValueChanged.SetListener((val) => {
                     player.party.CmdSetGoldShare(val);
+                });
+
+                //loot share dropdown
+                lootShareDropdown.interactable = player.party.InParty() && party.members[0] == player.name;
+                lootShareDropdown.onValueChanged.SetListener((val) => { });
+                lootShareDropdown.onValueChanged.SetListener((val) => {
+                    player.party.CmdSetLootShare(val);
                 });
             }
         }

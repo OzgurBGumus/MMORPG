@@ -116,6 +116,7 @@ public partial class MonsterInventory
             if (ScriptableItem.All.TryGetValue(AddonItemDrop.goldHashCode, out var data))
             {
                 slots.Add(new ItemSlot(new Item(data)));
+                owners.Add("");
             }
         }
         
@@ -141,7 +142,7 @@ public partial class MonsterInventory
                     {
                         if (AddonItemDrop.RandomPoint3D(center, out var point))
                         {
-                            string lootOwner = string.IsNullOrEmpty(owners[i]) ? "" : owners[i];
+                            string lootOwner = (i < owners.Count && !string.IsNullOrEmpty(owners[i])) ? owners[i] : "";
                             // spawn an item without generating a unique ID
                             ItemDrop loot = AddonItemDrop.GenerateLoot(lootOwner, itemData.name, itemData.gold, monster.gold, center, point);
                             NetworkServer.Spawn(loot.gameObject);
