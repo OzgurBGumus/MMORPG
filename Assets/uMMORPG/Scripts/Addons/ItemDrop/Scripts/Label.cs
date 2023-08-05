@@ -91,6 +91,6 @@ public class Label : MonoBehaviour
     public void Hide()
     {
         gameObject.SetActive(false);
-        LootManager.instance.GetPlayer()?.ControlRaycast(false);
+        //LootManager.instance.GetPlayer()?.ControlRaycast(false);
     }
 }

@@ -238,20 +238,26 @@ public partial class Player
                 }
                 return;
             }
-
-            Loot loot = new Loot
+            if (item.data.CanLoot(item.owner))
             {
-                hashCode = item.name.GetStableHashCode(),
-                uniqueId = item.uniqueId,
-                stack = item.stack
-            };
-            CmdAddItem(item.gameObject, loot);
+                Loot loot = new Loot
+                {
+                    hashCode = item.name.GetStableHashCode(),
+                    uniqueId = item.uniqueId,
+                    stack = item.stack
+                };
+                CmdAddItem(item.gameObject, loot);
 
-            if (targetItem != null)
+                if (targetItem != null)
+                {
+                    Destroy(targetItem.gameObject);
+                    targetItem = null;
+                }
+            }
+            else
             {
-                Destroy(targetItem.gameObject);
                 targetItem = null;
-            }           
+            }       
         }
     }
  
@@ -308,7 +314,7 @@ public partial class Player
         }
 #endif
 #if ITEM_DROP_R
-        if (party.InParty() && party.party.shareGold)
+        if (party.InParty() && party.party.shareLoot != (int)LootShareEnum.Individual)
         {
             // find all party members nearby
             List<Player> closeMembers = party.GetMembersInProximity();
@@ -375,24 +381,67 @@ public partial class Player
         // try to find an item in the item dictionary by hashCode
         if (ScriptableItem.All.TryGetValue(loot.hashCode, out var data))
         {
-            // enough space in the inventory, pick up the item
-            if (inventory.Add(new Item(data), loot.stack))
+            
+            if (party.InParty())
             {
-                if (ItemDropSettings.Settings.showMessages)
+                List<Player> members = party.GetMembersInProximity();
+                bool userGotTheItem = false;
+                switch (party.party.shareLoot)
                 {
-                    string message = loot.stack == 1 ? $"You put [{data.name}] in your backpack" : $"You put [{data.name}] (<color=#ADFF2F>{loot.stack}</color>) in your backpack.";
-                    chat.TargetMsgInfo(message);
+                    case (int)LootShareEnum.Individual:
+                        AddItemIntoInventory(this, item, data, loot);
+                        break;
+                    case (int)LootShareEnum.Random:
+                        party.AddItemIntoRandomMember(item, data, string.IsNullOrEmpty(loot.uniqueId) ? Guid.NewGuid().ToString(): loot.uniqueId, loot.hashCode, loot.stack);
+                        break;
+                    case (int)LootShareEnum.Ordered:
+                        party.AddItemIntoNextMember(item, data, loot.uniqueId, loot.stack);
+                        break;
+                    case (int)LootShareEnum.Auction:
+                        AuctionItem auction = new AuctionItem();
+                        auction.uniqueId = loot.uniqueId;
+                        auction.hashCode = loot.hashCode;
+                        auction.stack = loot.stack;
+                        party.AddItemIntoAuction(item, auction);
+                        break;
                 }
-
-                if (item != null)
-                {
-                    //Debug.Log($"server item: {item}");
-                    AddonItemDrop.DeleteItem(loot.uniqueId);
-                    NetworkServer.Destroy(item);
-                }
+            }
+            else
+            {
+                AddItemIntoInventory(this, item, data, loot);
             }
         }
 #endif
+    }
+    
+    [Server]
+    private bool AddItemIntoInventory(Player player, GameObject item, ScriptableItem data, Loot loot)
+    {
+        // enough space in the inventory, pick up the item
+        if (player.inventory.Add(new Item(data), loot.stack))
+        {
+            if (ItemDropSettings.Settings.showMessages)
+            {
+                string message = loot.stack == 1 ? $"You put [{data.name}] in your backpack" : $"You put [{data.name}] (<color=#ADFF2F>{loot.stack}</color>) in your backpack.";
+                chat.TargetMsgInfo(message);
+            }
+
+            DestroyLoot(item, loot);
+            return true;
+        }
+        return false;
+    }
+
+    [Server]
+    private void DestroyLoot(GameObject item, Loot loot)
+    {
+        if (item != null)
+        {
+            //Debug.Log($"server item: {item}");
+            AddonItemDrop.DeleteItem(loot.uniqueId);
+            NetworkServer.Destroy(item);
+        }
+        
     }
 
     #region GoldLoss

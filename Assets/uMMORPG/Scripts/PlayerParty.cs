@@ -45,6 +45,18 @@ public class PlayerParty : NetworkBehaviour
         return party.partyId > 0;
     }
 
+    [Command]
+    public void CmdAcceptBidToLoot(string lootUniqueID)
+    {
+        PartySystem.CmdBidToAuction(party.partyId, player, lootUniqueID);
+    }
+
+    [Command]
+    public void CmdRejectBidToLoot(string lootUniqueID)
+    {
+        PartySystem.CmdRejectBidToAuction(party.partyId, player, lootUniqueID);
+    }
+
     // find party members in proximity for item/exp sharing etc.
     public List<Player> GetMembersInProximity()
     {
@@ -62,6 +74,28 @@ public class PlayerParty : NetworkBehaviour
             }
         }
         return proximity;
+    }
+    public string[] GetMembersInProximityStringArray()
+    {
+        List<string> res = new List<string>();
+        // clear proximity cache instead of allocating a new one each time
+        proximity.Clear();
+
+        if (InParty())
+        {
+            // (avoid Linq because it is HEAVY(!) on GC and performance)
+            foreach (NetworkConnection conn in netIdentity.observers.Values)
+            {
+                Player observer = conn.identity.GetComponent<Player>();
+                if (party.Contains(observer.name))
+                {
+                    res.Add(observer.name);
+                    proximity.Add(observer);
+                }
+                    
+            }
+        }
+        return res.ToArray();
     }
 
     // party invite by name (not by target) so that chat commands are possible
@@ -155,6 +189,13 @@ public class PlayerParty : NetworkBehaviour
         PartySystem.SetPartyGoldShare(party.partyId, name, value);
     }
 
+    [Command]
+    public void CmdSetLootShare(int value)
+    {
+        // try to set. party system will do all the validation.
+        PartySystem.SetPartyLootShare(party.partyId, name, value);
+    }
+
     // helper function to calculate the experience rewards for sharing parties
     public static long CalculateExperienceShare(long total, int memberCount, float bonusPercentagePerMember, int memberLevel, int killedLevel)
     {
@@ -220,4 +261,44 @@ public class PlayerParty : NetworkBehaviour
             }
         }
     }
+
+
+    [Server]
+    public void AddItemIntoMember(string playerName, GameObject item, ScriptableItem data, string uniqueId, int stack) {
+        PartySystem.AddItemIntoMember(party.partyId, playerName, item, data, uniqueId, stack);
+        
+    }
+    [Server]
+    public void AddItemIntoRandomMember(GameObject item, ScriptableItem data, string uniqueId, int hashCode, int stack)
+    {
+        PartySystem.AddItemIntoRandomMember(party.partyId, GetMembersInProximityStringArray(), item, uniqueId, hashCode, stack);
+
+    }
+    [Server]
+    public void AddItemIntoNextMember(GameObject item, ScriptableItem data, string uniqueId, int stack)
+    {
+        PartySystem.AddItemIntoNextMember(party.partyId, GetMembersInProximityStringArray(), item, data, uniqueId, stack);
+
+    }
+    [Server]
+    public void AddItemIntoAuction(GameObject item, AuctionItem auctionItem)
+    {
+        auctionItem.rejectedBids = new string[0];
+        auctionItem.bids = new string[0];
+        auctionItem.acceptableMembers = GetMembersInProximityStringArray();
+        PartySystem.CmdAddItemIntoAuction(party.partyId, item, auctionItem);
+    }
+
+    [Server]
+    private void DestroyLoot(GameObject item, Loot loot)
+    {
+        if (item != null)
+        {
+            //Debug.Log($"server item: {item}");
+            AddonItemDrop.DeleteItem(loot.uniqueId);
+            NetworkServer.Destroy(item);
+        }
+
+    }
+
 }

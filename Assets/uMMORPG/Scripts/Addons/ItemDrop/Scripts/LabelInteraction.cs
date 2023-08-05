@@ -8,7 +8,7 @@ public class LabelInteraction : MonoBehaviour
 
     void OnMouseDown()
     {
-        LootManager.instance.GetPlayer()?.ControlRaycast(true);
+        //LootManager.instance.GetPlayer()?.ControlRaycast(true);
 
         item = LootManager.instance.GetLootHighlighter().SelectLoot(label.gameObject);
         //Debug.Log($"Selected Item: {label.text.text}, {item}");
