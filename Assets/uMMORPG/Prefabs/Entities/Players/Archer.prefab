@@ -312,6 +312,8 @@ MonoBehaviour:
   customization: {fileID: 1970961225953634095}
   upgrade: {fileID: 4521734194411720887}
   itemRarityConfig: {fileID: 11400000, guid: dd350f5007de8874cb433e69b78b8c95, type: 2}
+  targetItem: {fileID: 0}
+  lockRaycast: 0
   experience: {fileID: 7224164981670902446}
   intelligence: {fileID: 5337225809773296567}
   strength: {fileID: 6395401577655504590}
@@ -832,6 +834,11 @@ MonoBehaviour:
     defaultItem:
       item: {fileID: 0}
       amount: 1
+  - requiredCategory: 21
+    location: {fileID: 7959201922250125787}
+    defaultItem:
+      item: {fileID: 0}
+      amount: 1
 --- !u!114 &7224164981670902446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -941,6 +948,7 @@ MonoBehaviour:
   - item: {fileID: 11400000, guid: acadbc0e96f8b49299aa1d1a5453f6f0, type: 2}
     amount: 5
   splitKeys: 300100002f010000
+  ItemUsingBlocked: 0
   trash:
     item:
       currentUpgradeLevel: 0

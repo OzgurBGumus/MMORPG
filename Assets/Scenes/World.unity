@@ -13398,6 +13398,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4489300417060102595, guid: 62d08c6a58c3c3445b3ec4462778c53e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 62d08c6a58c3c3445b3ec4462778c53e, type: 3}
 --- !u!1001 &361631686
@@ -59262,6 +59267,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6052480834058568368, guid: fe4c4929e99c29247b45d069b0a1b589,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 6634955248893315856, guid: fe4c4929e99c29247b45d069b0a1b589,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -59706,7 +59716,7 @@ PrefabInstance:
     - target: {fileID: 2587608247090335818, guid: cb6bfdff94d0eda49a166f395852564f,
         type: 3}
       propertyPath: saleItems.Array.size
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2587608247090335818, guid: cb6bfdff94d0eda49a166f395852564f,
         type: 3}
@@ -59718,7 +59728,7 @@ PrefabInstance:
         type: 3}
       propertyPath: saleItems.Array.data[7]
       value: 
-      objectReference: {fileID: 11400000, guid: 7a83f012a184a4245a82356f1635c9da,
+      objectReference: {fileID: 11400000, guid: be6611977b86de242be8255e0a2b3f3e,
         type: 2}
     - target: {fileID: 2587608247090335818, guid: cb6bfdff94d0eda49a166f395852564f,
         type: 3}

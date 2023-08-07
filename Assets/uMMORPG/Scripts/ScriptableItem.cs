@@ -26,7 +26,7 @@ public enum ItemCategory { None,
     Potion, Pet, Mount, Usable, Material,
     WeaponBow, WeaponSword, WeaponStaff, WeaponPriestWeapon, WeaponShield,
     Helmet, Gloves, Boots, Armor, Panth, 
-    Belt, Necklage, Earring, Ring, upgradeMaterial}
+    Belt, Necklage, Earring, Ring, upgradeMaterial, Wing}
 
 [CreateAssetMenu(menuName="uMMORPG Item/General", order=999)]
 public partial class ScriptableItem : ScriptableObject
