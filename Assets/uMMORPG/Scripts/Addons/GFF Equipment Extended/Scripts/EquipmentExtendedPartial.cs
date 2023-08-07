@@ -81,13 +81,16 @@ public partial class EquipmentItem
             else if (equipmentIndex == 10 || equipmentIndex == 11)
             {
                 if (player.equipment.slots[equipmentIndex].amount < 1) SwapSlots(player, equipmentIndex, inventoryIndex);
-                else SwapSlots(player, equipmentIndex + 1, inventoryIndex);
             }
             //earrings
             else if (equipmentIndex == 12 || equipmentIndex == 13)
             {
                 if (player.equipment.slots[equipmentIndex].amount < 1) SwapSlots(player, equipmentIndex, inventoryIndex);
-                else SwapSlots(player, equipmentIndex + 1, inventoryIndex);
+            }
+            //wing
+            else if(equipmentIndex == 14)
+            {
+                if (player.inventory.slots[inventoryIndex].item.data.category == ItemCategory.Wing) SwapSlots(player, equipmentIndex, inventoryIndex);
             }
 
             else SwapSlots(player, equipmentIndex, inventoryIndex);
