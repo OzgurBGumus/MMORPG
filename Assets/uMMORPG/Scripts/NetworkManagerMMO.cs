@@ -66,7 +66,7 @@ public partial class NetworkManagerMMO : NetworkManager
     [Header("Character Selection")]
     public int selection = -1;
     public Transform[] selectionLocations;
-    public Transform selectionCameraLocation;
+    public Transform[] selectionCameraLocations;
     public CharacterSelectSpawnPosition selectionSpawnLocation;
     [HideInInspector] public List<Player> playerClasses = new List<Player>(); // cached in Awake
 

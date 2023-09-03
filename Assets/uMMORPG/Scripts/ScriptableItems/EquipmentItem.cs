@@ -40,14 +40,23 @@ public partial class EquipmentItem : UsableItem
     // tooltip
     public override string ToolTip()
     {
-        StringBuilder tip = new StringBuilder(base.ToolTip());
-        tip.Replace("{CATEGORY}", category.ToString());
-        //tip.Replace("{DAMAGEBONUS}", damageBonus.ToString());
-        //tip.Replace("{DEFENSEBONUS}", defenseBonus.ToString());
-        tip.Replace("{HEALTHBONUS}", healthBonus.ToString());
-        tip.Replace("{MANABONUS}", manaBonus.ToString());
-        tip.Replace("{BLOCKCHANCEBONUS}", Mathf.RoundToInt(blockChanceBonus * 100).ToString());
-        tip.Replace("{CRITICALCHANCEBONUS}", Mathf.RoundToInt(criticalChanceBonus * 100).ToString());
-        return tip.ToString();
+        string toolTip =
+        "<b>" + name + "</b>\n" +
+        "\n" +
+        (defenseBonus != 0 ? "Defense Bonus: {DEFENSEBONUS}\n" : "") +
+        (damageBonus != 0 ? "Pyshical Attack Bonus: {DAMAGEBONUS}\n" : "") +
+        "Durability: {DURABILITY}%\n" +
+        "Destroyable: " + (destroyable ? "Yes" : "No") + "\n" +
+        "Sellable: " + (sellable ? "Yes" : "No") + "\n" +
+        "Tradable: " + (tradable ? "Yes" : "No") + "\n" +
+        "Required Level: " + minLevel + "\n" +
+        "\n" +
+        "Enchantment: {UPGRADE}\n" +
+        "\n" +
+        "Price: " + buyPrice.ToString() + " Gold\n" +
+        "<i>Sells for: " + sellPrice.ToString() + " Gold</i>\n" +
+        "\n" +
+        base.toolTip;
+        return toolTip;
     }
 }

@@ -19,7 +19,7 @@ public partial class UICharacterSelection : MonoBehaviour
     {
         manager = GameObject.Find("NetworkManager").GetComponent<NetworkManagerMMO>();
         auth = GameObject.Find("NetworkManager").GetComponent<NetworkAuthenticatorMMO>();
-        Camera.main.transform.position = manager.selectionCameraLocation.position;
+        Camera.main.transform.position = manager.selectionCameraLocations[0].position;
         
     }
     void Update()
@@ -31,7 +31,11 @@ public partial class UICharacterSelection : MonoBehaviour
             // characters available message received already?
             if (manager.charactersAvailableMsg.characters != null)
             {
-                Camera.main.transform.position = manager.selectionCameraLocation.position;
+                int currentSelection = manager.selection == -1 ? 0 : manager.selection;
+                Camera.main.transform.position =  Vector3.Lerp(Camera.main.transform.position, manager.selectionCameraLocations[currentSelection].position, Time.deltaTime*2.0f);
+
+
+
                 CharactersAvailableMsg.CharacterPreview[] characters = manager.charactersAvailableMsg.characters;
 
                 // start button: calls AddPLayer which calls OnServerAddPlayer

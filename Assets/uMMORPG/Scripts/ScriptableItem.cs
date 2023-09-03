@@ -47,7 +47,7 @@ public partial class ScriptableItem : ScriptableObject
 
     public float[] upgradeBonusesPercent;
     public float[] upgradeChances;
-
+    
     // tooltip /////////////////////////////////////////////////////////////////
     // fill in all variables into the tooltip
     // this saves us lots of ugly string concatenation code.

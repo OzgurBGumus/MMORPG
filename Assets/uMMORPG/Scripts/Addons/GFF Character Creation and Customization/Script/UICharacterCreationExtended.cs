@@ -308,8 +308,8 @@ public partial class UICharacterCreationExtended : MonoBehaviour
     }
     void PressButtonCancel()
     {
-        Camera.main.transform.position = manager.selectionCameraLocation.position;
-        Camera.main.transform.rotation = manager.selectionCameraLocation.rotation;
+        Camera.main.transform.position = manager.selectionCameraLocations[manager.selection].position;
+        Camera.main.transform.rotation = manager.selectionCameraLocations[manager.selection].rotation;
 
         Destroy(playerPreview);
         nameInput.text = "";

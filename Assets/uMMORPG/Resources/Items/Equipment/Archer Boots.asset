@@ -30,33 +30,7 @@ MonoBehaviour:
   sellable: 1
   tradable: 1
   destroyable: 1
-  toolTip: '<b>{NAME}</b>
-
-
-    {DEFENSEBONUS} Defense
-
-    Durability: {DURABILITY}%
-
-    Destroyable:
-    {DESTROYABLE}
-
-    Sellable: {SELLABLE}
-
-    Tradable: {TRADABLE}
-
-    Required
-    Level: {MINLEVEL}
-
-
-    Enchantment: {UPGRADE}
-
-
-    Amount: {AMOUNT}
-
-    Price:
-    {BUYPRICE} Gold
-
-    <i>Sells for: {SELLPRICE} Gold</i>'
+  toolTip: 
   image: {fileID: 21300000, guid: 496c3159dd4584e3c8bd5b886097f454, type: 3}
   upgradeBonusesPercent:
   - 100
