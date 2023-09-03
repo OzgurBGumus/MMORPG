@@ -30,38 +30,7 @@ MonoBehaviour:
   sellable: 1
   tradable: 1
   destroyable: 1
-  toolTip: '<b>{NAME} {UPGRADE}</b>
-
-    A powerful white bow.
-
-
-    {DAMAGEBONUS}
-    Damage
-
-    {CRITICALCHANCEBONUS} Critical
-
-    Durability: {DURABILITY}%
-
-    Destroyable:
-    {DESTROYABLE}
-
-    Sellable: {SELLABLE}
-
-    Tradable: {TRADABLE}
-
-    Required
-    Level: {MINLEVEL}
-
-
-    Requires {REQUIREDAMMO}
-
-
-    Amount: {AMOUNT}
-
-    Price:
-    {BUYPRICE} Gold
-
-    <i>Sells for: {SELLPRICE} Gold</i>'
+  toolTip: A powerful white bow.
   image: {fileID: 21300000, guid: 12085298bfeea48c6bd147922ace454e, type: 3}
   upgradeBonusesPercent:
   - 100

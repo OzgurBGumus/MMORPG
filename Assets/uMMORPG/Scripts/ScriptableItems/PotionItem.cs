@@ -32,11 +32,25 @@ public class PotionItem : UsableItem
     // tooltip
     public override string ToolTip()
     {
-        StringBuilder tip = new StringBuilder(base.ToolTip());
-        tip.Replace("{USAGEHEALTH}", usageHealth.ToString());
-        tip.Replace("{USAGEMANA}", usageMana.ToString());
-        tip.Replace("{USAGEEXPERIENCE}", usageExperience.ToString());
-        tip.Replace("{USAGEPETHEALTH}", usagePetHealth.ToString());
-        return tip.ToString();
+        string tooltip = 
+            "<b>{NAME}</b>\n" +
+                        "\n" +
+            (usageHealth != 0 ? "Restores " + usageHealth.ToString() + " Health on use.\n" : "") +
+            (usageMana != 0 ? "Restores " + usageMana.ToString() + " Mana on use.\n" : "") +
+            (usagePetHealth != 0 ? "Restores " + usagePetHealth.ToString() + " Pet Health on use.\n" : "") +
+            (usageExperience != 0 ? "Gain " + usageExperience.ToString() + " Experience on use.\n" : "") +
+            "Destroyable: " + (destroyable ? "Yes" : "No") + "\n" +
+            "Sellable: " + (sellable ? "Yes" : "No") + "\n" +
+            "Tradable: " + (tradable ? "Yes" : "No") + "\n" +
+            "Required Level: " + minLevel + "\n" +
+                        "\n" +
+            "Price: " + buyPrice.ToString() + " Gold\n" +
+            "<i>Sells for: " + sellPrice.ToString() + " Gold</i>\n" +
+            "\n"+
+            base.toolTip;
+
+
+
+        return tooltip;
     }
 }
