@@ -69,39 +69,14 @@ public partial class UIInventory : MonoBehaviour
                     {
                         // refresh valid item
                         int icopy = i; // needed for lambdas, otherwise i is Count
-                        slot.button.onClick.SetListener(() =>
+                        if (Input.GetMouseButtonDown(1))
                         {
-                            if (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt))
+                            if (IsMouseOverSlot(slot))
                             {
-                                string color = "#" + ColorUtility.ToHtmlStringRGBA(player.itemRarityConfig.GetColor(itemSlot.item));
-                                string param1 = "item";
-                                //SHOULD CREATE THE JSON OF THE ITEM'S CURRENT DATA AND PUT THAT JSON TO LINK WITH param2
-                                string param2 = EncodeToBase64(itemSlot.ToolTip());
-                                string htmlElement = "[<color=" + color + "><link=" + param1 + ":" + param2 + ">" + itemSlot.item.name + "</link></color>]";
-                                UIChat.singleton.AppendText(htmlElement);
+                                // Perform your right-click action here
+                                OnRightClick(player, icopy, itemSlot);
                             }
-                            else if (itemSlot.item.data is UsableItem usable &&
-                                usable.CanUse(player, icopy))
-                            {
-                                player.inventory.CmdUseItem(icopy);
-                            }
-                            else
-                            {
-                                if (UIUpgrade.singleton.panel.activeSelf)
-                                {
-                                    UIUpgrade.singleton.OnInventoryItemClick(player, itemSlot, icopy);
-                                }
-                                else if (UIMerchant.singleton.panel.activeSelf)
-                                {
-                                    UIMerchant.singleton.OnInventoryItemClick(player, itemSlot, icopy);
-                                }
-                                //else if (UICrafting.singleton.panel.activeSelf)
-                                //{
-                                //    UICrafting.singleton.OnInventoryItemClick(player, itemSlot, icopy);
-                                //}
-                            }
-
-                        });
+                        }
                         // only build tooltip while it's actually shown. this
                         // avoids MASSIVE amounts of StringBuilder allocations.
                         slot.tooltip.enabled = true;
@@ -236,5 +211,54 @@ public partial class UIInventory : MonoBehaviour
     {
         byte[] bytes = Encoding.UTF8.GetBytes(input);
         return Convert.ToBase64String(bytes);
+    }
+
+
+    private bool IsMouseOverSlot(UniversalSlot slot)
+    {
+        RectTransform buttonRect = slot.button.GetComponent<RectTransform>();
+        Vector3 mousePosition = Input.mousePosition;
+
+        // Convert the mouse position to the button's local space
+        Vector2 localMousePosition;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(buttonRect, mousePosition, null, out localMousePosition);
+
+        // Check if the local mouse position is within the button's bounds
+        return buttonRect.rect.Contains(localMousePosition);
+    }
+    private void OnRightClick(Player player, int icopy, ItemSlot itemSlot)
+    {
+        if (Input.GetMouseButtonDown(1)) // Check for right-click
+        {
+            if (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt))
+            {
+                string color = "#" + ColorUtility.ToHtmlStringRGBA(player.itemRarityConfig.GetColor(itemSlot.item));
+                string param1 = "item";
+                //SHOULD CREATE THE JSON OF THE ITEM'S CURRENT DATA AND PUT THAT JSON TO LINK WITH param2
+                string param2 = EncodeToBase64(itemSlot.ToolTip());
+                string htmlElement = "[<color=" + color + "><link=" + param1 + ":" + param2 + ">" + itemSlot.item.name + "</link></color>]";
+                UIChat.singleton.AppendText(htmlElement);
+            }
+            else if (itemSlot.item.data is UsableItem usable &&
+                usable.CanUse(player, icopy))
+            {
+                player.inventory.CmdUseItem(icopy);
+            }
+            else
+            {
+                if (UIUpgrade.singleton.panel.activeSelf)
+                {
+                    UIUpgrade.singleton.OnInventoryItemClick(player, itemSlot, icopy);
+                }
+                else if (UIMerchant.singleton.panel.activeSelf)
+                {
+                    UIMerchant.singleton.OnInventoryItemClick(player, itemSlot, icopy);
+                }
+                //else if (UICrafting.singleton.panel.activeSelf)
+                //{
+                //    UICrafting.singleton.OnInventoryItemClick(player, itemSlot, icopy);
+                //}
+            }
+        }
     }
 }
