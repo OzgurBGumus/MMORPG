@@ -35,7 +35,7 @@ public class PlayerGameMasterTool : NetworkBehaviour
     void Update()
     {
         // validate: only for GMs
-        if (!player.isGameMaster) return;
+        if (player != null && !player.isGameMaster) return;
 
         // measure tick rate to get an idea of server load
         ++tickRateCounter;

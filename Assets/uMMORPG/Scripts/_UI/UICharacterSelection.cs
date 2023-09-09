@@ -10,16 +10,21 @@ public partial class UICharacterSelection : MonoBehaviour
     public UIConfirmation uiConfirmation;
     public NetworkManagerMMO manager; // singleton is null until update
     public GameObject panel;
+    public Button nextCharacterButton;
+    public Button previousCharacterButton;
     public Button startButton;
     public Button deleteButton;
     public Button createButton;
     public Button quitButton;
 
+    private int previousSelection = -1;
+
     private void Start()
     {
         manager = GameObject.Find("NetworkManager").GetComponent<NetworkManagerMMO>();
         auth = GameObject.Find("NetworkManager").GetComponent<NetworkAuthenticatorMMO>();
-        Camera.main.transform.position = manager.selectionCameraLocations[0].position;
+        Camera.main.transform.position = manager.selectionCameraLocation.position;
+        if (manager.charactersAvailableMsg.characters != null && manager.charactersAvailableMsg.characters.Length > 0) manager.selection = 0;
         
     }
     void Update()
@@ -31,8 +36,13 @@ public partial class UICharacterSelection : MonoBehaviour
             // characters available message received already?
             if (manager.charactersAvailableMsg.characters != null)
             {
-                int currentSelection = manager.selection == -1 ? 0 : manager.selection;
-                Camera.main.transform.position =  Vector3.Lerp(Camera.main.transform.position, manager.selectionCameraLocations[currentSelection].position, Time.deltaTime*2.0f);
+                if(previousSelection != manager.selection)
+                {
+                    //RUN THE CARACTER TO FRONT (SelectionSpawnPosition)
+                    previousSelection = manager.selection;
+
+                }
+                Camera.main.transform.position =  Vector3.Lerp(Camera.main.transform.position, manager.selectionCameraLocation.position, Time.deltaTime*2.0f);
 
 
 
@@ -59,6 +69,19 @@ public partial class UICharacterSelection : MonoBehaviour
                     panel.SetActive(false);
                 });
 
+                // next character button
+                nextCharacterButton.gameObject.SetActive(characters.Length != 0);
+                nextCharacterButton.onClick.SetListener(() => {
+                    changeSelectedCharacter(manager.selection, characters);
+                });
+
+                // previous character button
+                previousCharacterButton.gameObject.SetActive(characters.Length != 0);
+                previousCharacterButton.onClick.SetListener(() => {
+                    changeSelectedCharacter(manager.selection, characters, false);
+                });
+
+
                 // delete button
                 deleteButton.gameObject.SetActive(manager.selection != -1);
                 deleteButton.onClick.SetListener(() => {
@@ -81,5 +104,22 @@ public partial class UICharacterSelection : MonoBehaviour
             }
         }
         else panel.SetActive(false);
+    }
+
+    void changeSelectedCharacter(int previousIndex, CharactersAvailableMsg.CharacterPreview[] characters, bool next=true)
+    {
+        if (manager.selection < 0) return;
+        //manager.selectionLocations[manager.selection].gameObject.SetActive(false);
+        if (next)
+        {
+            manager.selection++;
+            if (characters.Length == manager.selection) manager.selection = 0;
+        }
+        else
+        {
+            manager.selection--;
+            if (manager.selection < 0) manager.selection = characters.Length - 1;
+        }
+        //manager.selectionLocations[manager.selection].gameObject.SetActive(true);
     }
 }

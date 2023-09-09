@@ -44,27 +44,32 @@ public class PlayerMerchant : NetworkBehaviour
     }
     void Update()
     {
-        // update overlays in any case, except on server-only mode
-        // (also update for character selection previews etc. then)
-        if (!isServerOnly)
+        Player player = Player.localPlayer;
+        if (player != null)
         {
-            if (player.state == "MERCHANT")
+            // update overlays in any case, except on server-only mode
+            // (also update for character selection previews etc. then)
+            if (!isServerOnly)
             {
-                if (!overlayContainer.activeSelf)
+                if (player.state == "MERCHANT")
                 {
-                    overlay.text = title;
-                    overlayContainer.SetActive(true);
+                    if (!overlayContainer.activeSelf)
+                    {
+                        overlay.text = title;
+                        overlayContainer.SetActive(true);
+                    }
                 }
-            }
-            else
-            {
-                if (overlayContainer.activeSelf)
+                else
                 {
-                    overlayContainer.SetActive(false);
+                    if (overlayContainer.activeSelf)
+                    {
+                        overlayContainer.SetActive(false);
 
+                    }
                 }
             }
         }
+        
     }
     public override void OnStartServer()
     {

@@ -308,8 +308,8 @@ public partial class UICharacterCreationExtended : MonoBehaviour
     }
     void PressButtonCancel()
     {
-        Camera.main.transform.position = manager.selectionCameraLocations[manager.selection].position;
-        Camera.main.transform.rotation = manager.selectionCameraLocations[manager.selection].rotation;
+        Camera.main.transform.position = manager.selectionCameraLocation.position;
+        Camera.main.transform.rotation = manager.selectionCameraLocation.rotation;
 
         Destroy(playerPreview);
         nameInput.text = "";
@@ -386,8 +386,7 @@ public partial class UICharacterCreationExtended : MonoBehaviour
 
         if (!customizationInGame)
         {
-            Camera.main.transform.position = positions.cameraPosition.position;
-            Camera.main.transform.rotation = positions.cameraPosition.rotation;
+            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, positions.cameraPosition.position, Time.deltaTime * 1.0f);
         }
         else
         {

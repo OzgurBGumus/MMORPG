@@ -66,8 +66,8 @@ public partial class NetworkManagerMMO : NetworkManager
     [Header("Character Selection")]
     public int selection = -1;
     public Transform[] selectionLocations;
-    public Transform[] selectionCameraLocations;
-    public CharacterSelectSpawnPosition selectionSpawnLocation;
+    public Transform selectionCameraLocation;
+    public Transform selectionSpawnLocation;
     [HideInInspector] public List<Player> playerClasses = new List<Player>(); // cached in Awake
 
     [Header("Database")]
@@ -363,7 +363,8 @@ public partial class NetworkManagerMMO : NetworkManager
 
     public void ClearPreviews()
     {
-        selection = -1;
+        if (charactersAvailableMsg.characters != null && charactersAvailableMsg.characters.Length > 0) selection = 0;
+        else selection = -1;
         foreach (Transform location in selectionLocations)
             if (location.childCount > 0)
                 Destroy(location.GetChild(0).gameObject);

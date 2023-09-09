@@ -17,6 +17,12 @@ public partial struct CharactersAvailableMsg
         public string gender;
         public int level;
         public long gold;
+        public int health;
+        public int mana;
+        public int strenght;
+        public int intelligence;
+
+
 
         public string customization;
         public float scale;

@@ -24,6 +24,8 @@ public class PlayerNavMeshMovement : NavMeshMovement
     public float rotationSpeed = 2;
     public float xMinAngle = -40;
     public float xMaxAngle = 80;
+    public bool doNotRotateOrZoomIfInUIInterface = false;
+    private bool dragging;
 
     // the target position can be adjusted by an offset in order to foucs on a
     // target's head for example
@@ -115,6 +117,7 @@ public class PlayerNavMeshMovement : NavMeshMovement
 
         // for all players:
         UpdateAnimations();
+        CheckObjectsBetweenPlayerAndCam();
     }
 
     [Client]
@@ -233,6 +236,44 @@ public class PlayerNavMeshMovement : NavMeshMovement
         }
     }
 
+    [Client]
+    void CheckObjectsBetweenPlayerAndCam()
+    {
+        if (!isLocalPlayer) return;
+        // need to assign cam here before using it.
+        cam = Camera.main;
+        Vector3 playerPosition = Player.localPlayer.transform.position;
+        Vector3 cameraPosition = Camera.main.transform.position;
+        var raycasts = Physics.RaycastAll(playerPosition, cameraPosition);
+        if (raycasts.Length > 0)
+        {
+            foreach(var raycast in raycasts)
+            {
+                if(raycast.transform.position != playerPosition && raycast.transform.position != cameraPosition)
+                    Debug.Log("There is a GameObject between GameObject A and GameObject B: " + raycast.transform.gameObject.name);
+            }
+           
+        }
+        // Calculate the direction from player to cam
+        Vector3 direction = playerPosition - cameraPosition;
+
+        // Cast a ray from player towards cam
+        RaycastHit[] hits = Physics.RaycastAll(Player.localPlayer.transform.position, direction, direction.magnitude);
+
+        // Loop through the hits and check for GameObjects in between
+        foreach (RaycastHit hit in hits)
+        {
+            GameObject hitObject = hit.collider.gameObject;
+
+            // Check if the hit object is not player or cam
+            if (hitObject != Player.localPlayer.gameObject && hitObject != Camera.main.gameObject)
+            {
+                //Debug.Log("There is a GameObject between GameObject A and GameObject B: " + hitObject.name);
+                // You can perform further actions here if needed
+            }
+        }
+    }
+
     // camera //////////////////////////////////////////////////////////////////
     void LateUpdate()
     {
@@ -245,30 +286,36 @@ public class PlayerNavMeshMovement : NavMeshMovement
         Vector3 targetPos = transform.position + cameraOffset;
 
         // rotation and zoom should only happen if not in a UI right now
-        if (!Utils.IsCursorOverUserInterface())
+        if (!doNotRotateOrZoomIfInUIInterface || !Utils.IsCursorOverUserInterface())
         {
             // right mouse rotation if we have a mouse
             if (Input.mousePresent)
             {
                 if (Input.GetMouseButton(mouseRotateButton))
                 {
-                    // initialize the base rotation if not initialized yet.
-                    // (only after first mouse click and not in Awake because
-                    //  we might rotate the camera inbetween, e.g. during
-                    //  character selection. this would cause a sudden jump to
-                    //  the original rotation from Awake otherwise.)
-                    if (!rotationInitialized)
+                    if (!dragging && !Utils.IsCursorOverUserInterface()) dragging = true;
+                    if (dragging)
                     {
-                        rotation = cam.transform.eulerAngles;
-                        rotationInitialized = true;
-                    }
+                        // initialize the base rotation if not initialized yet.
+                        // (only after first mouse click and not in Awake because
+                        //  we might rotate the camera inbetween, e.g. during
+                        //  character selection. this would cause a sudden jump to
+                        //  the original rotation from Awake otherwise.)
+                        if (!rotationInitialized)
+                        {
+                            rotation = cam.transform.eulerAngles;
+                            rotationInitialized = true;
+                        }
 
-                    // note: mouse x is for y rotation and vice versa
-                    rotation.y += Input.GetAxis("Mouse X") * rotationSpeed;
-                    rotation.x -= Input.GetAxis("Mouse Y") * rotationSpeed;
-                    rotation.x = Mathf.Clamp(rotation.x, xMinAngle, xMaxAngle);
-                    cam.transform.rotation = Quaternion.Euler(rotation.x, rotation.y, 0);
+                        // note: mouse x is for y rotation and vice versa
+                        rotation.y += Input.GetAxis("Mouse X") * rotationSpeed;
+                        rotation.x -= Input.GetAxis("Mouse Y") * rotationSpeed;
+                        rotation.x = Mathf.Clamp(rotation.x, xMinAngle, xMaxAngle);
+                        cam.transform.rotation = Quaternion.Euler(rotation.x, rotation.y, 0);
+                    }
+                    
                 }
+                else dragging = false;
             }
             else
             {
