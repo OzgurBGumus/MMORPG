@@ -3,6 +3,7 @@
 using System;
 using UnityEngine;
 using Mirror;
+using UnityEditor;
 
 [RequireComponent(typeof(PlayerIndicator))]
 [RequireComponent(typeof(NetworkNavMeshAgentRubberbanding))]
@@ -117,7 +118,7 @@ public class PlayerNavMeshMovement : NavMeshMovement
 
         // for all players:
         UpdateAnimations();
-        CheckObjectsBetweenPlayerAndCam();
+        
     }
 
     [Client]
@@ -237,39 +238,33 @@ public class PlayerNavMeshMovement : NavMeshMovement
     }
 
     [Client]
-    void CheckObjectsBetweenPlayerAndCam()
+    void CheckObjectsBetweenPlayerAndCam(Vector3 targetPos)
     {
         if (!isLocalPlayer) return;
         // need to assign cam here before using it.
         cam = Camera.main;
+
         Vector3 playerPosition = Player.localPlayer.transform.position;
         Vector3 cameraPosition = Camera.main.transform.position;
-        var raycasts = Physics.RaycastAll(playerPosition, cameraPosition);
-        if (raycasts.Length > 0)
-        {
-            foreach(var raycast in raycasts)
-            {
-                if(raycast.transform.position != playerPosition && raycast.transform.position != cameraPosition)
-                    Debug.Log("There is a GameObject between GameObject A and GameObject B: " + raycast.transform.gameObject.name);
-            }
-           
-        }
-        // Calculate the direction from player to cam
-        Vector3 direction = playerPosition - cameraPosition;
 
-        // Cast a ray from player towards cam
-        RaycastHit[] hits = Physics.RaycastAll(Player.localPlayer.transform.position, direction, direction.magnitude);
-
-        // Loop through the hits and check for GameObjects in between
-        foreach (RaycastHit hit in hits)
+        Vector3 direction = (playerPosition - cameraPosition).normalized;
+        float lineLength = Vector3.Distance(cameraPosition, playerPosition);
+        Ray ray = new Ray(cameraPosition, direction);
+        RaycastHit hit;
+        Debug.DrawLine(playerPosition, cameraPosition, Color.red);
+        if (Physics.Raycast(ray, out hit, lineLength))
         {
+            // A GameObject was hit in the line
             GameObject hitObject = hit.collider.gameObject;
-
-            // Check if the hit object is not player or cam
-            if (hitObject != Player.localPlayer.gameObject && hitObject != Camera.main.gameObject)
+            if(hitObject.transform.position != playerPosition && hitObject.transform.position != cameraPosition)
             {
-                //Debug.Log("There is a GameObject between GameObject A and GameObject B: " + hitObject.name);
-                // You can perform further actions here if needed
+                Debug.Log("Hit: " + hitObject.name);
+                Debug.Log("Hit Position: " + hit.point);
+                // calculate a better distance (with some space between it)
+                float d = Vector3.Distance(targetPos, hit.point) - 1f;
+
+                // set the final cam position
+                cam.transform.position = targetPos - (cam.transform.rotation * Vector3.forward * d);
             }
         }
     }
@@ -332,11 +327,12 @@ public class PlayerNavMeshMovement : NavMeshMovement
         // target follow
         cam.transform.position = targetPos - (cam.transform.rotation * Vector3.forward * cameraDistance);
 
+        //CheckObjectsBetweenPlayerAndCam(targetPos);
         // avoid view blocking (disabled, see comment at the top)
         if (Physics.Linecast(targetPos, cam.transform.position, out RaycastHit hit, viewBlockingLayers))
         {
             // calculate a better distance (with some space between it)
-            float d = Vector3.Distance(targetPos, hit.point) - 0.1f;
+            float d = Vector3.Distance(targetPos, hit.point) - 0.3f;
 
             // set the final cam position
             cam.transform.position = targetPos - (cam.transform.rotation * Vector3.forward * d);
