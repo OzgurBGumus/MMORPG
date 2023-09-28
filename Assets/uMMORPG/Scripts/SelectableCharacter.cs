@@ -13,7 +13,6 @@ public class SelectableCharacter : MonoBehaviour
     {
         // set selection index
         ((NetworkManagerMMO)NetworkManager.singleton).selection = index;
-
         // show selection indicator for better feedback
         GetComponent<PlayerIndicator>().SetViaParent(transform);
     }

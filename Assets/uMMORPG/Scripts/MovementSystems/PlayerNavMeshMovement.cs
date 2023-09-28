@@ -3,6 +3,7 @@
 using System;
 using UnityEngine;
 using Mirror;
+using UnityEditor;
 
 [RequireComponent(typeof(PlayerIndicator))]
 [RequireComponent(typeof(NetworkNavMeshAgentRubberbanding))]
@@ -24,6 +25,8 @@ public class PlayerNavMeshMovement : NavMeshMovement
     public float rotationSpeed = 2;
     public float xMinAngle = -40;
     public float xMaxAngle = 80;
+    public bool doNotRotateOrZoomIfInUIInterface = false;
+    private bool dragging;
 
     // the target position can be adjusted by an offset in order to foucs on a
     // target's head for example
@@ -115,6 +118,7 @@ public class PlayerNavMeshMovement : NavMeshMovement
 
         // for all players:
         UpdateAnimations();
+        
     }
 
     [Client]
@@ -233,6 +237,38 @@ public class PlayerNavMeshMovement : NavMeshMovement
         }
     }
 
+    [Client]
+    void CheckObjectsBetweenPlayerAndCam(Vector3 targetPos)
+    {
+        if (!isLocalPlayer) return;
+        // need to assign cam here before using it.
+        cam = Camera.main;
+
+        Vector3 playerPosition = Player.localPlayer.transform.position;
+        Vector3 cameraPosition = Camera.main.transform.position;
+
+        Vector3 direction = (playerPosition - cameraPosition).normalized;
+        float lineLength = Vector3.Distance(cameraPosition, playerPosition);
+        Ray ray = new Ray(cameraPosition, direction);
+        RaycastHit hit;
+        Debug.DrawLine(playerPosition, cameraPosition, Color.red);
+        if (Physics.Raycast(ray, out hit, lineLength))
+        {
+            // A GameObject was hit in the line
+            GameObject hitObject = hit.collider.gameObject;
+            if(hitObject.transform.position != playerPosition && hitObject.transform.position != cameraPosition)
+            {
+                Debug.Log("Hit: " + hitObject.name);
+                Debug.Log("Hit Position: " + hit.point);
+                // calculate a better distance (with some space between it)
+                float d = Vector3.Distance(targetPos, hit.point) - 1f;
+
+                // set the final cam position
+                cam.transform.position = targetPos - (cam.transform.rotation * Vector3.forward * d);
+            }
+        }
+    }
+
     // camera //////////////////////////////////////////////////////////////////
     void LateUpdate()
     {
@@ -245,30 +281,36 @@ public class PlayerNavMeshMovement : NavMeshMovement
         Vector3 targetPos = transform.position + cameraOffset;
 
         // rotation and zoom should only happen if not in a UI right now
-        if (!Utils.IsCursorOverUserInterface())
+        if (!doNotRotateOrZoomIfInUIInterface || !Utils.IsCursorOverUserInterface())
         {
             // right mouse rotation if we have a mouse
             if (Input.mousePresent)
             {
                 if (Input.GetMouseButton(mouseRotateButton))
                 {
-                    // initialize the base rotation if not initialized yet.
-                    // (only after first mouse click and not in Awake because
-                    //  we might rotate the camera inbetween, e.g. during
-                    //  character selection. this would cause a sudden jump to
-                    //  the original rotation from Awake otherwise.)
-                    if (!rotationInitialized)
+                    if (!dragging && !Utils.IsCursorOverUserInterface()) dragging = true;
+                    if (dragging)
                     {
-                        rotation = cam.transform.eulerAngles;
-                        rotationInitialized = true;
-                    }
+                        // initialize the base rotation if not initialized yet.
+                        // (only after first mouse click and not in Awake because
+                        //  we might rotate the camera inbetween, e.g. during
+                        //  character selection. this would cause a sudden jump to
+                        //  the original rotation from Awake otherwise.)
+                        if (!rotationInitialized)
+                        {
+                            rotation = cam.transform.eulerAngles;
+                            rotationInitialized = true;
+                        }
 
-                    // note: mouse x is for y rotation and vice versa
-                    rotation.y += Input.GetAxis("Mouse X") * rotationSpeed;
-                    rotation.x -= Input.GetAxis("Mouse Y") * rotationSpeed;
-                    rotation.x = Mathf.Clamp(rotation.x, xMinAngle, xMaxAngle);
-                    cam.transform.rotation = Quaternion.Euler(rotation.x, rotation.y, 0);
+                        // note: mouse x is for y rotation and vice versa
+                        rotation.y += Input.GetAxis("Mouse X") * rotationSpeed;
+                        rotation.x -= Input.GetAxis("Mouse Y") * rotationSpeed;
+                        rotation.x = Mathf.Clamp(rotation.x, xMinAngle, xMaxAngle);
+                        cam.transform.rotation = Quaternion.Euler(rotation.x, rotation.y, 0);
+                    }
+                    
                 }
+                else dragging = false;
             }
             else
             {
@@ -285,11 +327,12 @@ public class PlayerNavMeshMovement : NavMeshMovement
         // target follow
         cam.transform.position = targetPos - (cam.transform.rotation * Vector3.forward * cameraDistance);
 
+        //CheckObjectsBetweenPlayerAndCam(targetPos);
         // avoid view blocking (disabled, see comment at the top)
         if (Physics.Linecast(targetPos, cam.transform.position, out RaycastHit hit, viewBlockingLayers))
         {
             // calculate a better distance (with some space between it)
-            float d = Vector3.Distance(targetPos, hit.point) - 0.1f;
+            float d = Vector3.Distance(targetPos, hit.point) - 0.3f;
 
             // set the final cam position
             cam.transform.position = targetPos - (cam.transform.rotation * Vector3.forward * d);

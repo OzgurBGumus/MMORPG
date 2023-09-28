@@ -1061,10 +1061,11 @@ MonoBehaviour:
   rotationSpeed: 2
   xMinAngle: -40
   xMaxAngle: 80
+  doNotRotateOrZoomIfInUIInterface: 0
   cameraOffset: {x: 0, y: 0, z: 0}
   viewBlockingLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 262144
   directionDampening: 0.05
 --- !u!114 &3989831241574406916
 MonoBehaviour:
