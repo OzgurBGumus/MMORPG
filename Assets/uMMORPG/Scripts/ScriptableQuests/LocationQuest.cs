@@ -24,7 +24,7 @@ public class LocationQuest : ScriptableQuest
         if (location.name == name)
         {
             Quest quest = player.quests.quests[questIndex];
-            quest.progress = 1;
+            quest.progress[0] = 1;
             player.quests.quests[questIndex] = quest;
         }
     }
@@ -32,7 +32,7 @@ public class LocationQuest : ScriptableQuest
     // fulfillment /////////////////////////////////////////////////////////////
     public override bool IsFulfilled(Player player, Quest quest)
     {
-        return quest.progress == 1;
+        return quest.progress[0] == 1;
     }
 
     // tooltip /////////////////////////////////////////////////////////////////
@@ -41,7 +41,7 @@ public class LocationQuest : ScriptableQuest
         // we use a StringBuilder so that addons can modify tooltips later too
         // ('string' itself can't be passed as a mutable object)
         StringBuilder tip = new StringBuilder(base.ToolTip(player, quest, isShort));
-        tip.Replace("{LOCATIONSTATUS}", quest.progress == 0 ? "Pending" : "Done");
+        tip.Replace("{LOCATIONSTATUS}", quest.progress[0] == 0 ? "Pending" : "Done");
         return tip.ToString();
     }
 }

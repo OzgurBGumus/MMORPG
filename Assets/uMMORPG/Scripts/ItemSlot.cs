@@ -23,19 +23,30 @@ public partial struct ItemSlot
 
     // helper functions to increase/decrease amount more easily
     // -> returns the amount that we were able to increase/decrease by
-    public int DecreaseAmount(int reduceBy)
+    public int DecreaseAmount(int reduceBy, Player player = null)
     {
         // as many as possible
         int limit = Mathf.Clamp(reduceBy, 0, amount);
         amount -= limit;
+
+        //if we give player parameter, that means this is an inventory slot and need to check quests
+        if(player != null)
+        {
+            player.quests.OnInventoryUpdateTrigger();
+        }
         return limit;
     }
 
-    public int IncreaseAmount(int increaseBy)
+    public int IncreaseAmount(int increaseBy, Player player = null)
     {
         // as many as possible
         int limit = Mathf.Clamp(increaseBy, 0, item.maxStack - amount);
         amount += limit;
+        //if we give player parameter, that means this is an inventory slot and need to check quests
+        if (player != null)
+        {
+            player.quests.OnInventoryUpdateTrigger();
+        }
         return limit;
     }
 

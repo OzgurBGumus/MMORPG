@@ -21,23 +21,20 @@ MonoBehaviour:
 
     Tasks:
 
-    *
-    Kill {KILLTARGET}: {KILLED}/{KILLAMOUNT}
+    {KILLTARGETS}
 
 
     Rewards:
 
-    * {REWARDGOLD} Gold
-
     *
-    {REWARDEXPERIENCE} Experience
+    {REWARDGOLD} Gold
+
+    * {REWARDEXPERIENCE} Experience
 
     * {REWARDITEM}
 
 
     {STATUS}'
-  toolTipShort: 'Kill  <color=red><link={KILLTARGET}>{KILLTARGET}</link></color>:
-    {KILLED}/{KILLAMOUNT}'
   requiredLevel: 0
   predecessor: {fileID: 0}
   rewardGold: 100
@@ -45,5 +42,8 @@ MonoBehaviour:
   rewardItem:
   - {fileID: 11400000, guid: ae0314505b06f4f1280aa735db1c70e8, type: 2}
   rewardItemCount: 1e000000
-  killTarget: {fileID: 11474358, guid: f4f3cd62f16787b4c8c6371cca6538fe, type: 3}
-  killAmount: 2
+  KillMonsterList:
+  - killTarget: {fileID: 11474358, guid: f4f3cd62f16787b4c8c6371cca6538fe, type: 3}
+    killAmount: 5
+  - killTarget: {fileID: 11474358, guid: 39509616e6dcda4499fe58ab529bc61d, type: 3}
+    killAmount: 1

@@ -13,6 +13,9 @@ public class PlayerQuests : NetworkBehaviour
     public int activeQuestLimit = 10;
     public readonly SyncList<Quest> quests = new SyncList<Quest>();
 
+    [HideInInspector]
+    public bool inventoryUpdated = false;
+
     // quests //////////////////////////////////////////////////////////////////
     public int GetIndexByName(string questName)
     {
@@ -82,7 +85,11 @@ public class PlayerQuests : NetworkBehaviour
         {
             ScriptableQuestOffer npcQuest = npc.quests.quests[npcQuestIndex];
             if (npcQuest.acceptHere && CanAccept(npcQuest.quest))
+            {
                 quests.Add(new Quest(npcQuest.quest));
+                npcQuest.quest.OnInventoryUpdate(player, quests.Count - 1);
+            }
+                
         }
     }
 
@@ -157,6 +164,18 @@ public class PlayerQuests : NetworkBehaviour
         for (int i = 0; i < quests.Count; ++i)
             if (!quests[i].completed)
                 quests[i].OnKilled(player, i, victim);
+    }
+
+    // inventory update ////////////////////////////////////////////////////////
+    public void OnInventoryUpdate()
+    {
+        for (int i = 0; i < quests.Count; ++i)
+            if (!quests[i].completed)
+                quests[i].OnInventoryUpdate(player, i);
+        inventoryUpdated = false;
+    }public void OnInventoryUpdateTrigger()
+    {
+        inventoryUpdated = true;
     }
 
     // ontrigger ///////////////////////////////////////////////////////////////
