@@ -22,7 +22,6 @@ public abstract class ScriptableQuest : ScriptableObject
 {
     [Header("General")]
     [SerializeField, TextArea(1, 30)] protected string toolTip; // not public, use ToolTip()
-    [SerializeField, TextArea(1, 30)] protected string toolTipShort; // not public, use ToolTip()
 
     [Header("Requirements")]
     public int requiredLevel; // player.level
@@ -33,9 +32,7 @@ public abstract class ScriptableQuest : ScriptableObject
     public long rewardExperience;
     public List<ScriptableItem> rewardItem;
     public List<int> rewardItemCount;
-
-    protected int missionCount;
-
+    public bool readyToComplete = false;
 
 
     // events to hook into /////////////////////////////////////////////////////
@@ -47,6 +44,7 @@ public abstract class ScriptableQuest : ScriptableObject
     }
     public virtual void OnKilled(Player player, int questIndex, Entity victim) {}
     public virtual void OnLocation(Player player, int questIndex, Collider location) {}
+    public virtual void OnInventoryUpdate(Player player, int questIndex) { }
 
     // fulfillment /////////////////////////////////////////////////////////////
     // we pass the Quest instead of an index for ease of use and because we are
@@ -95,9 +93,13 @@ public abstract class ScriptableQuest : ScriptableObject
         }
         else
         {
-            StringBuilder tip = new StringBuilder(toolTipShort);
-            return tip.ToString();
+            return "";
         }
+    }
+
+    public virtual int GetMissionCount()
+    {
+        return 1;
     }
 
     // caching /////////////////////////////////////////////////////////////////

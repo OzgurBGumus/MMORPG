@@ -34,12 +34,14 @@ MonoBehaviour:
 
 
     {STATUS}'
-  toolTipShort: 'Gather {GATHERITEM}: {GATHERED}/{GATHERAMOUNT}'
-  requiredLevel: 2
-  predecessor: {fileID: 11400000, guid: 1d577c57b33bf497a92a27d9529bc0b0, type: 2}
+  requiredLevel: 1
+  predecessor: {fileID: 0}
   rewardGold: 100
   rewardExperience: 20
   rewardItem: []
   rewardItemCount: 
-  gatherItem: {fileID: 11400000, guid: ebde5c85fd92e499493a5ae898bef3cb, type: 2}
-  gatherAmount: 3
+  GatherItemList:
+  - gatherItem: {fileID: 11400000, guid: ebde5c85fd92e499493a5ae898bef3cb, type: 2}
+    gatherAmount: 1
+  - gatherItem: {fileID: 11400000, guid: ae0314505b06f4f1280aa735db1c70e8, type: 2}
+    gatherAmount: 2

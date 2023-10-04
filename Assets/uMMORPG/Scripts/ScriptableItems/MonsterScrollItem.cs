@@ -41,7 +41,7 @@ public class MonsterScrollItem : UsableItem
 
         // decrease amount
         ItemSlot slot = player.inventory.slots[inventoryIndex];
-        slot.DecreaseAmount(1);
+        slot.DecreaseAmount(1, player);
         player.inventory.slots[inventoryIndex] = slot;
     }
 }

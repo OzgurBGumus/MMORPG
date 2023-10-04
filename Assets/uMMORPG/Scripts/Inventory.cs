@@ -131,6 +131,8 @@ public class Inventory : ItemContainer
                 // were we able to fit the whole amount already? then stop loop
                 if (amount <= 0) return true;
             }
+
+
             // we should have been able to add all of them
             if (amount != 0) Debug.LogError("inventory add failed: " + item.name + " " + amount);
         }
