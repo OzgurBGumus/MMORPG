@@ -64,7 +64,7 @@ public class PlayerNpcTrading : NetworkBehaviour
                     // sell the amount
                     long price = slot.item.sellPrice * amount;
                     player.gold += price;
-                    slot.DecreaseAmount(amount);
+                    slot.DecreaseAmount(amount, player);
                     inventory.slots[index] = slot;
                 }
             }

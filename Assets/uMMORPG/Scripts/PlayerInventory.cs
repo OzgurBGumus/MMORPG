@@ -233,4 +233,24 @@ public partial class PlayerInventory : Inventory
 #endif
         }
     }
+    public bool Add(Item item, int amount)
+    {
+        if(base.Add(item, amount))
+        {
+            player.quests.OnInventoryUpdateTrigger();
+            return true;
+        }
+        return false;
+
+        
+    }
+    public bool Remove(Item item, int amount)
+    {
+        if (base.Remove(item, amount))
+        {
+            player.quests.OnInventoryUpdateTrigger();
+            return true;
+        }
+        return false;
+    }
 }

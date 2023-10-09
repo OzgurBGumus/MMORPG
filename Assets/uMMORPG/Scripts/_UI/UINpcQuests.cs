@@ -44,8 +44,8 @@ public partial class UINpcQuests : MonoBehaviour
                 (npcQuest.rewardExperience != 0 ? 1 : 0)
                 , contentReward);
 
-            UIUtils.BalancePrefabs(slotMissionPrefab.gameObject, 1, contentMission);
-
+            
+            FillContentMission(npcQuest);
             // find quest index in original npc quest list (unfiltered)
             int npcIndex = npc.quests.GetIndexByName(npcQuest.name);
 
@@ -104,10 +104,37 @@ public partial class UINpcQuests : MonoBehaviour
                 accept.onClick.SetListener(() => {
                     player.quests.CmdAccept(npcIndex);
                     currentQuestName = "";
-                    this.gameObject.SetActive(false);
+                    panel.SetActive(false);
                 });
             }
         }
         else panel.SetActive(false);
+    }
+
+    private void FillContentMission(ScriptableQuest npcQuest)
+    {
+        UIUtils.BalancePrefabs(slotMissionPrefab.gameObject, npcQuest.GetMissionCount(), contentMission);
+        if (npcQuest != null)
+        {
+            if(npcQuest is KillQuest killQuest)
+            {
+                for (int i=0; i< killQuest.KillMonsterList.Count; i++)
+                {
+                    UIQuestMissionSlot slot = contentMission.GetChild(i).GetComponent<UIQuestMissionSlot>();
+                    slot.descriptionText.text = killQuest.KillMonsterList[i].killAmount.ToString();
+                    slot.nameButton.text = killQuest.KillMonsterList[i].killTarget.name;
+                }
+                
+            }
+            else if(npcQuest is GatherQuest gatherQuest)
+            {
+                for (int i = 0; i < gatherQuest.GatherItemList.Count; i++)
+                {
+                    UIQuestMissionSlot slot = contentMission.GetChild(i).GetComponent<UIQuestMissionSlot>();
+                    slot.descriptionText.text = gatherQuest.GatherItemList[i].gatherAmount.ToString();
+                    slot.nameButton.text = gatherQuest.GatherItemList[i].gatherItem.name;
+                }
+            }
+        }
     }
 }

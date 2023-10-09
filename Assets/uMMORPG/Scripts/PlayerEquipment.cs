@@ -233,7 +233,7 @@ public partial class PlayerEquipment : Equipment
                     // merge from -> to
                     // put as many as possible into 'To' slot
                     int put = slotTo.IncreaseAmount(slotFrom.amount);
-                    slotFrom.DecreaseAmount(put);
+                    slotFrom.DecreaseAmount(put, player);
 
                     // put back into the list
                     inventory.slots[inventoryIndex] = slotFrom;
@@ -267,7 +267,7 @@ public partial class PlayerEquipment : Equipment
                 {
                     // merge from -> to
                     // put as many as possible into 'To' slot
-                    int put = slotTo.IncreaseAmount(slotFrom.amount);
+                    int put = slotTo.IncreaseAmount(slotFrom.amount, player);
                     slotFrom.DecreaseAmount(put);
 
                     // put back into the list

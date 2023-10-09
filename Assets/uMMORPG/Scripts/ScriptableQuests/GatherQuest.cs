@@ -1,41 +1,85 @@
 ﻿// a simple gather quest example
 using UnityEngine;
 using System.Text;
+using System.Collections.Generic;
+using System.Linq;
+using System;
 
 [CreateAssetMenu(menuName="uMMORPG Quest/Gather Quest", order=999)]
 public class GatherQuest : ScriptableQuest
 {
-    [Header("Fulfillment")]
-    public ScriptableItem gatherItem;
-    public int gatherAmount;
+    [Serializable]
+    public class GatherQuestItems
+    {
+        public ScriptableItem gatherItem;
+        public int gatherAmount;
+    }
+    public List<GatherQuestItems> GatherItemList;
+    
+
+    // events //////////////////////////////////////////////////////////////////
+    public override void OnInventoryUpdate(Player player, int questIndex)
+    {
+        Quest quest = player.quests.quests[questIndex];
+        for (int i = 0; i < GatherItemList.Count; i++)
+        {
+            quest.progress[i] = player.inventory.Count(new Item(GatherItemList[i].gatherItem));
+        }
+
+    }
+
 
     // fulfillment /////////////////////////////////////////////////////////////
     public override bool IsFulfilled(Player player, Quest quest)
     {
-        return gatherItem != null &&
-               player.inventory.Count(new Item(gatherItem)) >= gatherAmount;
+        if (readyToComplete) return true;
+
+        for(int i = 0; i < GatherItemList.Count; i++)
+        {
+            if(player.inventory.Count(new Item(GatherItemList[i].gatherItem)) < GatherItemList[i].gatherAmount)
+            {
+                return false;
+            }
+        }
+        readyToComplete = true;
+        return readyToComplete;
     }
 
     public override void OnCompleted(Player player, Quest quest)
     {
-        // remove gathered items from player's inventory
-        if (gatherItem != null)
-            player.inventory.Remove(new Item(gatherItem), gatherAmount);
+        for (int i = 0; i < GatherItemList.Count; i++)
+        {
+            // remove gathered items from player's inventory
+            if (GatherItemList[i] != null)
+                player.inventory.Remove(new Item(GatherItemList[i].gatherItem), GatherItemList[i].gatherAmount);
+        }
+            
+            
     }
 
     // tooltip /////////////////////////////////////////////////////////////////
     public override string ToolTip(Player player, Quest quest, bool isShort = false)
     {
+        StringBuilder tip = new StringBuilder();
         // we use a StringBuilder so that addons can modify tooltips later too
         // ('string' itself can't be passed as a mutable object)
-        StringBuilder tip = new StringBuilder(base.ToolTip(player, quest, isShort));
-        tip.Replace("{GATHERAMOUNT}", gatherAmount.ToString());
-        if (gatherItem != null)
+        if (!isShort)
         {
-            int gathered = player.inventory.Count(new Item(gatherItem));
-            tip.Replace("{GATHERITEM}", gatherItem.name);
-            tip.Replace("{GATHERED}", Mathf.Min(gathered, gatherAmount).ToString());
+            tip.Append(base.ToolTip(player, quest, isShort));
         }
+        else
+        {
+            for (int i = 0; i < GatherItemList.Count; i++)
+            {
+
+                tip.Append($"<color=green><link={GatherItemList[i].gatherItem.name}>{GatherItemList[i].gatherItem.name}</link></color>: {quest.progress[i].ToString()}/{GatherItemList[i].gatherAmount.ToString()}\n");
+            }
+        }
+        
         return tip.ToString();
+    }
+    public override int GetMissionCount()
+    {
+        return GatherItemList.Count;
     }
 }

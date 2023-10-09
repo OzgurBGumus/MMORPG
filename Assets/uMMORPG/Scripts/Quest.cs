@@ -24,7 +24,7 @@ public partial struct Quest
     //    * simple boolean checks (1/0)
     //    * checklists (by setting the 32 bits to 1/0)
     // -> could use long for 64 bits if needed later, or even multiple fields
-    public int progress;
+    public List<int> progress;
 
     // a quest is complete after finishing it at the npc and getting rewards
     public bool completed;
@@ -33,7 +33,11 @@ public partial struct Quest
     public Quest(ScriptableQuest data)
     {
         hash = data.name.GetStableHashCode();
-        progress = 0;
+        progress = new List<int>();
+        for (int i = 0; i < data.GetMissionCount(); i++)
+        {
+            progress.Add(0);
+        }
         completed = false;
     }
 
@@ -60,6 +64,7 @@ public partial struct Quest
     public List<int> rewardItemCount => data.rewardItemCount;
 
     // events
+    public void OnInventoryUpdate(Player player, int questIndex) { data.OnInventoryUpdate(player, questIndex); }
     public void OnKilled(Player player, int questIndex, Entity victim) { data.OnKilled(player, questIndex, victim); }
     public void OnLocation(Player player, int questIndex, Collider location) { data.OnLocation(player, questIndex, location); }
 

@@ -61,6 +61,7 @@ using System.IO;
 using System.Collections.Generic;
 using SQLite; // from https://github.com/praeclarum/sqlite-net
 using UnityEngine.Events;
+using System.Linq;
 
 public partial class Database : MonoBehaviour
 {
@@ -163,9 +164,15 @@ public partial class Database : MonoBehaviour
     {
         public string character { get; set; }
         public string name { get; set; }
-        public int progress { get; set; }
         public bool completed { get; set; }
         // PRIMARY KEY (character, name) is created manually.
+    }
+    class character_quests_progress
+    {
+        public int index { get; set; }
+        public string character { get; set; }
+        public string name { get; set; }
+        public int progress { get; set; }
     }
     class character_orders
     {
@@ -252,6 +259,8 @@ public partial class Database : MonoBehaviour
         connection.CreateIndex(nameof(character_buffs), new []{"character", "name"});
         connection.CreateTable<character_quests>();
         connection.CreateIndex(nameof(character_quests), new []{"character", "name"});
+        connection.CreateTable<character_quests_progress>();
+        connection.CreateIndex(nameof(character_quests_progress), new[] { "character", "name", "index" });
         connection.CreateTable<character_orders>();
         connection.CreateTable<character_guild>();
         connection.CreateTable<guild_info>();
@@ -486,14 +495,17 @@ public partial class Database : MonoBehaviour
 
     void LoadQuests(PlayerQuests quests)
     {
+        string prevQuestName = "";
+        List<character_quests_progress> progresses = connection.Query<character_quests_progress>("SELECT * FROM character_quests_progress WHERE character=?", quests.name);
         // load quests
         foreach (character_quests row in connection.Query<character_quests>("SELECT * FROM character_quests WHERE character=?", quests.name))
         {
+            string questName = "";
             ScriptableQuest questData;
             if (ScriptableQuest.All.TryGetValue(row.name.GetStableHashCode(), out questData))
             {
                 Quest quest = new Quest(questData);
-                quest.progress = row.progress;
+                quest.progress = progresses.FindAll(x=> x.name ==quest.name).Select(prog => prog.progress).ToList();
                 quest.completed = row.completed;
                 quests.quests.Add(quest);
             }
@@ -738,14 +750,24 @@ public partial class Database : MonoBehaviour
     {
         // quests: remove old entries first, then add all new ones
         connection.Execute("DELETE FROM character_quests WHERE character=?", quests.name);
+        connection.Execute("DELETE FROM character_quests_progress WHERE character=?", quests.name);
         foreach (Quest quest in quests.quests)
         {
             connection.InsertOrReplace(new character_quests{
                 character = quests.name,
                 name = quest.name,
-                progress = quest.progress,
                 completed = quest.completed
             });
+            for(int i=0;i< quest.progress.Count; i++)
+            {
+                connection.InsertOrReplace(new character_quests_progress
+                {
+                    character = quests.name,
+                    name = quest.name,
+                    progress = quest.progress[i],
+                    index = i
+                });
+            }
         }
     }
 

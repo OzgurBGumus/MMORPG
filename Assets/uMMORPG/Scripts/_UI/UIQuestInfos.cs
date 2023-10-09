@@ -8,12 +8,21 @@ using UnityEngine.UI;
 
 public class UIQuestInfos : MonoBehaviour
 {
+    public static UIQuestInfos singleton;
     public GameObject panel;
     public Transform content;
     public UIQuestInfoSlot slotPrefab;
 
     public string expandPrefix = "[+] ";
     public string hidePrefix = "[-] ";
+    public Targets targets;
+
+    public UIQuestInfos()
+    {
+        // assign singleton only once (to work with DontDestroyOnLoad when
+        // using Zones / switching scenes)
+        if (singleton == null) singleton = this;
+    }
 
     // Update is called once per frame
     void Update()
@@ -58,30 +67,29 @@ public class UIQuestInfos : MonoBehaviour
                 Vector3 bestDestination = new Vector3 (0,0,0);
                 Player player = Player.localPlayer;
                 PlayerNavMeshMovement playerNavMeshMovement = player.GetComponent<PlayerNavMeshMovement>();
-                switch (linkID)
+                if (targets.TargetPositions.ContainsKey(linkID.ToLower()))
                 {
-                    case "Bandit":
-                        bestDestination = playerNavMeshMovement.NearestValidDestination(Targets.positionBandit);
-                        break;
+                    bestDestination = playerNavMeshMovement.NearestValidDestination(targets.TargetPositions[linkID.ToLower()]);
 
-                }
-
-                // casting or stunned? then set pending destination
-                if (player.state == "STUNNED")
-                {
-                    player.pendingDestination = bestDestination;
-                    player.pendingDestinationValid = true;
-                }
-                // otherwise navigate there
-                else
-                {
-                    playerNavMeshMovement.Navigate(bestDestination, 0);
-                    if (player.state == "CASTING")
+                    // casting or stunned? then set pending destination
+                    if (player.state == "STUNNED")
                     {
-                        player.SetNextMove(bestDestination);
-                        player.UpdateState();
+                        player.pendingDestination = bestDestination;
+                        player.pendingDestinationValid = true;
+                    }
+                    // otherwise navigate there
+                    else
+                    {
+                        playerNavMeshMovement.Navigate(bestDestination, 0);
+                        if (player.state == "CASTING")
+                        {
+                            player.SetNextMove(bestDestination);
+                            player.UpdateState();
+                        }
                     }
                 }
+
+                
             }
         }
     }

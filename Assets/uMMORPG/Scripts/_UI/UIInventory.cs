@@ -109,6 +109,8 @@ public partial class UIInventory : MonoBehaviour
                         slot.upgradeText.text = "+" + itemSlot.item.currentUpgradeLevel;
                         slot.GetComponent<Image>().sprite = player.itemRarityConfig.GetSprite;
                         slot.GetComponent<Image>().color = player.itemRarityConfig.GetColor(itemSlot.item);
+
+
                     }
                     else
                     {
@@ -158,6 +160,11 @@ public partial class UIInventory : MonoBehaviour
                     trashImage.sprite = null;
                     trashOverlay.SetActive(false);
                 }
+            }
+
+            if (player.quests.inventoryUpdated)
+            {
+                player.quests.OnInventoryUpdate();
             }
         }
         else {
