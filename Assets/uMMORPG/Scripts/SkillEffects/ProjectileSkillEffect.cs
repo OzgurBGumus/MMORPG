@@ -12,6 +12,7 @@ public class ProjectileSkillEffect : SkillEffect
 {
     public float speed = 35;
     [HideInInspector] public int damage = 1; // set by skill
+    [HideInInspector] public DamageType damageType;
     [HideInInspector] public float stunChance; // set by skill
     [HideInInspector] public float stunTime; // set by skill
 
@@ -59,7 +60,7 @@ public class ProjectileSkillEffect : SkillEffect
                 if (target.health.current > 0)
                 {
                     // find the skill that we casted this effect with
-                    caster.combat.DealDamageAt(target, caster.name, caster.combat.damage + damage, stunChance, stunTime);
+                    caster.combat.DealDamageAt(target, caster.name, damage, damageType, stunChance, stunTime);
                 }
                 NetworkServer.Destroy(gameObject);
             }

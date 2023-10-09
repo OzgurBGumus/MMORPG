@@ -40,7 +40,7 @@ public partial class Entity
     {
         if (entity is Monster monster)
         {
-            if (damageType == DamageType.Normal) monster.UpdateAggroList(this, 1);
+            if (damageType == DamageType.Physical || damageType == DamageType.Physical) monster.UpdateAggroList(this, 1);
             else if (damageType == DamageType.Crit) monster.UpdateAggroList(this, 3);
         }
     }

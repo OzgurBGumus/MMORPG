@@ -29,8 +29,8 @@ public class AggroTargetSkill : TargetProjectileSkill
 
         // deal damage directly with base damage + skill damage
         caster.combat.DealDamageAt(monster, caster.name,
-                            caster.combat.damage + damage.Get(skillLevel),
-
+                            GetDamage(caster.combat.physicalAttack, caster.combat.magicalAttack, skillLevel),
+                            damageType,
                             //gff
                             //caster.combat.damage + damage.Get(skillLevel) + caster.ammoDamageBonuses(),
 

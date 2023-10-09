@@ -8,7 +8,7 @@ using Mirror;
 [Serializable] public class UnityEventSkill : UnityEvent<Skill> {}
 
 [DisallowMultipleComponent]
-public abstract class Skills : NetworkBehaviour, IHealthBonus, IManaBonus, ICombatBonus
+public abstract class Skills : NetworkBehaviour, IHealthBonus, IManaBonus, ICritBonus, IHitBonus, IDodgeBonus, IPhysicalDefenseBonus, IPhysicalDefenseReductionBonus, IMagicalDefenseBonus, IMagicalDefenseReductionBonus, IPhysicalAttackBonus, IMagicalAttackBonus, ICombatBonus
 {
     [Header("Components")]
     public Entity entity;
@@ -43,7 +43,7 @@ public abstract class Skills : NetworkBehaviour, IHealthBonus, IManaBonus, IComb
     [SyncVar, HideInInspector] public int currentSkill = -1;
 
     // boni ////////////////////////////////////////////////////////////////////
-    public int GetHealthBonus(int baseHealth)
+    public int GetHealthBonus()
     {
         // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
         int passiveBonus = 0;
@@ -70,10 +70,10 @@ public abstract class Skills : NetworkBehaviour, IHealthBonus, IManaBonus, IComb
         foreach (Buff buff in buffs)
             buffPercent += buff.healthPercentPerSecondBonus;
 
-        return Convert.ToInt32(passivePercent * health.max) + Convert.ToInt32(buffPercent * health.max);
+        return Convert.ToInt32(((passivePercent+buffPercent)/100.0f) * health.max);
     }
 
-    public int GetManaBonus(int baseMana)
+    public int GetManaBonus()
     {
         // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
         int passiveBonus = 0;
@@ -100,65 +100,216 @@ public abstract class Skills : NetworkBehaviour, IHealthBonus, IManaBonus, IComb
         foreach (Buff buff in buffs)
             buffPercent += buff.manaPercentPerSecondBonus;
 
-        return Convert.ToInt32(passivePercent * mana.max) + Convert.ToInt32(buffPercent * mana.max);
+        return Convert.ToInt32(((passivePercent + buffPercent) / 100.0f) * mana.max);
     }
 
-    public int GetDamageBonus()
+    public int GetPhysicalAttackBonus()
     {
         // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
         int passiveBonus = 0;
         foreach (Skill skill in skills)
             if (skill.level > 0 && skill.data is PassiveSkill passiveSkill)
-                passiveBonus += passiveSkill.damageBonus.Get(skill.level);
+                passiveBonus += passiveSkill.PhysicalAttackBonus.Get(skill.level);
 
         int buffBonus = 0;
         foreach (Buff buff in buffs)
-            buffBonus += buff.damageBonus;
+            buffBonus += buff.PhysicalAttackBonus;
 
         return passiveBonus + buffBonus;
     }
 
-    public int GetDefenseBonus()
+    public int GetMagicalAttackBonus()
     {
         // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
         int passiveBonus = 0;
         foreach (Skill skill in skills)
             if (skill.level > 0 && skill.data is PassiveSkill passiveSkill)
-                passiveBonus += passiveSkill.defenseBonus.Get(skill.level);
+                passiveBonus += passiveSkill.MagicalAttackBonus.Get(skill.level);
 
         int buffBonus = 0;
         foreach (Buff buff in buffs)
-            buffBonus += buff.defenseBonus;
+            buffBonus += buff.MagicalAttackBonus;
 
         return passiveBonus + buffBonus;
     }
 
-    public float GetCriticalChanceBonus()
+    public int GetPhysicalDefenseBonus()
     {
         // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
-        float passiveBonus = 0;
+        int passiveBonus = 0;
         foreach (Skill skill in skills)
             if (skill.level > 0 && skill.data is PassiveSkill passiveSkill)
-                passiveBonus += passiveSkill.criticalChanceBonus.Get(skill.level);
+                passiveBonus += passiveSkill.physicalDefenseBonus.Get(skill.level);
 
-        float buffBonus = 0;
+        int buffBonus = 0;
         foreach (Buff buff in buffs)
-            buffBonus += buff.criticalChanceBonus;
+            buffBonus += buff.physicalDefenseBonus;
 
         return passiveBonus + buffBonus;
     }
 
-    public float GetBlockChanceBonus()
+    public int GetMagicalDefenseBonus()
     {
         // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
-        float passiveBonus = 0;
+        int passiveBonus = 0;
         foreach (Skill skill in skills)
             if (skill.level > 0 && skill.data is PassiveSkill passiveSkill)
-                passiveBonus += passiveSkill.blockChanceBonus.Get(skill.level);
+                passiveBonus += passiveSkill.magicalDefenseBonus.Get(skill.level);
 
-        float buffBonus = 0;
+        int buffBonus = 0;
         foreach (Buff buff in buffs)
-            buffBonus += buff.blockChanceBonus;
+            buffBonus += buff.magicalDefenseBonus;
+
+        return passiveBonus + buffBonus;
+    }
+
+    public int GetPhysicalDefenseReductionBonus()
+    {
+        // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+        int passiveBonus = 0;
+        foreach (Skill skill in skills)
+            if (skill.level > 0 && skill.data is PassiveSkill passiveSkill)
+                passiveBonus += passiveSkill.physicalDefenseReductionBonus.Get(skill.level);
+
+        int buffBonus = 0;
+        foreach (Buff buff in buffs)
+            buffBonus += buff.physicalDefenseReductionBonus;
+
+        return passiveBonus + buffBonus;
+    }
+
+    public int GetMagicalDefenseReductionBonus()
+    {
+        // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+        int passiveBonus = 0;
+        foreach (Skill skill in skills)
+            if (skill.level > 0 && skill.data is PassiveSkill passiveSkill)
+                passiveBonus += passiveSkill.magicalDefenseReductionBonus.Get(skill.level);
+
+        int buffBonus = 0;
+        foreach (Buff buff in buffs)
+            buffBonus += buff.magicalDefenseReductionBonus;
+
+        return passiveBonus + buffBonus;
+    }
+
+    public int GetCritBonus()
+    {
+        // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+        int passiveBonus = 0;
+        foreach (Skill skill in skills)
+            if (skill.level > 0 && skill.data is PassiveSkill passiveSkill)
+                passiveBonus += passiveSkill.critBonus.Get(skill.level);
+
+        int buffBonus = 0;
+        foreach (Buff buff in buffs)
+            buffBonus += buff.critBonus;
+
+        return passiveBonus + buffBonus;
+    }
+
+    public int GetCritDamageBonus()
+    {
+        // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+        int passiveBonus = 0;
+        foreach (Skill skill in skills)
+            if (skill.level > 0 && skill.data is PassiveSkill passiveSkill)
+                passiveBonus += passiveSkill.critDamageBonus.Get(skill.level);
+
+        int buffBonus = 0;
+        foreach (Buff buff in buffs)
+            buffBonus += buff.critDamageBonus;
+
+        return passiveBonus + buffBonus;
+    }
+
+    public int GetDodgeBonus()
+    {
+        // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+        int passiveBonus = 0;
+        foreach (Skill skill in skills)
+            if (skill.level > 0 && skill.data is PassiveSkill passiveSkill)
+                passiveBonus += passiveSkill.dodgeBonus.Get(skill.level);
+
+        int buffBonus = 0;
+        foreach (Buff buff in buffs)
+            buffBonus += buff.dodgeBonus;
+
+        return passiveBonus + buffBonus;
+    }
+
+    public int GetHitBonus()
+    {
+        // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+        int passiveBonus = 0;
+        foreach (Skill skill in skills)
+            if (skill.level > 0 && skill.data is PassiveSkill passiveSkill)
+                passiveBonus += passiveSkill.hitBonus.Get(skill.level);
+
+        int buffBonus = 0;
+        foreach (Buff buff in buffs)
+            buffBonus += buff.hitBonus;
+
+        return passiveBonus + buffBonus;
+    }
+
+    public int GetAttackSpeedBonus()
+    {
+        // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+        int passiveBonus = 0;
+        foreach (Skill skill in skills)
+            if (skill.level > 0 && skill.data is PassiveSkill passiveSkill)
+                passiveBonus += passiveSkill.attackSpeedBonus.Get(skill.level);
+
+        int buffBonus = 0;
+        foreach (Buff buff in buffs)
+            buffBonus += buff.attackSpeedBonus;
+
+        return passiveBonus + buffBonus;
+    }
+
+    public int GetCastSpeedBonus()
+    {
+        // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+        int passiveBonus = 0;
+        foreach (Skill skill in skills)
+            if (skill.level > 0 && skill.data is PassiveSkill passiveSkill)
+                passiveBonus += passiveSkill.castSpeedBonus.Get(skill.level);
+
+        int buffBonus = 0;
+        foreach (Buff buff in buffs)
+            buffBonus += buff.castSpeedBonus;
+
+        return passiveBonus + buffBonus;
+    }
+
+    public int GetMoveSpeedBonus()
+    {
+        // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+        int passiveBonus = 0;
+        foreach (Skill skill in skills)
+            if (skill.level > 0 && skill.data is PassiveSkill passiveSkill)
+                passiveBonus += passiveSkill.attackSpeedBonus.Get(skill.level);
+
+        int buffBonus = 0;
+        foreach (Buff buff in buffs)
+            buffBonus += buff.attackSpeedBonus;
+
+        return passiveBonus + buffBonus;
+    }
+
+
+    public int GetLuckBonus()
+    {
+        // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+        int passiveBonus = 0;
+        foreach (Skill skill in skills)
+            if (skill.level > 0 && skill.data is PassiveSkill passiveSkill)
+                passiveBonus += passiveSkill.luckBonus.Get(skill.level);
+
+        int buffBonus = 0;
+        foreach (Buff buff in buffs)
+            buffBonus += buff.luckBonus;
 
         return passiveBonus + buffBonus;
     }
@@ -352,4 +503,6 @@ public abstract class Skills : NetworkBehaviour, IHealthBonus, IManaBonus, IComb
         // reset currently casted skill
         CancelCast();
     }
+
+    
 }

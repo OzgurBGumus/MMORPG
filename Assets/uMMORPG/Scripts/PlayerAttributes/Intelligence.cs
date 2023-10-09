@@ -4,13 +4,31 @@ using System;
 using UnityEngine;
 
 [DisallowMultipleComponent]
-public class Intelligence : PlayerAttribute, IManaBonus
+public class Intelligence : PlayerAttribute, IManaBonus, IMagicalAttackBonus, IMagicalDefenseBonus
 {
-    // 1 point means 1% of max bonus
-    public float manaBonusPercentPerPoint = 0.01f;
+    public int baseValue;
+    public float manaBonusPerPoint = 4;
+    public float manaRecoveryBonusPerPoint = 1;
+    public float magicalAttackBonusPerPoint = 2;
+    public float magicalDefenseBonusPerPoint = 1;
 
-    public int GetManaBonus(int baseMana) =>
-        Convert.ToInt32(baseMana * (value * manaBonusPercentPerPoint));
+    public int GetManaBonus()
+    {
+        return Convert.ToInt32(value * manaBonusPerPoint);
+    }
 
-    public int GetManaRecoveryBonus() => 0;
+    public int GetManaRecoveryBonus()
+    {
+        return Convert.ToInt32(value * manaRecoveryBonusPerPoint);
+    }
+
+    public int GetMagicalAttackBonus()
+    {
+        return Convert.ToInt32(value * magicalAttackBonusPerPoint);
+    }
+
+    public int GetMagicalDefenseBonus()
+    {
+        return Convert.ToInt32(value * magicalDefenseBonusPerPoint);
+    }
 }

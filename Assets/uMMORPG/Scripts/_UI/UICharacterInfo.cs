@@ -7,21 +7,34 @@ public partial class UICharacterInfo : MonoBehaviour
 {
     public KeyCode hotKey = KeyCode.T;
     public GameObject panel;
-    public Text damageText;
-    public Text defenseText;
+    public Text physicalAttackText;
+    public Text magicalAttackText;
+    public Text physicalDefenseText;
+    public Text magicalDefenseText;
     public Text healthText;
+    public Text healthRecoveryText;
     public Text manaText;
-    public Text criticalChanceText;
-    public Text blockChanceText;
-    public Text speedText;
+    public Text manaRecoveryText;
+    public Text critText;
+    public Text critDamageText;
+    public Text hitText;
+    public Text dodgeText;
+    public Text attackSpeedText;
+    public Text moveSpeedText;
+    public Text castSpeedText;
+    public Text luckText;
     public Text levelText;
     public Text currentExperienceText;
     public Text maximumExperienceText;
     public Text skillExperienceText;
     public Text attributesText;
     public Text strengthText;
+    public Text enduranceText;
+    public Text agilityText;
     public Text intelligenceText;
     public Button strengthButton;
+    public Button agilityButton;
+    public Button enduranceButton;
     public Button intelligenceButton;
 
 
@@ -124,17 +137,25 @@ public partial class UICharacterInfo : MonoBehaviour
                 //    }
                 //}
 
-                damageText.text = player.combat.damage.ToString();
-                defenseText.text = player.combat.defense.ToString();
-                healthText.text = player.health.max.ToString();
-                manaText.text = player.mana.max.ToString();
-                criticalChanceText.text = (player.combat.criticalChance * 100).ToString("F0") + "%";
-                blockChanceText.text = (player.combat.blockChance * 100).ToString("F0") + "%";
-                speedText.text = player.speed.ToString("F1");
-                levelText.text = player.level.current.ToString();
-                currentExperienceText.text = player.experience.current.ToString();
-                maximumExperienceText.text = player.experience.max.ToString();
-                skillExperienceText.text = ((PlayerSkills)player.skills).skillExperience.ToString();
+                physicalAttackText.text = player.combat.physicalAttack.ToString();
+                magicalAttackText.text = player.combat.magicalAttack.ToString();
+                physicalDefenseText.text = player.combat.physicalDefense.ToString() + "(" + player.combat.physicalDefenseReduction + "%)";
+                magicalDefenseText.text = player.combat.magicalDefense.ToString() +"("+player.combat.magicalDefenseReduction+"%)";
+
+                healthText.text = $"<color=red>{player.health.current}/{player.health.max}</color>";
+                //healthRecoveryText.text = player.health.recoveryRate.ToString();
+                manaText.text = $"<color=blue>{player.mana.current}/{player.mana.max}</color>";
+                //manaRecoveryText.text = player.mana.recoveryRate.ToString();
+
+                critText.text = player.combat.crit.ToString();
+                //critDamageText.text = player.combat.critDamage.ToString("F0") +"%";
+                hitText.text = player.combat.hit.ToString();
+                dodgeText.text = player.combat.dodge.ToString();
+                //moveSpeedText.text = player.speed.ToString("F1");
+                //levelText.text = player.level.current.ToString();
+                //currentExperienceText.text = player.experience.current.ToString();
+                //maximumExperienceText.text = player.experience.max.ToString();
+                //skillExperienceText.text = ((PlayerSkills)player.skills).skillExperience.ToString();
                 Utils.InvokeMany(typeof(UICharacterInfo), this, "Update_", player);
 
                 // attributes (show spendable if >1 so it's more obvious)
@@ -147,14 +168,30 @@ public partial class UICharacterInfo : MonoBehaviour
 
                 strengthText.text = player.strength.value.ToString();
                 strengthButton.interactable = player.strength.PointsSpendable() > 0;
+                strengthButton.gameObject.SetActive(strengthButton.interactable);
                 strengthButton.onClick.SetListener(() => {
                     player.strength.CmdIncrease();
                 });
 
                 intelligenceText.text = player.intelligence.value.ToString();
                 intelligenceButton.interactable = player.intelligence.PointsSpendable() > 0;
+                intelligenceButton.gameObject.SetActive(intelligenceButton.interactable);
                 intelligenceButton.onClick.SetListener(() => {
                     player.intelligence.CmdIncrease();
+                });
+
+                enduranceText.text = player.endurance.value.ToString();
+                enduranceButton.interactable = player.endurance.PointsSpendable() > 0;
+                enduranceButton.gameObject.SetActive(enduranceButton.interactable);
+                enduranceButton.onClick.SetListener(() => {
+                    player.endurance.CmdIncrease();
+                });
+
+                agilityText.text = player.agility.value.ToString();
+                agilityButton.interactable = player.agility.PointsSpendable() > 0;
+                agilityButton.gameObject.SetActive(agilityButton.interactable);
+                agilityButton.onClick.SetListener(() => {
+                    player.agility.CmdIncrease();
                 });
             }
         }

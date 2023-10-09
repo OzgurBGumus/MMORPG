@@ -5,11 +5,23 @@ public partial class EquipmentItem : UsableItem
 {
     [Header("Equipment")]
     public int healthBonus;
+    public int healthRecoveryBonus;
     public int manaBonus;
-    public int damageBonus;
-    public int defenseBonus;
-    [Range(0, 1)] public float blockChanceBonus;
-    [Range(0, 1)] public float criticalChanceBonus;
+    public int ManaRecoveryBonus;
+    /*[Range(0, 1)]*/ public int dodgeBonus;
+    public int critBonus;
+    public int hitBonus;
+    public int physicalDefenseBonus;
+    public int physicalDefenseReductionBonus;
+    public int magicalDefenseBonus;
+    public int magicalDefenseReductionBonus;
+    public int physicalAttackBonus;
+    public int magicalAttackBonus;
+    public int attackSpeedBonus;
+    public int castSpeedBonus;
+    public int moveSpeedBonus;
+    public int luckBonus;
+    public int critDamageBonus;
     public GameObject modelPrefab;
 
     // usage
@@ -43,8 +55,12 @@ public partial class EquipmentItem : UsableItem
         string toolTip =
         "<b>" + name + "</b>\n" +
         "\n" +
-        (defenseBonus != 0 ? "Defense Bonus: {DEFENSEBONUS}\n" : "") +
-        (damageBonus != 0 ? "Pyshical Attack Bonus: {DAMAGEBONUS}\n" : "") +
+        (physicalDefenseBonus != 0 ? "PDEF: {PDEF}\n" : "") +
+        (physicalDefenseReductionBonus != 0 ? "PDEF Reduction: {PDEFREDUCTION}\n" : "") +
+        (magicalDefenseBonus != 0 ? "MDEF: {MDEF}\n" : "") +
+        (magicalDefenseReductionBonus != 0 ? "MDEF Reduction: {MDEFREDUCTION}\n" : "") +
+        (physicalAttackBonus != 0 ? "PATK: {PATK}\n" : "") +
+        (magicalAttackBonus != 0 ? "MATK: {MATK}\n" : "") +
         "Durability: {DURABILITY}%\n" +
         "Destroyable: " + (destroyable ? "Yes" : "No") + "\n" +
         "Sellable: " + (sellable ? "Yes" : "No") + "\n" +

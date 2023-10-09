@@ -25,7 +25,8 @@ public class TargetDamageSkill : DamageSkill
     {
         // deal damage directly with base damage + skill damage
         caster.combat.DealDamageAt(caster.target, caster.name,
-                                   caster.combat.damage + damage.Get(skillLevel),
+                                   GetDamage(caster.combat.physicalAttack, caster.combat.magicalAttack, skillLevel),
+                                   damageType,
                                    stunChance.Get(skillLevel),
                                    stunTime.Get(skillLevel));
     }

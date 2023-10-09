@@ -31,6 +31,8 @@ using TMPro;
 [RequireComponent(typeof(Experience))]
 [RequireComponent(typeof(Intelligence))]
 [RequireComponent(typeof(Strength))]
+[RequireComponent(typeof(Endurance))]
+[RequireComponent(typeof(Agility))]
 [RequireComponent(typeof(PlayerChat))]
 [RequireComponent(typeof(PlayerCrafting))]
 [RequireComponent(typeof(PlayerGameMasterTool))]
@@ -57,6 +59,8 @@ public partial class Player : Entity
     public Experience experience;
     public Intelligence intelligence;
     public Strength strength;
+    public Endurance endurance;
+    public Agility agility;
     public PlayerChat chat;
     public PlayerCrafting crafting;
     public PlayerGameMasterTool gameMasterTool;

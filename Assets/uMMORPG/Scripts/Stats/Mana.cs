@@ -1,26 +1,25 @@
 ﻿using UnityEngine;
 
-// inventory, attributes etc. can influence max health
-public interface IHealthBonus
+// inventory, attributes etc. can influence max mana
+public interface IManaBonus
 {
-    int GetHealthBonus(int baseHealth);
-    int GetHealthRecoveryBonus();
+    int GetManaBonus();
+    int GetManaRecoveryBonus();
 }
 
 [RequireComponent(typeof(Level))]
 [DisallowMultipleComponent]
-public class Health : Energy
+public class Mana : Energy
 {
     public Level level;
-
-    public LinearInt baseHealth = new LinearInt{baseValue=100};
+    public LinearInt baseMana = new LinearInt{baseValue=100};
     public int baseRecoveryRate = 1;
 
     // cache components that give a bonus (attributes, inventory, etc.)
     // (assigned when needed. NOT in Awake because then prefab.max doesn't work)
-    IHealthBonus[] _bonusComponents;
-    IHealthBonus[] bonusComponents =>
-        _bonusComponents ?? (_bonusComponents = GetComponents<IHealthBonus>());
+    IManaBonus[] _bonusComponents;
+    IManaBonus[] bonusComponents =>
+        _bonusComponents ?? (_bonusComponents = GetComponents<IManaBonus>());
 
     // calculate max
     public override int max
@@ -29,9 +28,9 @@ public class Health : Energy
         {
             // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
             int bonus = 0;
-            int baseThisLevel = baseHealth.Get(level.current);
-            foreach (IHealthBonus bonusComponent in bonusComponents)
-                bonus += bonusComponent.GetHealthBonus(baseThisLevel);
+            int baseThisLevel = baseMana.Get(level.current);
+            foreach (IManaBonus bonusComponent in bonusComponents)
+                bonus += bonusComponent.GetManaBonus();
             return baseThisLevel + bonus;
         }
     }
@@ -42,8 +41,8 @@ public class Health : Energy
         {
             // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
             int bonus = 0;
-            foreach (IHealthBonus bonusComponent in bonusComponents)
-                bonus += bonusComponent.GetHealthRecoveryBonus();
+            foreach (IManaBonus bonusComponent in bonusComponents)
+                bonus += bonusComponent.GetManaRecoveryBonus();
             return baseRecoveryRate + bonus;
         }
     }
