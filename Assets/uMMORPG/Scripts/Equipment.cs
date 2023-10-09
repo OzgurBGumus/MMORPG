@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 
 [DisallowMultipleComponent]
-public abstract class Equipment : ItemContainer, IHealthBonus, IManaBonus, ICombatBonus
+public abstract class Equipment : ItemContainer, IHealthBonus, IManaBonus, ICritBonus, IHitBonus, IDodgeBonus, IPhysicalDefenseBonus, IMagicalDefenseBonus, IMagicalDefenseReductionBonus, IPhysicalAttackBonus, IMagicalAttackBonus, IPhysicalDefenseReductionBonus, ICombatBonus
 {
     // boni ////////////////////////////////////////////////////////////////////
-    public int GetHealthBonus(int baseHealth)
+    //Convert.ToInt32(value * dodgeBonusPercentPerPoint)
+    public int GetHealthBonus()
     {
         // calculate equipment bonus
         // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
@@ -15,9 +16,17 @@ public abstract class Equipment : ItemContainer, IHealthBonus, IManaBonus, IComb
         return bonus;
     }
 
-    public int GetHealthRecoveryBonus() => 0;
+    public int GetHealthRecoveryBonus()
+    {
+        // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+        int bonus = 0;
+        foreach (ItemSlot slot in slots)
+            if (slot.amount > 0 && slot.item.CheckDurability())
+                bonus += ((EquipmentItem)slot.item.data).healthRecoveryBonus;
+        return bonus;
+    }
 
-    public int GetManaBonus(int baseMana)
+    public int GetManaBonus()
     {
         // calculate equipment bonus
         // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
@@ -28,51 +37,177 @@ public abstract class Equipment : ItemContainer, IHealthBonus, IManaBonus, IComb
         return bonus;
     }
 
-    public int GetManaRecoveryBonus() => 0;
-
-    public int GetDamageBonus()
+    public int GetManaRecoveryBonus()
     {
-        // calculate equipment bonus
         // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
         int bonus = 0;
         foreach (ItemSlot slot in slots)
             if (slot.amount > 0 && slot.item.CheckDurability())
-                bonus += slot.item.BonusAsPercentageOfUpgrade(((EquipmentItem)slot.item.data).damageBonus);
+                bonus += ((EquipmentItem)slot.item.data).ManaRecoveryBonus;
         return bonus;
     }
 
-    public int GetDefenseBonus()
+    public int GetCritBonus()
     {
-        // calculate equipment bonus
         // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
         int bonus = 0;
         foreach (ItemSlot slot in slots)
             if (slot.amount > 0 && slot.item.CheckDurability())
-                bonus += slot.item.BonusAsPercentageOfUpgrade(((EquipmentItem)slot.item.data).defenseBonus);
+                bonus += ((EquipmentItem)slot.item.data).critBonus;
         return bonus;
     }
 
-    public float GetCriticalChanceBonus()
+    public int GetHitBonus()
     {
-        // calculate equipment bonus
         // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
-        float bonus = 0;
+        int bonus = 0;
         foreach (ItemSlot slot in slots)
             if (slot.amount > 0 && slot.item.CheckDurability())
-                bonus += ((EquipmentItem)slot.item.data).criticalChanceBonus;
+                bonus += ((EquipmentItem)slot.item.data).hitBonus;
         return bonus;
     }
 
-    public float GetBlockChanceBonus()
+    public int GetDodgeBonus()
     {
-        // calculate equipment bonus
         // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
-        float bonus = 0;
+        int bonus = 0;
         foreach (ItemSlot slot in slots)
             if (slot.amount > 0 && slot.item.CheckDurability())
-                bonus += ((EquipmentItem)slot.item.data).blockChanceBonus;
+                bonus += ((EquipmentItem)slot.item.data).dodgeBonus;
         return bonus;
     }
+
+    public int GetPhysicalDefenseBonus()
+    {
+        // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+        int bonus = 0;
+        foreach (ItemSlot slot in slots)
+            if (slot.amount > 0 && slot.item.CheckDurability())
+                bonus += ((EquipmentItem)slot.item.data).physicalDefenseBonus;
+        return bonus;
+    }
+
+    public int GetPhysicalDefenseReductionBonus()
+    {
+        // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+        int bonus = 0;
+        foreach (ItemSlot slot in slots)
+            if (slot.amount > 0 && slot.item.CheckDurability())
+                bonus += ((EquipmentItem)slot.item.data).physicalDefenseReductionBonus;
+        return bonus;
+    }
+
+    public int GetMagicalDefenseBonus()
+    {
+        // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+        int bonus = 0;
+        foreach (ItemSlot slot in slots)
+            if (slot.amount > 0 && slot.item.CheckDurability())
+                bonus += ((EquipmentItem)slot.item.data).magicalDefenseBonus;
+        return bonus;
+    }
+
+    public int GetMagicalDefenseReductionBonus()
+    {
+        // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+        int bonus = 0;
+        foreach (ItemSlot slot in slots)
+            if (slot.amount > 0 && slot.item.CheckDurability())
+                bonus += ((EquipmentItem)slot.item.data).magicalDefenseReductionBonus;
+        return bonus;
+    }
+
+    public int GetPhysicalAttackBonus()
+    {
+        // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+        int bonus = 0;
+        foreach (ItemSlot slot in slots)
+            if (slot.amount > 0 && slot.item.CheckDurability())
+                bonus += ((EquipmentItem)slot.item.data).physicalAttackBonus;
+        return bonus;
+    }
+
+    public int GetMagicalAttackBonus()
+    {
+        // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+        int bonus = 0;
+        foreach (ItemSlot slot in slots)
+            if (slot.amount > 0 && slot.item.CheckDurability())
+                bonus += ((EquipmentItem)slot.item.data).magicalAttackBonus;
+        return bonus;
+    }
+
+    public int GetAttackSpeedBonus()
+    {
+        // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+        int bonus = 0;
+        foreach (ItemSlot slot in slots)
+            if (slot.amount > 0 && slot.item.CheckDurability())
+                bonus += ((EquipmentItem)slot.item.data).attackSpeedBonus;
+        return bonus;
+    }
+
+    public int GetCastSpeedBonus()
+    {
+        // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+        int bonus = 0;
+        foreach (ItemSlot slot in slots)
+            if (slot.amount > 0 && slot.item.CheckDurability())
+                bonus += ((EquipmentItem)slot.item.data).castSpeedBonus;
+        return bonus;
+    }
+
+    public int GetMoveSpeedBonus()
+    {
+        // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+        int bonus = 0;
+        foreach (ItemSlot slot in slots)
+            if (slot.amount > 0 && slot.item.CheckDurability())
+                bonus += ((EquipmentItem)slot.item.data).moveSpeedBonus;
+        return bonus;
+    }
+
+    public int GetLuckBonus()
+    {
+        // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+        int bonus = 0;
+        foreach (ItemSlot slot in slots)
+            if (slot.amount > 0 && slot.item.CheckDurability())
+                bonus += ((EquipmentItem)slot.item.data).luckBonus;
+        return bonus;
+    }
+
+    public int GetCritDamageBonus()
+    {
+        // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+        int bonus = 0;
+        foreach (ItemSlot slot in slots)
+            if (slot.amount > 0 && slot.item.CheckDurability())
+                bonus += ((EquipmentItem)slot.item.data).critDamageBonus;
+        return bonus;
+    }
+
+    //public int GetDamageBonus()
+    //{
+    //    // calculate equipment bonus
+    //    // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+    //    int bonus = 0;
+    //    foreach (ItemSlot slot in slots)
+    //        if (slot.amount > 0 && slot.item.CheckDurability())
+    //            bonus += slot.item.BonusAsPercentageOfUpgrade(((EquipmentItem)slot.item.data).damageBonus);
+    //    return bonus;
+    //}
+
+    //public int GetDefenseBonus()
+    //{
+    //    // calculate equipment bonus
+    //    // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+    //    int bonus = 0;
+    //    foreach (ItemSlot slot in slots)
+    //        if (slot.amount > 0 && slot.item.CheckDurability())
+    //            bonus += slot.item.BonusAsPercentageOfUpgrade(((EquipmentItem)slot.item.data).defenseBonus);
+    //    return bonus;
+    //}
 
     ////////////////////////////////////////////////////////////////////////////
     // helper function to find the equipped weapon index
@@ -97,4 +232,5 @@ public abstract class Equipment : ItemContainer, IHealthBonus, IManaBonus, IComb
         int index = GetEquippedWeaponIndex();
         return index != -1 ? ((WeaponItem)slots[index].item.data).category.ToString() : "";
     }
+
 }

@@ -101,6 +101,8 @@ public partial class Database : MonoBehaviour
         public int mana { get; set; }
         public int strength { get; set; }
         public int intelligence { get; set; }
+        public int endurance { get; set; }
+        public int agility { get; set; }
         public long experience { get; set; } // TODO does long work?
         public long skillExperience { get; set; } // TODO does long work?
         public long gold { get; set; } // TODO does long work?
@@ -541,6 +543,8 @@ public partial class Database : MonoBehaviour
                 player.level.current                          = Mathf.Min(row.level, player.level.max); // limit to max level in case we changed it
                 player.strength.value                         = row.strength;
                 player.intelligence.value                     = row.intelligence;
+                player.endurance.value                        = row.endurance;
+                player.agility.value                          = row.agility;
                 player.experience.current                     = row.experience;
                 ((PlayerSkills)player.skills).skillExperience = row.skillExperience;
                 player.gold                                   = row.gold;
@@ -762,6 +766,8 @@ public partial class Database : MonoBehaviour
             health = player.health.current,
             mana = player.mana.current,
             strength = player.strength.value,
+            endurance = player.endurance.value,
+            agility = player.agility.value,
             intelligence = player.intelligence.value,
             experience = player.experience.current,
             skillExperience = ((PlayerSkills)player.skills).skillExperience,

@@ -45,13 +45,23 @@ public partial struct Buff
     public bool remainAfterDeath => data.remainAfterDeath;
     public int healthMaxBonus => data.healthMaxBonus.Get(level);
     public int manaMaxBonus => data.manaMaxBonus.Get(level);
-    public int damageBonus => data.damageBonus.Get(level);
-    public int defenseBonus => data.defenseBonus.Get(level);
-    public float blockChanceBonus => data.blockChanceBonus.Get(level);
-    public float criticalChanceBonus => data.criticalChanceBonus.Get(level);
     public float healthPercentPerSecondBonus => data.healthPercentPerSecondBonus.Get(level);
     public float manaPercentPerSecondBonus => data.manaPercentPerSecondBonus.Get(level);
-    public float speedBonus => data.speedBonus.Get(level);
+    public int PhysicalAttackBonus => data.PhysicalAttackBonus.Get(level);
+    public int MagicalAttackBonus => data.MagicalAttackBonus.Get(level);
+    public int physicalDefenseBonus => data.physicalDefenseBonus.Get(level);
+    public int magicalDefenseReductionBonus => data.magicalDefenseReductionBonus.Get(level);
+    public int physicalDefenseReductionBonus => data.physicalDefenseReductionBonus.Get(level);
+    public int magicalDefenseBonus => data.magicalDefenseBonus.Get(level);
+    public int dodgeBonus => data.dodgeBonus.Get(level);
+    public int critBonus => data.critBonus.Get(level);
+    public int critDamageBonus => data.critDamageBonus.Get(level);
+    
+    public int hitBonus => data.hitBonus.Get(level);
+    public int attackSpeedBonus => data.attackSpeedBonus.Get(level);
+    public float moveSpeedBonus => data.moveSpeedBonus.Get(level);
+    public int castSpeedBonus => data.castSpeedBonus.Get(level);
+    public int luckBonus => data.luckBonus.Get(level);
     public int maxLevel => data.maxLevel;
 
     // tooltip - runtime part

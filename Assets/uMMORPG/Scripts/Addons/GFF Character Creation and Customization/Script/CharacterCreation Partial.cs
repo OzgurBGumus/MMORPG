@@ -143,9 +143,9 @@ public partial class UICharacterInfo
 
     void Update_RaceClassGender(Player player)
     {
-        raceText.text = player.race.ToString();
-        classText.text = player.className;
-        genderText.text = player.gender;
+        //if(raceText != null )raceText.text = player.race.ToString();
+        //classText.text = player.className;
+        //genderText.text = player.gender;
     }
 }
 

@@ -469,6 +469,10 @@ public partial class NetworkManagerMMO : NetworkManager
         }
         player.health.current = player.health.max; // after equipment in case of boni
         player.mana.current = player.mana.max; // after equipment in case of boni
+        player.strength.value = player.strength.baseValue;
+        player.intelligence.value = player.intelligence.baseValue;
+        player.endurance.value = player.endurance.baseValue;
+        player.agility.value = player.agility.baseValue;
         player.isGameMaster = gameMaster;
 
         return player;

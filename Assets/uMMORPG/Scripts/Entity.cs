@@ -91,11 +91,11 @@ public abstract partial class Entity : NetworkBehaviour
             float passiveBonus = 0;
             foreach (Skill skill in skills.skills)
                 if (skill.level > 0 && skill.data is PassiveSkill passiveSkill)
-                    passiveBonus += passiveSkill.speedBonus.Get(skill.level);
+                    passiveBonus += passiveSkill.moveSpeedBonus.Get(skill.level);
 
             float buffBonus = 0;
             foreach (Buff buff in skills.buffs)
-                buffBonus += buff.speedBonus;
+                buffBonus += buff.moveSpeedBonus;
 
             // base + passives + buffs
             return _speed.Get(level.current) + passiveBonus + buffBonus;

@@ -413,7 +413,7 @@ public class PlayerCharacterControllerMovement : Movement
         {
             int damage = Mathf.RoundToInt(fallMagnitude * fallDamageMultiplier);
             health.current -= damage;
-            combat.RpcOnReceivedDamaged(damage, DamageType.Normal);
+            combat.RpcOnReceivedDamaged(damage, DamageType.Physical);
         }
     }
 

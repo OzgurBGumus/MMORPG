@@ -4,15 +4,39 @@ using Mirror;
 using TMPro;
 using UnityEngine.Events;
 
-public enum DamageType { Normal, Block, Crit }
+public enum DamageType { Physical, Magical, Block, Crit }
 
 // inventory, attributes etc. can influence max health
 public interface ICombatBonus
 {
-    int GetDamageBonus();
-    int GetDefenseBonus();
-    float GetCriticalChanceBonus();
-    float GetBlockChanceBonus();
+    int GetCritBonus();
+    int GetHitBonus();
+    int GetDodgeBonus();
+
+
+    int GetPhysicalDefenseBonus();
+    int GetPhysicalDefenseReductionBonus();
+    int GetMagicalDefenseBonus();
+    int GetMagicalDefenseReductionBonus();
+
+
+
+    int GetPhysicalAttackBonus();
+    int GetMagicalAttackBonus();
+
+    int GetHealthBonus();
+    int GetHealthRecoveryBonus();
+
+    int GetManaBonus();
+    int GetManaRecoveryBonus();
+
+    int GetAttackSpeedBonus();
+    int GetCastSpeedBonus();
+    int GetMoveSpeedBonus();
+    int GetLuckBonus();
+    int GetCritDamageBonus();
+
+
 }
 
 [Serializable] public class UnityEventIntDamageType : UnityEvent<int, DamageType> {}
@@ -29,10 +53,16 @@ public class Combat : NetworkBehaviour
 
     [Header("Stats")]
     [SyncVar] public bool invincible = false; // GMs, Npcs, ...
-    public LinearInt baseDamage = new LinearInt{baseValue=1};
-    public LinearInt baseDefense = new LinearInt{baseValue=1};
-    public LinearFloat baseBlockChance;
-    public LinearFloat baseCriticalChance;
+    public int basePhysicalDamage;
+    public int baseMagicalDamage;
+    public int basePhysicalDefense;
+    public int basePhysicalDefenseReduction;
+    public int baseMagicalDefense;
+    public int baseMagicalDefenseReduction;
+    public int baseCrit;
+    public int baseCritDamage;
+    public int baseDodge;
+    public int baseHit;
 
     [Header("Damage Popup")]
     public GameObject damagePopupPrefab;
@@ -49,55 +79,158 @@ public class Combat : NetworkBehaviour
     ICombatBonus[] bonusComponents =>
         _bonusComponents ?? (_bonusComponents = GetComponents<ICombatBonus>());
 
-    // calculate damage
-    public int damage
+    PlayerAttribute[] _playerAttributes;
+    PlayerAttribute[] playerAttributes =>
+        _playerAttributes ?? (_playerAttributes = GetComponents<PlayerAttribute>());
+
+    // calculate PATK
+    public int physicalAttack
     {
         get
         {
             // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
             int bonus = 0;
             foreach (ICombatBonus bonusComponent in bonusComponents)
-                bonus += bonusComponent.GetDamageBonus();
-            return baseDamage.Get(level.current) + bonus;
+                bonus += bonusComponent.GetPhysicalAttackBonus();
+            foreach(PlayerAttribute attr in playerAttributes)
+                if(attr is IPhysicalAttackBonus)
+                    bonus += ((IPhysicalAttackBonus)attr).GetPhysicalAttackBonus();
+            return basePhysicalDamage + bonus;
         }
     }
 
-    // calculate defense
-    public int defense
+    //Calculate MATK
+    public int magicalAttack
     {
         get
         {
             // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
             int bonus = 0;
             foreach (ICombatBonus bonusComponent in bonusComponents)
-                bonus += bonusComponent.GetDefenseBonus();
-            return baseDefense.Get(level.current) + bonus;
+                bonus += bonusComponent.GetMagicalAttackBonus();
+            foreach (PlayerAttribute attr in playerAttributes)
+                if (attr is IMagicalAttackBonus)
+                    bonus += ((IMagicalAttackBonus)attr).GetMagicalAttackBonus();
+            return baseMagicalDamage + bonus;
         }
     }
 
-    // calculate block
-    public float blockChance
+    // calculate physical defense
+    public int physicalDefense
     {
         get
         {
             // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
-            float bonus = 0;
+            int bonus = 0;
             foreach (ICombatBonus bonusComponent in bonusComponents)
-                bonus += bonusComponent.GetBlockChanceBonus();
-            return baseBlockChance.Get(level.current) + bonus;
+                bonus += bonusComponent.GetPhysicalDefenseBonus();
+            foreach (PlayerAttribute attr in playerAttributes)
+                if (attr is IPhysicalDefenseBonus)
+                    bonus += ((IPhysicalDefenseBonus)attr).GetPhysicalDefenseBonus();
+            return basePhysicalDefense + bonus;
         }
     }
 
-    // calculate critical
-    public float criticalChance
+    // calculate physical defense reduction
+    public int physicalDefenseReduction
     {
         get
         {
             // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
-            float bonus = 0;
+            int bonus = 0;
             foreach (ICombatBonus bonusComponent in bonusComponents)
-                bonus += bonusComponent.GetCriticalChanceBonus();
-            return baseCriticalChance.Get(level.current) + bonus;
+                bonus += bonusComponent.GetPhysicalDefenseReductionBonus();
+            return basePhysicalDefenseReduction + bonus;
+        }
+    }
+
+    // calculate magical defense
+    public int magicalDefense
+    {
+        get
+        {
+            // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+            int bonus = 0;
+            foreach (ICombatBonus bonusComponent in bonusComponents)
+                bonus += bonusComponent.GetMagicalDefenseBonus();
+            foreach (PlayerAttribute attr in playerAttributes)
+                if (attr is IMagicalDefenseBonus)
+                    bonus += ((IMagicalDefenseBonus)attr).GetMagicalDefenseBonus();
+            return baseMagicalDefense + bonus;
+        }
+    }
+
+    // calculate magical defense reduction
+    public int magicalDefenseReduction
+    {
+        get
+        {
+            // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+            int bonus = 0;
+            foreach (ICombatBonus bonusComponent in bonusComponents)
+                bonus += bonusComponent.GetMagicalDefenseReductionBonus();
+            return baseMagicalDefenseReduction + bonus;
+        }
+    }
+
+    // calculate dodge
+    public int dodge
+    {
+        get
+        {
+            // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+            int bonus = 0;
+            foreach (ICombatBonus bonusComponent in bonusComponents)
+                bonus += bonusComponent.GetDodgeBonus();
+            foreach (PlayerAttribute attr in playerAttributes)
+                if (attr is IDodgeBonus)
+                    bonus += ((IDodgeBonus)attr).GetDodgeBonus();
+            return baseDodge + bonus;
+        }
+    }
+
+    // calculate crit
+    public int crit
+    {
+        get
+        {
+            // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+            int bonus = 0;
+            foreach (ICombatBonus bonusComponent in bonusComponents)
+                bonus += bonusComponent.GetCritBonus();
+            foreach (PlayerAttribute attr in playerAttributes)
+                if (attr is ICritBonus)
+                    bonus += ((ICritBonus)attr).GetCritBonus();
+            return baseCrit + bonus;
+        }
+    }
+
+    // calculate crit damage
+    public int critDamage
+    {
+        get
+        {
+            // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+            int bonus = 0;
+            foreach (ICombatBonus bonusComponent in bonusComponents)
+                bonus += bonusComponent.GetCritDamageBonus();
+            return baseCritDamage + bonus;
+        }
+    }
+
+    // calculate hit damage
+    public int hit
+    {
+        get
+        {
+            // sum up manually. Linq.Sum() is HEAVY(!) on GC and performance (190 KB/call!)
+            int bonus = 0;
+            foreach (ICombatBonus bonusComponent in bonusComponents)
+                bonus += bonusComponent.GetHitBonus();
+            foreach (PlayerAttribute attr in playerAttributes)
+                if (attr is IHitBonus)
+                    bonus += ((IHitBonus)attr).GetHitBonus();
+            return baseHit + bonus;
         }
     }
 
@@ -105,17 +238,16 @@ public class Combat : NetworkBehaviour
     // deal damage at another entity
     // (can be overwritten for players etc. that need custom functionality)
     [Server]
-    public virtual void DealDamageAt(Entity victim, string from, int amount, float stunChance=0, float stunTime=0)
+    public virtual void DealDamageAt(Entity victim, string from, int amount, DamageType damageType, float stunChance=0, float stunTime=0)
     {
         Combat victimCombat = victim.combat;
         int damageDealt = 0;
-        DamageType damageType = DamageType.Normal;
 
         // don't deal any damage if entity is invincible
         if (!victimCombat.invincible)
         {
             // block? (we use < not <= so that block rate 0 never blocks)
-            if (UnityEngine.Random.value < victimCombat.blockChance)
+            if (victim.combat.hit < victimCombat.dodge)
             {
                 damageType = DamageType.Block;
             }
@@ -124,10 +256,13 @@ public class Combat : NetworkBehaviour
             {
                 // subtract defense (but leave at least 1 damage, otherwise
                 // it may be frustrating for weaker players)
-                damageDealt = Mathf.Max(amount - victimCombat.defense, 1);
+                int receivedDamage = 0;
+                if (damageType == DamageType.Physical) receivedDamage = Convert.ToInt32((amount - victim.combat.physicalDefense) * (victim.combat.physicalDefenseReduction == 0 ? 1 : victim.combat.physicalDefenseReduction / 100.0));
+                else if(damageType == DamageType.Magical) receivedDamage = Convert.ToInt32((amount - victim.combat.magicalDefense) * (victim.combat.magicalDefenseReduction == 0 ? 1 : victim.combat.magicalDefenseReduction / 100.0));
+                damageDealt = Mathf.Max(receivedDamage, 1);
 
                 // critical hit?
-                if (UnityEngine.Random.value < criticalChance)
+                if (damageType == DamageType.Physical && victim.combat.physicalDefense < UnityEngine.Random.Range(0, crit))
                 {
                     damageDealt *= 2;
                     damageType = DamageType.Crit;
@@ -190,8 +325,15 @@ public class Combat : NetworkBehaviour
             Vector3 position = new Vector3(bounds.center.x, bounds.max.y, bounds.center.z);
 
             GameObject popup = Instantiate(damagePopupPrefab, position, Quaternion.identity);
-            if (damageType == DamageType.Normal)
+            if (damageType == DamageType.Physical)
+            {
                 popup.GetComponentInChildren<TextMeshPro>().text = amount.ToString();
+            }
+            else if(damageType == DamageType.Magical)
+            {
+                popup.GetComponentInChildren<TextMeshPro>().color = Color.red;
+                popup.GetComponentInChildren<TextMeshPro>().text = amount.ToString();
+            }
             else if (damageType == DamageType.Block)
                 popup.GetComponentInChildren<TextMeshPro>().text = "<i>Block!</i>";
             else if (damageType == DamageType.Crit)

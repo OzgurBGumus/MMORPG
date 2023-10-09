@@ -17,24 +17,6 @@ MonoBehaviour:
     race: 1
     nameColor: {r: 1, g: 0.7254902, b: 1, a: 1}
     classes:
-    - name: Warrior
-      hp: 100
-      fp: 55
-      sp: 75
-      damage: 70
-      defense: 100
-      weapon: Sword and Shield
-      armor: Metal Armor
-      men: 1
-      girl: 0
-      leftHand: {fileID: 11400000, guid: 8383cafc85a494a16b426cb11e5efa49, type: 2}
-      rightHand: {fileID: 11400000, guid: ebde5c85fd92e499493a5ae898bef3cb, type: 2}
-      head: {fileID: 0}
-      chest: {fileID: 11400000, guid: 5570618a929d842a182f7dbed42c0109, type: 2}
-      legs: {fileID: 11400000, guid: 4eda55d5000d34ff89fa773edb90c52e, type: 2}
-      arms: {fileID: 11400000, guid: da80831a1b8414f508e394ac277cd825, type: 2}
-      feet: {fileID: 11400000, guid: 9cf6a58fcc5134fb7abde173664fc8ff, type: 2}
-      shoulders: {fileID: 11400000, guid: 1fb260ab728654b48ae767a1a0ad1bb5, type: 2}
     - name: Archer
       hp: 60
       fp: 65
@@ -45,14 +27,6 @@ MonoBehaviour:
       armor: Leather armor
       men: 0
       girl: 1
-      leftHand: {fileID: 0}
-      rightHand: {fileID: 11400000, guid: ed9584898ad0e4ecc93ae9e3c257edc7, type: 2}
-      head: {fileID: 0}
-      chest: {fileID: 0}
-      legs: {fileID: 0}
-      arms: {fileID: 0}
-      feet: {fileID: 0}
-      shoulders: {fileID: 0}
     - name: Specialist
       hp: 55
       fp: 100
@@ -63,14 +37,6 @@ MonoBehaviour:
       armor: Cloth Armor
       men: 1
       girl: 1
-      leftHand: {fileID: 0}
-      rightHand: {fileID: 0}
-      head: {fileID: 0}
-      chest: {fileID: 0}
-      legs: {fileID: 0}
-      arms: {fileID: 0}
-      feet: {fileID: 0}
-      shoulders: {fileID: 0}
   - name: Orcs
     race: 2
     nameColor: {r: 0.6163098, g: 1, b: 0.4669811, a: 1}
@@ -85,14 +51,6 @@ MonoBehaviour:
       armor: Metal Armor
       men: 1
       girl: 0
-      leftHand: {fileID: 11400000, guid: 8383cafc85a494a16b426cb11e5efa49, type: 2}
-      rightHand: {fileID: 11400000, guid: ebde5c85fd92e499493a5ae898bef3cb, type: 2}
-      head: {fileID: 0}
-      chest: {fileID: 11400000, guid: 5570618a929d842a182f7dbed42c0109, type: 2}
-      legs: {fileID: 11400000, guid: 4eda55d5000d34ff89fa773edb90c52e, type: 2}
-      arms: {fileID: 11400000, guid: da80831a1b8414f508e394ac277cd825, type: 2}
-      feet: {fileID: 11400000, guid: 9cf6a58fcc5134fb7abde173664fc8ff, type: 2}
-      shoulders: {fileID: 11400000, guid: 1fb260ab728654b48ae767a1a0ad1bb5, type: 2}
     - name: Archer
       hp: 60
       fp: 65
@@ -103,14 +61,6 @@ MonoBehaviour:
       armor: Leather armor
       men: 0
       girl: 1
-      leftHand: {fileID: 0}
-      rightHand: {fileID: 11400000, guid: ed9584898ad0e4ecc93ae9e3c257edc7, type: 2}
-      head: {fileID: 0}
-      chest: {fileID: 0}
-      legs: {fileID: 0}
-      arms: {fileID: 0}
-      feet: {fileID: 0}
-      shoulders: {fileID: 0}
     - name: Wizard
       hp: 55
       fp: 100
@@ -121,14 +71,6 @@ MonoBehaviour:
       armor: Cloth Armor
       men: 1
       girl: 1
-      leftHand: {fileID: 0}
-      rightHand: {fileID: 0}
-      head: {fileID: 0}
-      chest: {fileID: 0}
-      legs: {fileID: 0}
-      arms: {fileID: 0}
-      feet: {fileID: 0}
-      shoulders: {fileID: 0}
   - name: Undead
     race: 3
     nameColor: {r: 0.9056604, g: 0.9056604, b: 0.9056604, a: 1}
@@ -143,14 +85,6 @@ MonoBehaviour:
       armor: Metal Armor
       men: 1
       girl: 0
-      leftHand: {fileID: 11400000, guid: 8383cafc85a494a16b426cb11e5efa49, type: 2}
-      rightHand: {fileID: 11400000, guid: ebde5c85fd92e499493a5ae898bef3cb, type: 2}
-      head: {fileID: 0}
-      chest: {fileID: 11400000, guid: 5570618a929d842a182f7dbed42c0109, type: 2}
-      legs: {fileID: 11400000, guid: 4eda55d5000d34ff89fa773edb90c52e, type: 2}
-      arms: {fileID: 11400000, guid: da80831a1b8414f508e394ac277cd825, type: 2}
-      feet: {fileID: 11400000, guid: 9cf6a58fcc5134fb7abde173664fc8ff, type: 2}
-      shoulders: {fileID: 11400000, guid: 1fb260ab728654b48ae767a1a0ad1bb5, type: 2}
     - name: Archer
       hp: 60
       fp: 65
@@ -161,11 +95,3 @@ MonoBehaviour:
       armor: Leather armor
       men: 0
       girl: 1
-      leftHand: {fileID: 0}
-      rightHand: {fileID: 11400000, guid: ed9584898ad0e4ecc93ae9e3c257edc7, type: 2}
-      head: {fileID: 0}
-      chest: {fileID: 0}
-      legs: {fileID: 0}
-      arms: {fileID: 0}
-      feet: {fileID: 0}
-      shoulders: {fileID: 0}

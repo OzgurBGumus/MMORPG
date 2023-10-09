@@ -98,7 +98,8 @@ public class TargetProjectileSkill : DamageSkill
             ProjectileSkillEffect effect = go.GetComponent<ProjectileSkillEffect>();
             effect.target = caster.target;
             effect.caster = caster;
-            effect.damage = damage.Get(skillLevel);
+            effect.damage = GetDamage(caster.combat.physicalAttack, caster.combat.magicalAttack, skillLevel);
+            effect.damageType = damageType;
             effect.stunChance = stunChance.Get(skillLevel);
             effect.stunTime = stunTime.Get(skillLevel);
             NetworkServer.Spawn(go);

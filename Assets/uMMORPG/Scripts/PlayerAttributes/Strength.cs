@@ -4,13 +4,19 @@ using System;
 using UnityEngine;
 
 [DisallowMultipleComponent]
-public class Strength : PlayerAttribute, IHealthBonus
+public class Strength : PlayerAttribute, IHealthBonus, IPhysicalAttackBonus
 {
-    // 1 point means 1% of max bonus
-    public float healthBonusPercentPerPoint = 0.01f;
+    public int baseValue;
+    public float healthBonusPerPoint = 0.01f;
+    public float physicalAttackBonusPerPoint = 0.01f;
 
-    public int GetHealthBonus(int baseHealth) =>
-        Convert.ToInt32(baseHealth * (value * healthBonusPercentPerPoint));
+    public int GetHealthBonus() =>
+        Convert.ToInt32(value * healthBonusPerPoint);
 
     public int GetHealthRecoveryBonus() => 0;
+
+    public int GetPhysicalAttackBonus()
+    {
+        return Convert.ToInt32(value * physicalAttackBonusPerPoint);
+    }
 }

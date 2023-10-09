@@ -43,10 +43,15 @@ public partial struct Item
         if (data is EquipmentItem item)
         {
             //damage
-            tip.Replace("{DAMAGEBONUS}", BonusAsPercentageOfUpgrade(item.damageBonus).ToString());
+            tip.Replace("{PATKBONUS}", BonusAsPercentageOfUpgrade(item.physicalAttackBonus).ToString());
+            tip.Replace("{MATKBONUS}", BonusAsPercentageOfUpgrade(item.magicalAttackBonus).ToString());
 
             //defense
-            tip.Replace("{DEFENSEBONUS}", BonusAsPercentageOfUpgrade(item.defenseBonus).ToString());
+            tip.Replace("{PDEFBONUS}", BonusAsPercentageOfUpgrade(item.physicalDefenseBonus).ToString());
+            tip.Replace("{MDEFBONUS}", BonusAsPercentageOfUpgrade(item.magicalDefenseBonus).ToString());
+
+            tip.Replace("{MDEFREDUCTIONBONUS}", BonusAsPercentageOfUpgrade(item.magicalDefenseReductionBonus).ToString());
+            tip.Replace("{PDEFREDUCTIONBONUS}", BonusAsPercentageOfUpgrade(item.physicalDefenseReductionBonus).ToString());
 
             tip.Replace("{UPGRADE}", "+" + currentUpgradeLevel.ToString());
         }

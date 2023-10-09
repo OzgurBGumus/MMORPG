@@ -19,6 +19,8 @@ GameObject:
   - component: {fileID: 6372609056192116201}
   - component: {fileID: 5712206906443104382}
   - component: {fileID: 8529401566019713110}
+  - component: {fileID: 7988980425300266584}
+  - component: {fileID: 8672695298976605243}
   - component: {fileID: 6395401577655504590}
   - component: {fileID: 5337225809773296567}
   - component: {fileID: 4516250602342586415}
@@ -317,6 +319,8 @@ MonoBehaviour:
   experience: {fileID: 7224164981670902446}
   intelligence: {fileID: 5337225809773296567}
   strength: {fileID: 6395401577655504590}
+  endurance: {fileID: 7988980425300266584}
+  agility: {fileID: 8672695298976605243}
   chat: {fileID: 11481206}
   crafting: {fileID: 6835918529521475956}
   gameMasterTool: {fileID: 1551624724093034080}
@@ -448,7 +452,7 @@ MonoBehaviour:
   level: {fileID: 6372609056192116201}
   baseHealth:
     baseValue: 100
-    bonusPerLevel: 10
+    bonusPerLevel: 40
   baseRecoveryRate: 1
 --- !u!114 &8529401566019713110
 MonoBehaviour:
@@ -472,9 +476,52 @@ MonoBehaviour:
       m_Calls: []
   level: {fileID: 6372609056192116201}
   baseMana:
-    baseValue: 100
-    bonusPerLevel: 10
+    baseValue: 60
+    bonusPerLevel: 0
   baseRecoveryRate: 1
+--- !u!114 &7988980425300266584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 142034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21cb8bb3443b1e54b8a83b9aa3a64a22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  level: {fileID: 6372609056192116201}
+  health: {fileID: 5712206906443104382}
+  value: 1
+  baseValue: 6
+  hitBonusPerPoint: 16
+  physicalDefenseBonusPerPoint: 1
+--- !u!114 &8672695298976605243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 142034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bf1d4de009508d4ab627546534ceb91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  level: {fileID: 6372609056192116201}
+  health: {fileID: 5712206906443104382}
+  value: 1
+  baseValue: 10
+  hitBonusPerPoint: 0.5
+  dodgeBonusPerPoint: 1.4
+  critBonusPerPoint: 0.6
 --- !u!114 &6395401577655504590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -493,7 +540,9 @@ MonoBehaviour:
   level: {fileID: 6372609056192116201}
   health: {fileID: 5712206906443104382}
   value: 0
-  healthBonusPercentPerPoint: 0.01
+  baseValue: 10
+  healthBonusPerPoint: 3
+  physicalAttackBonusPerPoint: 2
 --- !u!114 &5337225809773296567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -512,7 +561,11 @@ MonoBehaviour:
   level: {fileID: 6372609056192116201}
   health: {fileID: 5712206906443104382}
   value: 0
-  manaBonusPercentPerPoint: 0.01
+  baseValue: 4
+  manaBonusPerPoint: 4
+  manaRecoveryBonusPerPoint: 0
+  magicalAttackBonusPerPoint: 2
+  magicalDefenseBonusPerPoint: 1
 --- !u!114 &4516250602342586415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -532,18 +585,16 @@ MonoBehaviour:
   entity: {fileID: 11448894}
   collider: {fileID: 1405507854619521122}
   invincible: 0
-  baseDamage:
-    baseValue: 1
-    bonusPerLevel: 0
-  baseDefense:
-    baseValue: 1
-    bonusPerLevel: 0
-  baseBlockChance:
-    baseValue: 0
-    bonusPerLevel: 0
-  baseCriticalChance:
-    baseValue: 0
-    bonusPerLevel: 0
+  basePhysicalDamage: 5
+  baseMagicalDamage: 5
+  basePhysicalDefense: 5
+  basePhysicalDefenseReduction: 0
+  baseMagicalDefense: 5
+  baseMagicalDefenseReduction: 0
+  baseCrit: 1
+  baseCritDamage: 150
+  baseDodge: 2
+  baseHit: 17
   damagePopupPrefab: {fileID: 179236, guid: e81ebbaa55e254e31b9909cef04e3855, type: 3}
   onDamageDealtTo:
     m_PersistentCalls:

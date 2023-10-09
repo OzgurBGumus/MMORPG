@@ -54,8 +54,19 @@ MonoBehaviour:
     baseValue: 25
     bonusPerLevel: 0
   castSound: {fileID: 0}
-  damage:
-    baseValue: 5
+  contentSlot: 0
+  treeInSlot: 0
+  physicalBonusDamage:
+    baseValue: 0
+    bonusPerLevel: 0
+  physicalDamagePercent:
+    baseValue: 100
+    bonusPerLevel: 0
+  magicalBonusDamage:
+    baseValue: 1
+    bonusPerLevel: 0
+  magicalDamagePercent:
+    baseValue: 1
     bonusPerLevel: 0
   stunChance:
     baseValue: 0
@@ -63,5 +74,6 @@ MonoBehaviour:
   stunTime:
     baseValue: 0
     bonusPerLevel: 0
+  damageType: 0
   projectile: {fileID: 114423741089805692, guid: 0f4948efce538432191cef46aef01d26,
     type: 3}
