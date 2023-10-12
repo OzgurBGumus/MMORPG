@@ -207,5 +207,88 @@ namespace GFFAddons
         {
             UIUpgrade.singleton.ItemInfoUpgradeSuccess(playername, itemname, amount);
         }
+
+
+
+
+
+        /////WINGS
+        [Server]
+        private void WingUpgrade()
+        {
+            ItemSlot slot_0 = player.inventory.slots[upgradeIndices[0]];
+
+            //gemstone coefficient of influence
+            float materialBonuses = CalculateUpgradeBonuses();
+
+            // addon system hooks (Item rarity)
+            rarityIndex = 0;
+            Utils.InvokeMany(typeof(UIUpgrade), this, "rarityValue_", this, player.inventory.slots[upgradeIndices[0]].item);
+
+            //eng - chance of successful enchantment
+            //ru - шанс зачарования (берем из айтема в зависимости от апгрэйда)
+            int position = slot_0.item.currentUpgradeLevel;
+            float upgradeChance = slot_0.item.data.upgradeChances[position] * materialBonuses;
+
+            //if final chance of enchantment more than random value
+            //if you set an Item's UpgradeChange to 10000, that means if you put regular items to all slots (5 slots), it will success with 10000 value.
+            //that means 1 slot adds 0.2 materialBonuses
+            if (upgradeChance > UnityEngine.Random.Range(0, 10000))
+            {
+                slot_0.item.currentUpgradeLevel++;
+
+                player.inventory.slots[upgradeIndices[0]] = slot_0;
+
+                if (data.showSuccessfullyEnchantmentOnChat && slot_0.item.currentUpgradeLevel >= data.showSuccessfullyUpdateValue)
+                {
+                    string message = "Successfully Upgraded " + slot_0.item.name + " +" + slot_0.item.currentUpgradeLevel;
+
+                    //for original chat
+                    player.chat.OnSubmit(message);
+
+                    //if used chat extended addon
+                    //player.chat.OnSubmit(message, chatChannel.info);
+                }
+
+                //show info message for all online players
+                if (slot_0.item.currentUpgradeLevel >= data.showSuccessfullyUpdateValue)
+                {
+                    foreach (Player player in Player.onlinePlayers.Values)
+                    {
+                        player.upgrade.RpcSuccessfullyEnchantedOpenPanel(player.name, slot_0.item.name, slot_0.item.currentUpgradeLevel);
+                    }
+                }
+            }
+            else
+            {
+                slot_0.amount = 0;
+                TargetItemUpgradeError("Item Destroyed");
+
+                player.inventory.slots[upgradeIndices[0]] = slot_0;
+
+                //show informational messages
+                if (data.showFailedEnchantmentOnChat)
+                {
+                    string message = "Failed upgrade to" + slot_0.item.name + " +" + (slot_0.item.currentUpgradeLevel + 1);
+
+                    //for original chat
+                    player.chat.OnSubmit(message);
+
+                    //if used chat extended addon
+                    //player.chat.OnSubmit(message, chatChannel.info);
+                }
+            }
+
+            //decrease amount gems and rune on 1
+            for (int i = 1; i < upgradeIndices.Count; i++)
+            {
+                if (upgradeIndices[i] != -1)
+                {
+                    ItemSlot slot_i = player.inventory.slots[upgradeIndices[i]];
+                    slot_i.amount -= 1;
+                    player.inventory.slots[upgradeIndices[i]] = slot_i;
+                }
+            }
+        }
     }
 }

@@ -17,6 +17,31 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System;
+
+[Serializable]
+public class RewardItems
+{
+    public ScriptableItem item;
+    public int count;
+}
+//[Serializable]
+//public enum QuestDialogueOwner { NPC, User };
+//[Serializable]
+//public enum QuestDialogueAnswerTask { Next, Cancel, CorrectAnswer, WrongAnswer }
+//[Serializable]
+//public class QuestDialogue
+//{
+//    public QuestDialogueOwner owner;
+//    public string description;
+//    public List<QuestDialogueAnswer> answers;
+//}
+//[Serializable]
+//public class QuestDialogueAnswer
+//{
+//    public string description;
+//    public QuestDialogueAnswerTask task;
+//}
 
 public abstract class ScriptableQuest : ScriptableObject
 {
@@ -30,10 +55,11 @@ public abstract class ScriptableQuest : ScriptableObject
     [Header("Rewards")]
     public long rewardGold;
     public long rewardExperience;
-    public List<ScriptableItem> rewardItem;
-    public List<int> rewardItemCount;
+    public List<RewardItems> rewardItems;
     public bool readyToComplete = false;
 
+
+    //public List<QuestDialogue> dialog;
 
     // events to hook into /////////////////////////////////////////////////////
     public virtual void OnSelect(Player player, string questName) {

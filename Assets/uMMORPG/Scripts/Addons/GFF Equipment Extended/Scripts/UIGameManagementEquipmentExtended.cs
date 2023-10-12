@@ -79,7 +79,7 @@ public class UIGameManagementEquipmentExtended : MonoBehaviour
                         }
 
                         //if used upgrade addon
-                        if (itemSlot.item.data is EquipmentItem equipmentItem)
+                        if (itemSlot.item.data is EquipmentItem equipmentItem && itemSlot.item.currentUpgradeLevel != 0)
                             slot.upgradeText.text = "+" + itemSlot.item.currentUpgradeLevel.ToString();
                         else slot.upgradeText.text = "";
 
