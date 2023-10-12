@@ -482,6 +482,7 @@ public partial class Player : Entity
                     skills.CastCheckTarget(skill) &&
                     skills.CastCheckDistance(skill, out Vector3 destination))
                 {
+                    movement.Reset();
                     //Debug.Log("MOVING->EventSkillRequest: early cast started while sliding to destination...");
                     // movement.Reset(); <- DO NOT DO THIS.
                     skills.StartCast(skill);
@@ -543,6 +544,11 @@ public partial class Player : Entity
         }
         if (EventMoveStart())
         {
+            if (skills.movedWhileCasting)
+            {
+                skills.CancelCast();
+                return "MOVING";
+            }
             // we do NOT cancel the cast if the player moved, and here is why:
             // * local player might move into cast range and then try to cast.
             // * server then receives the Cmd, goes to CASTING state, then
@@ -621,6 +627,8 @@ public partial class Player : Entity
 
             // clear current skill for now
             skills.currentSkill = -1;
+
+            movement.Reset();
 
             // use next target if the user tried to target another while casting
             UseNextTargetIfAny();

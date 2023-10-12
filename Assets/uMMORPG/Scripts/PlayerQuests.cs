@@ -144,7 +144,7 @@ public class PlayerQuests : NetworkBehaviour
                         {
                             for(int i = 0; i< quest.rewardItem.Count; i++)
                             {
-                                inventory.Add(new Item(quest.rewardItem[i]), quest.rewardItemCount[i]);
+                                inventory.Add(new Item(quest.rewardItem[i].item), quest.rewardItem[i].count);
                             }
                         }
                         // complete quest

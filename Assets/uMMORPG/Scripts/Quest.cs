@@ -60,8 +60,7 @@ public partial struct Quest
     public string predecessor => data.predecessor != null ? data.predecessor.name : "";
     public long rewardGold => data.rewardGold;
     public long rewardExperience => data.rewardExperience;
-    public List<ScriptableItem> rewardItem => data.rewardItem;
-    public List<int> rewardItemCount => data.rewardItemCount;
+    public List<RewardItems> rewardItem => data.rewardItems;
 
     // events
     public void OnInventoryUpdate(Player player, int questIndex) { data.OnInventoryUpdate(player, questIndex); }
