@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89083fd7e83a41240b20d1c0681587a4, type: 3}
+  m_Name: Wing_01_02
+  m_EditorClassIdentifier: 
+  rarity: 0
+  gold: 0
+  prefab: {fileID: 0}
+  offsetX: 0
+  offsetY: 0
+  offsetZ: -1.5
+  rotX: 0
+  rotY: 0
+  rotZ: -180
+  category: 21
+  maxStack: 1
+  maxDurability: 0
+  buyPrice: 0
+  sellPrice: 0
+  itemMallPrice: 0
+  sellable: 0
+  tradable: 0
+  destroyable: 1
+  toolTip: 
+  image: {fileID: 21300000, guid: ba3f8d1fa954205458a3b1716494a9e7, type: 3}
+  upgradeBonusesPercent:
+  - 100
+  upgradeChances: []
+  race: 0
+  clases: 0
+  minLevel: 0
+  cooldown: 0
+  _cooldownCategory: 
+  difficultyOfEnchantment: 1
+  considerItemLevel: 0
+  healthBonus: 0
+  healthRecoveryBonus: 0
+  manaBonus: 0
+  ManaRecoveryBonus: 0
+  dodgeBonus: 0
+  critBonus: 0
+  hitBonus: 0
+  physicalDefenseBonus: 0
+  physicalDefenseReductionBonus: 0
+  magicalDefenseBonus: 0
+  magicalDefenseReductionBonus: 0
+  physicalAttackBonus: 6
+  magicalAttackBonus: 6
+  attackSpeedBonus: 0
+  castSpeedBonus: 0
+  moveSpeedBonus: 0
+  luckBonus: 0
+  critDamageBonus: 0
+  modelPrefab: {fileID: 0}
+  nextWing: {fileID: 0}

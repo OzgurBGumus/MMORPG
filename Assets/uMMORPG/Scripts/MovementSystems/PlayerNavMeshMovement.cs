@@ -191,6 +191,12 @@ public class PlayerNavMeshMovement : NavMeshMovement
             !Utils.IsCursorOverUserInterface() &&
             Input.touchCount <= 1)
         {
+            if(player.skills.currentSkill != -1)
+            {
+                player.skills.movedWhileCasting = true;
+            }
+            
+
             if (player.lockRaycast)
                 return;
 

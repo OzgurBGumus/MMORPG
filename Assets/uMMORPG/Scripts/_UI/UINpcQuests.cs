@@ -39,7 +39,7 @@ public partial class UINpcQuests : MonoBehaviour
             // instantiate/destroy enough slots
             ScriptableQuest npcQuest = npc.quests.GetQuestsFor(player, currentQuestName);
             UIUtils.BalancePrefabs(slotRewardPrefab.gameObject,
-                npcQuest.rewardItem.Count + 
+                npcQuest.rewardItems.Count + 
                 (npcQuest.rewardGold != 0 ? 1 : 0) +
                 (npcQuest.rewardExperience != 0 ? 1 : 0)
                 , contentReward);
@@ -69,19 +69,18 @@ public partial class UINpcQuests : MonoBehaviour
                 slot.nameText.text = npcQuest.rewardGold.ToString();
             }
             //fill Reward Prefabs
-            for(int i=0; i < npcQuest.rewardItem.Count; i++)
+            for(int i=0; i < npcQuest.rewardItems.Count; i++)
             {
                 UIQuestRewardSlot slot = contentReward.GetChild(i).GetComponent<UIQuestRewardSlot>();
-                slot.descriptionText.text = npcQuest.rewardItemCount[i].ToString();
-                slot.nameText.text = npcQuest.rewardItem[i].name;
+                slot.descriptionText.text = npcQuest.rewardItems[i].count.ToString();
+                slot.nameText.text = npcQuest.rewardItems[i].item.name;
             }
             if (questIndex != -1)
             {
                 // running quest: shows description with current progress
                 // instead of static one
                 Quest quest = player.quests.quests[questIndex];
-                List<ScriptableItem> reward = npcQuest.rewardItem;
-                bool hasSpace = reward == null || player.inventory.SlotsFree() >= reward.Count;
+                bool hasSpace = npcQuest.rewardItems == null || player.inventory.SlotsFree() >= npcQuest.rewardItems.Count;
 
                 // description + not enough space warning (if needed)
                 descriptionText.text = quest.ToolTip(player);
@@ -116,23 +115,29 @@ public partial class UINpcQuests : MonoBehaviour
         UIUtils.BalancePrefabs(slotMissionPrefab.gameObject, npcQuest.GetMissionCount(), contentMission);
         if (npcQuest != null)
         {
-            if(npcQuest is KillQuest killQuest)
+            if(npcQuest is GeneralQuest generalQuest)
             {
-                for (int i=0; i< killQuest.KillMonsterList.Count; i++)
+                int currentTask = 0;
+                for (int i=0; i< generalQuest.KillMonsterList.Count; i++)
                 {
-                    UIQuestMissionSlot slot = contentMission.GetChild(i).GetComponent<UIQuestMissionSlot>();
-                    slot.descriptionText.text = killQuest.KillMonsterList[i].killAmount.ToString();
-                    slot.nameButton.text = killQuest.KillMonsterList[i].killTarget.name;
+                    UIQuestMissionSlot slot = contentMission.GetChild(currentTask).GetComponent<UIQuestMissionSlot>();
+                    slot.descriptionText.text = generalQuest.KillMonsterList[currentTask].killAmount.ToString();
+                    slot.nameButton.text = generalQuest.KillMonsterList[currentTask].killTarget.name;
+                    currentTask++;
                 }
-                
-            }
-            else if(npcQuest is GatherQuest gatherQuest)
-            {
-                for (int i = 0; i < gatherQuest.GatherItemList.Count; i++)
+                for (int i = 0; i < generalQuest.GatherItemList.Count; i++)
                 {
-                    UIQuestMissionSlot slot = contentMission.GetChild(i).GetComponent<UIQuestMissionSlot>();
-                    slot.descriptionText.text = gatherQuest.GatherItemList[i].gatherAmount.ToString();
-                    slot.nameButton.text = gatherQuest.GatherItemList[i].gatherItem.name;
+                    UIQuestMissionSlot slot = contentMission.GetChild(currentTask).GetComponent<UIQuestMissionSlot>();
+                    slot.descriptionText.text = generalQuest.GatherItemList[i].gatherAmount.ToString();
+                    slot.nameButton.text = generalQuest.GatherItemList[i].gatherItem.name;
+                    currentTask++;
+                }
+                for (int i = 0; i < generalQuest.LocationList.Count; i++)
+                {
+                    UIQuestMissionSlot slot = contentMission.GetChild(currentTask).GetComponent<UIQuestMissionSlot>();
+                    slot.descriptionText.text = "";
+                    slot.nameButton.text = generalQuest.LocationList[i];
+                    currentTask++;
                 }
             }
         }

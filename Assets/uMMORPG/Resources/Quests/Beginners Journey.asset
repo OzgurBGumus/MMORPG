@@ -9,41 +9,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2d0ab8a5b5004b93bc9f7f8490935cd, type: 3}
+  m_Script: {fileID: 11500000, guid: c5052b722f4180f4b8f1bcb7fb496903, type: 3}
   m_Name: Beginners Journey
   m_EditorClassIdentifier: 
   toolTip: '<b>{NAME}</b>
 
-    Kill some {KILLTARGET}s
-
-    to prove your strength!
-
-
-    Tasks:
-
-    {KILLTARGETS}
-
-
-    Rewards:
-
-    *
-    {REWARDGOLD} Gold
-
-    * {REWARDEXPERIENCE} Experience
-
-    * {REWARDITEM}
-
-
-    {STATUS}'
+    Kill Some Bandits. And Gather their swords.'
   requiredLevel: 0
   predecessor: {fileID: 0}
-  rewardGold: 100
-  rewardExperience: 70
-  rewardItem:
-  - {fileID: 11400000, guid: ae0314505b06f4f1280aa735db1c70e8, type: 2}
-  rewardItemCount: 1e000000
+  rewardGold: 50
+  rewardExperience: 250
+  rewardItems:
+  - item: {fileID: 11400000, guid: ae0314505b06f4f1280aa735db1c70e8, type: 2}
+    count: 5
+  - item: {fileID: 11400000, guid: 2608a09a88215491fbe878f632afe522, type: 2}
+    count: 5
+  readyToComplete: 1
+  GatherItemList:
+  - gatherItem: {fileID: 11400000, guid: ebde5c85fd92e499493a5ae898bef3cb, type: 2}
+    gatherAmount: 1
+  - gatherItem: {fileID: 11400000, guid: ae0314505b06f4f1280aa735db1c70e8, type: 2}
+    gatherAmount: 5
   KillMonsterList:
   - killTarget: {fileID: 11474358, guid: f4f3cd62f16787b4c8c6371cca6538fe, type: 3}
-    killAmount: 5
+    killAmount: 2
   - killTarget: {fileID: 11474358, guid: 39509616e6dcda4499fe58ab529bc61d, type: 3}
     killAmount: 1
+  LocationList: []

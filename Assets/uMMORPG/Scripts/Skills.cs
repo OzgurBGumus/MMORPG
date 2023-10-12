@@ -15,6 +15,7 @@ public abstract class Skills : NetworkBehaviour, IHealthBonus, IManaBonus, ICrit
     public Health health;
     public Mana mana;
 
+
     // 'skillTemplates' are the available skills (first one is default attack)
     // 'skills' are the loaded skills with cooldowns etc.
     [Header("Skills & Buffs")]
@@ -42,6 +43,7 @@ public abstract class Skills : NetworkBehaviour, IHealthBonus, IManaBonus, ICrit
     // current skill (synced because we need it as an animation parameter)
     [SyncVar, HideInInspector] public int currentSkill = -1;
 
+    [SyncVar, HideInInspector] public bool movedWhileCasting = false;
     // boni ////////////////////////////////////////////////////////////////////
     public int GetHealthBonus()
     {
