@@ -85,4 +85,8 @@ MonoBehaviour:
   luckBonus: 0
   critDamageBonus: 0
   modelPrefab: {fileID: 0}
-  nextWing: {fileID: 0}
+  nextWing: {fileID: 11400000, guid: 5a7b1bf8a12059544980c0efbb638076, type: 2}
+  wingUpgradeMaterial: {fileID: 11400000, guid: ae0314505b06f4f1280aa735db1c70e8,
+    type: 2}
+  wingUpgradeMaterialAmount: 4
+  wingUpgradeChance: 30

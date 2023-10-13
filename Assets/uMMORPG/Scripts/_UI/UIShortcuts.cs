@@ -8,6 +8,9 @@ public partial class UIShortcuts : MonoBehaviour
     public Button inventoryButton;
     public GameObject inventoryPanel;
 
+    public Button wingUpgradeButton;
+    public GameObject wingUpgradePanel;
+
     public Button merchantButton;
     public GameObject merchantPanel;
 
@@ -46,6 +49,10 @@ public partial class UIShortcuts : MonoBehaviour
 
             inventoryButton.onClick.SetListener(() => {
                 inventoryPanel.transform.parent.GetComponent<UIInventory>().Toggle();
+            });
+
+            wingUpgradeButton.onClick.SetListener(() => {
+                wingUpgradePanel.transform.parent.GetComponent<UIWingUpgrade>().Toggle();
             });
 
             merchantButton.onClick.SetListener(() => {

@@ -37,6 +37,15 @@ public class Inventory : ItemContainer
                 amount += slot.amount;
         return amount;
     }
+    public int Count(ScriptableItem item)
+    {
+        // count manually. Linq is HEAVY(!) on GC and performance
+        int amount = 0;
+        foreach (ItemSlot slot in slots)
+            if (slot.amount > 0 && slot.item.data.Equals(item))
+                amount += slot.amount;
+        return amount;
+    }
 
     // helper function to remove 'n' items from the inventory
     public bool Remove(Item item, int amount)

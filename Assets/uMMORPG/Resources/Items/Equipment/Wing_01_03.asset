@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 89083fd7e83a41240b20d1c0681587a4, type: 3}
-  m_Name: Wing_01_02
+  m_Name: Wing_01_03
   m_EditorClassIdentifier: 
   rarity: 0
   gold: 0
@@ -31,7 +31,7 @@ MonoBehaviour:
   tradable: 0
   destroyable: 1
   toolTip: 
-  image: {fileID: 21300000, guid: ba3f8d1fa954205458a3b1716494a9e7, type: 3}
+  image: {fileID: 21300000, guid: fe2ba4639d0034dc8b8d83cdb67fc083, type: 3}
   upgradeBonusesPercent:
   - 100
   upgradeChances: []
@@ -61,8 +61,7 @@ MonoBehaviour:
   luckBonus: 0
   critDamageBonus: 0
   modelPrefab: {fileID: 0}
-  nextWing: {fileID: 11400000, guid: 30bb10d2b13af3744af65dc23cf29690, type: 2}
-  wingUpgradeMaterial: {fileID: 11400000, guid: 2608a09a88215491fbe878f632afe522,
-    type: 2}
-  wingUpgradeMaterialAmount: 2
-  wingUpgradeChance: 25
+  nextWing: {fileID: 0}
+  wingUpgradeMaterial: {fileID: 0}
+  wingUpgradeMaterialAmount: 0
+  wingUpgradeChance: 0

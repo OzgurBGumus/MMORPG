@@ -27,6 +27,10 @@ public class ScriptableItemRarity : ScriptableObject
     {
         return types[types.FindIndex(x => x.rarity == item.data.GetItemRarity)].color;
     }
+    public Color GetColor(ScriptableItem item)
+    {
+        return types[types.FindIndex(x => x.rarity == item.GetItemRarity)].color;
+    }
     public Color GetColor(ItemRarity rarity)
     {
         return types[types.FindIndex(x => x.rarity == rarity)].color;
