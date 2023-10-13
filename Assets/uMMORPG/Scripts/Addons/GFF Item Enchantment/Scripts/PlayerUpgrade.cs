@@ -11,6 +11,8 @@ namespace GFFAddons
         [Header("Components")]
         public Player player;
         public EnchantmentData data;
+        [SyncVar]public int wingUpgradePoint;
+        [SyncVar]public int wingUpgradePointProgress;
         [HideInInspector] public List<int> upgradeIndices = new List<int>() { -1, -1, -1, -1, -1, -1 };
         [HideInInspector] public float UpgradeTimeRemaining() => NetworkTime.time >= upgradeTimeEnd ? 0 : (float)(upgradeTimeEnd - NetworkTime.time);
         [HideInInspector, SyncVar] public double upgradeTimeEnd; // server time. double for long term precision.
@@ -206,6 +208,75 @@ namespace GFFAddons
         private void RpcSuccessfullyEnchantedOpenPanel(string playername, string itemname, int amount)
         {
             UIUpgrade.singleton.ItemInfoUpgradeSuccess(playername, itemname, amount);
+        }
+
+
+
+        public bool CanUpgradeWing(Player player)
+        {
+            ItemSlot equipmentWingSlot = player.equipment.slots[14];
+            //Check does user wearing the wing
+            if (equipmentWingSlot.amount > 0)
+            {
+                WingItem wing = (WingItem)equipmentWingSlot.item.data;
+                ScriptableItem material = wing.wingUpgradeMaterial;
+                int materialCountInInventory = player.inventory.Count(material);
+                //Check do we have enough resource
+                if (materialCountInInventory >= wing.wingUpgradeMaterialAmount && wing.nextWing != null)
+                {
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
+
+        /////WINGS
+        [Command]
+        public void CmdStartWingUpgrade(Player player)
+        {
+            ItemSlot equipmentWingSlot = player.equipment.slots[14];
+            if (CanUpgradeWing(player))
+            {
+                WingItem wing = (WingItem)equipmentWingSlot.item.data;
+                int currentChange = wingUpgradePoint + wing.wingUpgradeChance;
+                int rnd = UnityEngine.Random.Range(0, 100);
+                if(rnd >= currentChange)
+                {
+                    IncreaseWingUpgradePointProgress(UnityEngine.Random.Range(0, 100));
+                    
+                }
+                else
+                {
+                    equipmentWingSlot.item = new Item(wing.nextWing);
+                    player.equipment.slots[14] = equipmentWingSlot;
+
+                    string message = "EveryBody, Listen! "+player.name+" Has her/his new Wings "+ wing.nextWing .name+ " !";
+
+                    ResetWingUpgradePointProgres();
+
+                    //for original chat
+                    player.chat.SendGlobalMessage(message);
+                }
+                player.inventory.Remove(new Item(wing.wingUpgradeMaterial), wing.wingUpgradeMaterialAmount);
+            }
+
+            ClearUpgradeIndices();
+        }
+
+        private void IncreaseWingUpgradePointProgress(int additionalProgress)
+        {
+            wingUpgradePointProgress += additionalProgress;
+            if(wingUpgradePointProgress >= 100)
+            {
+                wingUpgradePoint++;
+                wingUpgradePointProgress -= 100;
+            }
+        }
+        private void ResetWingUpgradePointProgres()
+        {
+            wingUpgradePointProgress = 0;
+            wingUpgradePoint = 0;
         }
     }
 }
