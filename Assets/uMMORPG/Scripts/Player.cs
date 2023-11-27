@@ -62,6 +62,7 @@ public partial class Player : Entity
     public Endurance endurance;
     public Agility agility;
     public PlayerChat chat;
+    public PlayerPrivateChat privateChat;
     public PlayerCrafting crafting;
     public PlayerGameMasterTool gameMasterTool;
     public PlayerGuild guild;

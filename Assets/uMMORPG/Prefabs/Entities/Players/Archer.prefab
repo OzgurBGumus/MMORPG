@@ -322,6 +322,7 @@ MonoBehaviour:
   endurance: {fileID: 7988980425300266584}
   agility: {fileID: 8672695298976605243}
   chat: {fileID: 11481206}
+  privateChat: {fileID: 0}
   crafting: {fileID: 6835918529521475956}
   gameMasterTool: {fileID: 1551624724093034080}
   guild: {fileID: 4555037830765103302}
@@ -498,7 +499,7 @@ MonoBehaviour:
   health: {fileID: 5712206906443104382}
   value: 1
   baseValue: 6
-  hitBonusPerPoint: 16
+  healthBonusPerPoint: 16
   physicalDefenseBonusPerPoint: 1
 --- !u!114 &8672695298976605243
 MonoBehaviour:
@@ -749,7 +750,8 @@ MonoBehaviour:
     command: /w
     identifierOut: (TO)
     identifierIn: (FROM)
-    textPrefab: {fileID: 193954, guid: c8ad1eb374d694823b6942e74e04a0ca, type: 3}
+    textPrefab: {fileID: 8672764157850495720, guid: 09e8f89542644a24b8482c55beeb7584,
+      type: 3}
   localChannel:
     command: 
     identifierOut: 
@@ -1221,6 +1223,7 @@ MonoBehaviour:
   player: {fileID: 11448894}
   inventory: {fileID: 5862149248774273826}
   activeQuestLimit: 10
+  inventoryUpdated: 0
 --- !u!114 &4964662516097220050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1305,6 +1308,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   currentSkill: -1
+  movedWhileCasting: 0
   level: {fileID: 6372609056192116201}
   movement: {fileID: 6690251532208965200}
   party: {fileID: 1571798236742742759}
@@ -1439,6 +1443,8 @@ MonoBehaviour:
   syncInterval: 0
   player: {fileID: 11448894}
   data: {fileID: 11400000, guid: 9b452ae4e2d9aa94d8d016d8d8f9760b, type: 2}
+  wingUpgradePoint: 0
+  wingUpgradePointProgress: 0
   upgradeIndices: ffffffffffffffffffffffffffffffffffffffffffffffff
   upgradeTimeEnd: 0
   rarityIndex: 0

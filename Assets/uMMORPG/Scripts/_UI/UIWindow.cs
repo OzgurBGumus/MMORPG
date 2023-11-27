@@ -2,6 +2,7 @@
 // by the user.
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public enum CloseOption
 {
@@ -21,7 +22,9 @@ public class UIWindow : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     // cache
     Transform window;
     Transform panelsParent;
-
+    public Button smallerButton;
+    //smaller view
+    bool isSmall = false;
     void Awake()
     {
         // cache the parent window
@@ -40,7 +43,8 @@ public class UIWindow : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnBeginDrag(PointerEventData d)
     {
-        if(isDraggable)
+        window.transform.SetAsLastSibling();
+        if (isDraggable)
         {
             currentlyDragged = this;
             HandleDrag(d);
@@ -84,15 +88,54 @@ public class UIWindow : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void TriggerWindowSmaller()
     {
-        // send message in case it's needed
-        // note: it's important to not name it the same as THIS function to avoid
-        //       a deadlock
-        if (window.gameObject.activeSelf)
+        window.transform.SetAsLastSibling();
+        if (isSmall)
         {
-            panelsParent.SendMessage("OnWindowClose", SendMessageOptions.DontRequireReceiver);
+            float additionalHeigth = 0;
+            UIWindow uiWindowElement;
+            foreach (Transform childTransform in window)
+            {
+                if (!childTransform.TryGetComponent<UIWindow>(out uiWindowElement))
+                {
+                    // Add the child GameObject to the list
+                    childTransform.gameObject.SetActive(true);
+                    additionalHeigth += childTransform.GetComponent<RectTransform>().rect.height;
+                }
+            }
+
+            
+            RectTransform rectTransform = GetComponent<RectTransform>();
+            Vector2 vectr = new Vector2(rectTransform.position.x, rectTransform.position.y- (additionalHeigth / 2));
+            rectTransform.Translate(vectr);
+            //(additionalHeigth / 2);
+
+            smallerButton.GetComponentInChildren<Text>().text = "-";
+            isSmall = false;
+            
         }
-        Transform sibling = window.GetChild(1);
-        sibling.gameObject.SetActive(!sibling.gameObject.activeSelf);
+        else
+        {
+            UIWindow uiWindowElement;
+            foreach (Transform childTransform in window)
+            {
+                if (!childTransform.TryGetComponent<UIWindow>(out uiWindowElement))
+                {
+                    // Add the child GameObject to the list
+                    childTransform.gameObject.SetActive(false);
+                }
+            }
+            smallerButton.GetComponentInChildren<Text>().text = "□";
+            isSmall = true;
+        }
+        //// send message in case it's needed
+        //// note: it's important to not name it the same as THIS function to avoid
+        ////       a deadlock
+        //if (window.gameObject.activeSelf)
+        //{
+        //    panelsParent.SendMessage("OnWindowClose", SendMessageOptions.DontRequireReceiver);
+        //}
+        //Transform sibling = window.GetChild(1);
+        //sibling.gameObject.SetActive(!sibling.gameObject.activeSelf);
 
     }
 }

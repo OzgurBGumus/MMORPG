@@ -103,7 +103,12 @@ public class PlayerChat : NetworkBehaviour
         UIChat.singleton.AddMessage(new ChatMessage("", infoChannel.identifierIn, "Or click on a message to reply", "",  infoChannel.textPrefab));
         UIChat.singleton.AddMessage(new ChatMessage("Someone", guildChannel.identifierIn, "Anyone here?", "/g ",  guildChannel.textPrefab));
         UIChat.singleton.AddMessage(new ChatMessage("Someone", partyChannel.identifierIn, "Let's hunt!", "/p ",  partyChannel.textPrefab));
-        UIChat.singleton.AddMessage(new ChatMessage("Someone", whisperChannel.identifierIn, "Are you there?", "/w Someone ",  whisperChannel.textPrefab));
+        TargetMsgWhisperFrom("someone", "Hey, r you there?");
+        TargetMsgWhisperFrom("someone1", "Hey, r you there?");
+        TargetMsgWhisperFrom("someone2", "Hey, r you there?");
+        TargetMsgWhisperFrom("someone3", "Hey, r you there?");
+        TargetMsgWhisperFrom("someone4", "Hey, r you there?");
+        TargetMsgWhisperFrom("someone5", "Hey, r you there?");
         UIChat.singleton.AddMessage(new ChatMessage("Someone", localChannel.identifierIn, "Hello!", "/w Someone ",  localChannel.textPrefab));
     }
 
@@ -126,7 +131,7 @@ public class PlayerChat : NetworkBehaviour
                 {
                     if (user != name)
                     {
-                        lastCommand = whisperChannel.command + " " + user + " ";
+                        //lastCommand = whisperChannel.command + " " + user + " ";
                         CmdMsgWhisper(user, message);
                     }
                     else Debug.Log("cant whisper to self");
@@ -263,6 +268,12 @@ public class PlayerChat : NetworkBehaviour
     {
         if (message.Length > maxLength) return;
 
+        if (playerName.Contains("someone"))
+        {
+            TargetMsgWhisperTo(playerName, message);
+        }
+
+
         // find the player with that name
         if (Player.onlinePlayers.TryGetValue(playerName, out Player onlinePlayer))
         {
@@ -288,7 +299,7 @@ public class PlayerChat : NetworkBehaviour
         // add message with identifierIn
         string identifier = whisperChannel.identifierIn;
         string reply = whisperChannel.command + " " + sender + " "; // whisper
-        UIChat.singleton.AddMessage(new ChatMessage(sender, identifier, message, reply, whisperChannel.textPrefab));
+        UIPrivateChat.singleton.AddMessage(new ChatMessage(sender, identifier, message, reply, whisperChannel.textPrefab), false);
     }
 
     [TargetRpc]
@@ -297,7 +308,7 @@ public class PlayerChat : NetworkBehaviour
         // add message with identifierOut
         string identifier = whisperChannel.identifierOut;
         string reply = whisperChannel.command + " " + receiver + " "; // whisper
-        UIChat.singleton.AddMessage(new ChatMessage(receiver, identifier, message, reply, whisperChannel.textPrefab));
+        UIPrivateChat.singleton.AddMessage(new ChatMessage(receiver, identifier, message, reply, whisperChannel.textPrefab), true);
     }
 
     [ClientRpc]
